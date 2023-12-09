@@ -1,0 +1,45 @@
+﻿@model Entity.Apartment
+
+
+<form method="Post" asp-controller="Apartment" >
+
+    <h5>New Apartment Form</h5>
+    <form-group>
+        <div>
+        <label asp-for="Floor"></label>
+            <input asp-for="Floor" min="0" placeholder="0" required />
+        </div>
+        <span asp-validation-for="Floor" class="text-danger"></span>
+    </form-group>
+    <form-group>
+        <div>
+        <label asp-for="Number"></label>
+            <input asp-for="Number" min="0" placeholder="0" size="100" required />
+        </div>
+        <span asp-validation-for="Number" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
+
+        <label asp-for="BlockName"></label>
+            <input asp-for="BlockName" placeholder="A - B..." required />
+        </div>
+        <span asp-validation-for="BlockName" class="text-danger"></span>
+    </form-group>
+
+    <form-group>
+        <div>
+        <label asp-for="Type"></label>
+            <input asp-for="Type" placeholder="(2+1) etc." required />
+        </div>
+        <span asp-validation-for="Type" class="text-danger"></span>
+
+    </form-group>
+
+
+    <input type="submit" value="Add Apartment" asp-action="Apartment" />
+    
+
+</form>
