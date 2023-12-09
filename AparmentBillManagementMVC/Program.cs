@@ -1,4 +1,5 @@
 using Bussiness.Abstract;
+using Bussiness.Automapper;
 using Bussiness.Concrete;
 using DataAccess;
 using DataAccess.Abstarct;
@@ -9,11 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSingleton<DbContext, AppDbContext>();
 builder.Services.AddSingleton<IApartmentDal, EfApartmentDal>();
 builder.Services.AddSingleton<IApartmentService, ApartmentManager>();
 
+builder.Services.AddSingleton<ITenantDal,EfTenantDal>();
+builder.Services.AddSingleton<ITenantService, TenantManager>();
+
+
+//builder.Services.AddSingleton<MappingProfile>();
 
 var app = builder.Build();
 

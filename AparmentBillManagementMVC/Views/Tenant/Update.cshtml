@@ -1,0 +1,65 @@
+﻿@model Entity.Tenant
+
+
+@if (TempData["message"] is not null)
+{
+    <div class="alert-info">@TempData["message"]</div>
+}
+
+
+<form asp-controller="Tenant" method="post">
+    <h5>New Apartment Form</h5>
+    <form-group>
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" placeholder="e.g. John" required />
+        </div>
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+    </form-group>
+    <form-group>
+        <div>
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" placeholder="e.g. Dorie" required />
+        </div>
+        <span asp-validation-for="LastName" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" placeholder="e.g. 05464638650" required type="number" />
+        </div>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
+            <label asp-for="Mail"></label>
+            <input asp-for="Mail" placeholder="e.g. blabla@gmail.com" required type="email" />
+        </div>
+        <span asp-validation-for="Mail" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
+            <label asp-for="IdentityNumber"></label>
+            <input asp-for="IdentityNumber" placeholder="enter identity number" required type="number" />
+        </div>
+        <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
+            <label asp-for="LicensePlate"></label>
+            <input asp-for="LicensePlate" placeholder="e.g. 49 MEB 490" required />
+        </div>
+        <span asp-validation-for="LicensePlate" class="text-danger"></span>
+
+    </form-group>
+    <input asp-action="Update" type="submit" value="Update Tenant" />
+</form>

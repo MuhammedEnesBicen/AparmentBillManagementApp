@@ -1,0 +1,39 @@
+﻿@model List<Entity.Tenant>
+
+
+@if (TempData["message"] is not null)
+{
+    <div class="alert-info">@TempData["message"]</div>
+}
+
+<a class="btn btn-outline-primary" asp-action="Tenant" > Add Tenant</a>
+
+<h2 class="d-flex justify-content-center">Tenants List</h2>
+@if (Model.Count < 1)
+{
+    <p class="alert-danger"> There is no tenant</p>
+}
+<div class="row justify-content-center">
+@foreach(Entity.Tenant item in Model)
+{
+    <div class="card my-3 mx-3 col-3 col-md-6 col-lg-4 col-sm-12 apartmentCard" style="width: 18rem;">
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+            <h2 class="card-title">@item.Name @item.LastName</h2>
+            <h6 class="card-subtitle mb-2 text-muted">@item.PhoneNumber</h6>
+            <p>Mail: @item.Mail</p>
+            <p>Licence Plate: @item.LicensePlate</p>
+                </div>
+                <div>
+            <a class="btn btn-danger mb-3 w-100" asp-controller="Tenant" asp-action="Delete" asp-route-id="@item.Id">
+                <i class="fa fa-trash"></i>  Delete Tenant
+            </a>
+            <a class="btn btn-warning text-white w-100" asp-controller="Tenant" asp-action="Update" asp-route-id="@item.Id">
+                <i class="fa fa-pencil"></i>  Update Tenant
+            </a>
+                </div>
+        </div>
+    </div>
+}
+
+</div>
