@@ -20,3 +20,13 @@ Then, they must run the <mark>"update-database"</mark> command in the Package Ma
 
 ![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/updatetenant.png)
 <br />
+
+### Tenants Page
+
+![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/bills.png)
+<br />
+
+### Tenant Update Page
+
+![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/updatebill.png)
+<br />

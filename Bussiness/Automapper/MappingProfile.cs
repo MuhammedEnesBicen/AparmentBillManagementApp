@@ -1,5 +1,6 @@
 using AutoMapper;
 using Entity;
+using Entity.DTOs;
 
 namespace Bussiness.Automapper
 {
@@ -7,7 +8,10 @@ namespace Bussiness.Automapper
     {
         public MappingProfile() {
             CreateMap<Tenant, Tenant>();
+            CreateMap<Bill,Bill>();
 
+            CreateMap<BillDTO, Bill>();
+            CreateMap<Bill,BillDTO>();
         }
     }
 }

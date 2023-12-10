@@ -19,6 +19,9 @@ builder.Services.AddSingleton<IApartmentService, ApartmentManager>();
 builder.Services.AddSingleton<ITenantDal,EfTenantDal>();
 builder.Services.AddSingleton<ITenantService, TenantManager>();
 
+builder.Services.AddSingleton<IBillDal, EfBillDal>();
+builder.Services.AddSingleton<IBillService, BillManager>();
+
 
 //builder.Services.AddSingleton<MappingProfile>();
 

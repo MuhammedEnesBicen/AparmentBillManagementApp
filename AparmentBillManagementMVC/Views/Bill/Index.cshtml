@@ -1,0 +1,37 @@
+﻿@model List<Entity.Bill>
+
+@if (TempData["message"] is not null)
+{
+    <div class="alert alert-info">@TempData["message"]</div>
+}
+
+<a asp-action="Bill" class="btn btn-outline-primary"> Add Bill</a>
+<h2 class="d-flex justify-content-center">Bills List</h2>
+<table class="table table-striped">
+    <tr>
+    <th>Apartment</th>
+    
+    <th>Explanation</th>
+    <th>BillDate</th>
+    <th>BillCost</th>
+    <th>Is Payed</th>
+    <th>Actions</th>
+    </tr>
+
+@foreach(Entity.Bill item in Model)
+{
+    <tr>
+        <td>@item.Apartment?.BlockName - @item.Apartment?.Number</td>
+        <td>@item.Explanation</td>
+        <td>@item.BillDate.ToString()</td>
+        <td>@item.BillCost</td>
+        <td>@item.IsPayed</td>
+        <td>
+            <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-info text-white"><i class="fa fa-pencil"></i> Update</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+
+        </td>
+    </tr>
+}
+  
+</table>

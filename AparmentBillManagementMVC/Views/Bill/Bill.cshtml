@@ -1,0 +1,59 @@
+﻿@model Entity.DTOs.BillDTO
+
+@{
+    DateTime today = DateTime.Today;
+}
+
+@if (TempData["message"] is not null)
+{
+    <div class="alert-info">@TempData["message"]</div>
+}
+
+<form asp-controller="Bill" method="post">
+    <h5>New Bill Form</h5>
+    <form-group>
+        <div>
+        <label asp-for="Explanation"></label>
+            <input asp-for="Explanation" required />
+        </div>
+        <span asp-validation-for="Explanation" class="text-danger"></span>
+    </form-group>
+
+        <form-group>
+        <div>
+
+        <label asp-for="BillDate"></label>
+            <input asp-for="BillDate" required type="date" />
+        </div>
+        <span asp-validation-for="BillDate" class="text-danger"></span>
+    </form-group>
+
+        <form-group>
+        <div>
+
+        <label asp-for="BillCost"></label>
+            <input asp-for="BillCost" required />
+        </div>
+        <span asp-validation-for="BillCost" class="text-danger"></span>
+    </form-group>
+
+        <form-group>
+        <div>
+
+        <label asp-for="IsPayed"></label>
+            <input asp-for="IsPayed" />
+        </div>
+        <span asp-validation-for="IsPayed" class="text-danger"></span>
+    </form-group>
+
+        <form-group>
+        <div>
+
+        <label asp-for="ApartmentId"></label>
+            <input asp-for="ApartmentId" required />
+        </div>
+        <span asp-validation-for="ApartmentId" class="text-danger"></span>
+    </form-group>
+
+    <input type="submit" asp-action="Bill"  value="Add Bill"/>
+</form>
