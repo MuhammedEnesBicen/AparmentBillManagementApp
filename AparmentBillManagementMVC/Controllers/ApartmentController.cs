@@ -12,12 +12,10 @@ namespace AparmentBillManagementMVC.Controllers
             this.apartmentService = apartmentService;
         }
         public IActionResult Index()
-        {
-            
+        {            
             var result = apartmentService.GetList();
             return View(result.Data);
         }
-
 
         public IActionResult Apartment()
         {
@@ -32,46 +30,37 @@ namespace AparmentBillManagementMVC.Controllers
             if (ModelState.IsValid)
             {
               var result = apartmentService.Add(apartment);
-            if(result.Success ==true) return RedirectToAction("Index");
-            return View("not added");
+                TempData["message"] = result.Message;
+                if (result.Success ==true)
+                {                    
+                    return RedirectToAction("Index");
+                }
             }
             return View();
-            
-
         }
 
         public IActionResult Delete([FromRoute] int id) {
             var result = apartmentService.DeleteById(id);
-
-TempData["message"]=result.Message;
-            
-            
-            return RedirectToAction("Index");
-        
+            TempData["message"]=result.Message;        
+            return RedirectToAction("Index");        
         }
 
         public IActionResult Update([FromRoute] int id)
         {
             var apartmentForUpdate  = apartmentService.GetById(id).Data;
-
             return View(apartmentForUpdate);
         }
 
         [HttpPost]
         public IActionResult Update([FromForm] Apartment apartment)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-            var result = apartmentService.Update(apartment);
-
-            TempData["message"] = result.Message;
-
-
-            return RedirectToAction("Index");
+                var result = apartmentService.Update(apartment);
+                TempData["message"] = result.Message;
+                return RedirectToAction("Index");
             }
             return View();
-
-
         }
     }
 }
