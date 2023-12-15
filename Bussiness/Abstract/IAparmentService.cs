@@ -1,11 +1,6 @@
 ﻿using Core.Utilities;
 using Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using Entity.ViewModels;
 namespace Bussiness.Abstract
 {
     public interface IApartmentService
@@ -15,8 +10,9 @@ namespace Bussiness.Abstract
         Result Update(Apartment apartment);
 
         DataResult<Apartment> GetById(int apartmentId);
-        DataResult<List<Apartment>> GetByBlockList(String blockName);
         DataResult<List<Apartment>> GetList();
+        DataResult<List<ApartmentVM>> GetApartmentVMs();
+        DataResult<List<ApartmentVM>> GetApartmentVMsByBlock(String blockName);
 
         Result DeleteById(int id);
     }

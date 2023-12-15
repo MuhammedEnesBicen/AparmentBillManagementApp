@@ -1,60 +1,48 @@
-﻿@model List<Entity.Apartment>
+﻿@model List<Entity.ViewModels.ApartmentVM>
 
-    <a asp-action="Apartment">Apartman eklemeye git</a>
 
-@if(TempData["message"] is not null)
+@if (TempData["message"] is not null)
 {
-    <div class="alert-info">@TempData["message"]</div>
-}
-
-@if (Model.Count < 1)
-{
-    <p class="alert-danger"> There is no apartment</p>
+    <div class="alert alert-info">@TempData["message"]</div>
 }
 
 @{
-    string category = "All";
+    List<string> blocks = Model.DistinctBy(a => a.Apartment.BlockName).Select(a => a.Apartment.BlockName).Order().ToList();
+}
 
-    List<Entity.Apartment> ApartmentList = Model;
 
-     void refreshList(string categoryText){
-        if (category == categoryText)
-            category = "All";
-        if (category == "All")
+<h2 class="d-flex justify-content-center mb-4">Apartments List</h2>
+@if (Model.Count < 1)
+{
+    <p class="alert alert-danger"> There is no apartment</p>
+}
+<div class="d-flex justify-content-between mb-2">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="all" autocomplete="off" checked onclick="getByBlockName('all')">
+        <label class="btn btn-outline-primary" for="all">All Blocks</label>
+
+        @foreach (string blockName in blocks)
         {
-            ApartmentList = Model;
+            <input type="radio" class="btn-check" name="btnradio" id="@blockName" autocomplete="off" onclick="getByBlockName('@blockName')">
+            <label class="btn btn-outline-primary" for="@blockName">@blockName</label>
         }
-        else
-        {
-            ApartmentList = Model.Where(i => i.BlockName == category).ToList();
-        }
+    </div>
+    <a class="btn btn-outline-primary" asp-action="Apartment">Add Apartment</a>
+</div>
+<div id="apartmentList">
+    @await Html.PartialAsync("ApartmentsList")
+</div>
+
+<script>
+
+    function getByBlockName(blockName) {
+
+        $.post("/Apartment/ApartmentsList?blockName=" + blockName).then(
+            function (result) {
+                console.log(result);
+                $("#apartmentList").html(result);
+            }
+        );
     }
 
-}
-
-
-
-<h2 class="d-flex justify-content-center">Apartments List</h2>
-<div class="row justify-content-center">
-   @*  <input type="button" onclick=@refreshList("A") /> *@
-@foreach(Entity.Apartment item in ApartmentList)
-{
-
-    <div class="card my-3 mx-3 col-3 col-md-6 col-lg-4 col-sm-12 apartmentCard" style="width: 18rem;">
-        <div class="card-body">
-            <h2 class="card-title">@item.BlockName - @item.Number</h2>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p>floor: @item.Floor</p>
-            <p>type: @item.Type.ToString()</p>
-            <p class="card-text">Monthly bill cost</p>
-
-            <a class="btn btn-danger mb-3 w-100" asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Id">
-                <i class="fa fa-trash"></i>  Delete Apartment</a>
-            <a class="btn btn-warning text-white w-100" asp-controller="Apartment" asp-action="Update" asp-route-id="@item.Id">
-                <i class="fa fa-pencil"></i>  Update Apartment</a>
-
-        </div>
-    </div>
-}
-
-</div>
+</script>

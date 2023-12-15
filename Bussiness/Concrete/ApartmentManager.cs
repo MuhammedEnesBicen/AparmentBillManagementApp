@@ -2,11 +2,7 @@
 using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entity.ViewModels;
 
 namespace Bussiness.Concrete
 {
@@ -41,9 +37,15 @@ namespace Bussiness.Concrete
             return new Result(false, "Apartment couldnt deleted");
         }
 
-        public DataResult<List<Apartment>> GetByBlockList(String blockName)
+        public DataResult<List<ApartmentVM>> GetApartmentVMs()
         {
-            return new DataResult<List<Apartment>>(true, "Succesfully Listed", apartmentDal.GetList(a => a.BlockName ==blockName).ToList());
+            var result = apartmentDal.GetApartmentVMs();
+            return new DataResult<List<ApartmentVM>>(true, "Succesfully Listed", result);
+        }
+
+        public DataResult<List<ApartmentVM>> GetApartmentVMsByBlock(String blockName)
+        {
+            return new DataResult<List<ApartmentVM>>(true, "Succesfully Listed", apartmentDal.GetApartmentVMs(blockName).ToList());
 
         }
 

@@ -12,8 +12,8 @@ namespace AparmentBillManagementMVC.Controllers
             this.apartmentService = apartmentService;
         }
         public IActionResult Index()
-        {            
-            var result = apartmentService.GetList();
+        {
+            var result = apartmentService.GetApartmentVMs();
             return View(result.Data);
         }
 
@@ -61,6 +61,14 @@ namespace AparmentBillManagementMVC.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+
+        [HttpPost]
+        public PartialViewResult ApartmentsList(string blockName)
+        {
+            var result =(blockName=="all")? apartmentService.GetApartmentVMs(): apartmentService.GetApartmentVMsByBlock(blockName);
+            return PartialView(result.Data);
         }
     }
 }

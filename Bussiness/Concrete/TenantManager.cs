@@ -3,6 +3,7 @@ using Bussiness.Abstract;
 using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
+using Entity.DTOs;
 
 namespace Bussiness.Concrete
 {
@@ -17,8 +18,9 @@ namespace Bussiness.Concrete
             this.mapper = mapper;
         }
 
-        public Result Add(Tenant tenant)
+        public Result Add(TenantDTO tenantDTO)
         {
+            Tenant tenant = mapper.Map<Tenant>(tenantDTO);
             tenantDal.Add(tenant);
             return new Result(true,"Tenant Added Successfully");
         }

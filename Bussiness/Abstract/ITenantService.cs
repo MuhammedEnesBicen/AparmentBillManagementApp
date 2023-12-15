@@ -1,11 +1,12 @@
 ﻿using Core.Utilities;
 using Entity;
+using Entity.DTOs;
 
 namespace Bussiness.Abstract
 {
     public interface ITenantService
     {
-        Result Add(Tenant tenant);
+        Result Add(TenantDTO tenantDTO);
         Result Delete(Tenant tenant);
         Result Update(Tenant tenant);
         Result DeleteById(int id);

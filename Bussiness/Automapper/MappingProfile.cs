@@ -12,6 +12,9 @@ namespace Bussiness.Automapper
 
             CreateMap<BillDTO, Bill>();
             CreateMap<Bill,BillDTO>();
+
+            CreateMap<TenantDTO, Tenant>();
+            CreateMap<Tenant,TenantDTO>();
         }
     }
 }

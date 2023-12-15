@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Entity
 {
@@ -11,10 +6,8 @@ namespace Entity
     {
         public int Id { get; set; }
 
-
         [Range(0, 20,ErrorMessage ="You should enter a number between 0 - 20")]        
         public int Floor { get; set; }
-
         
         [Range(0, 100)]
         public int Number { get; set; }
@@ -25,8 +18,7 @@ namespace Entity
         public string BlockName { get; set; }
 
         [Required]
-        public string Type { get; set; }//(2+1) vs
-        public int? TenantId { get; set; }
-        public Tenant? Tenant { get; set; }
+        [StringLength(20)]
+        public string Type { get; set; }//like (2+1) or (3+1)
     }
 }

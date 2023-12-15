@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entity
+namespace Entity.DTOs
 {
-    public class Tenant
+    public class TenantDTO
     {
-        public int Id { get; set; }
+        
         [Required]
         [StringLength(20)]
         [MinLength(2)]
@@ -14,7 +14,7 @@ namespace Entity
         [MinLength(2)]
         public string LastName { get; set; }
         [Required]
-        [MinLength(11,ErrorMessage ="length of Identity number must be 11")]
+        [MinLength(11, ErrorMessage = "length of Identity number must be 11")]
         [MaxLength(11, ErrorMessage = "length of Identity number must be 11")]
         public string IdentityNumber { get; set; }
         [Required]
@@ -25,6 +25,5 @@ namespace Entity
         public string? LicensePlate { get; set; }
 
         public int ApartmentId { get; set; }
-        public Apartment Apartment { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Entity;
+using Entity.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AparmentBillManagementMVC.Controllers
@@ -19,24 +20,27 @@ namespace AparmentBillManagementMVC.Controllers
             return View(model);
         }
 
-        public IActionResult Tenant()
+        public IActionResult Tenant([FromQuery]int apartmentId)
         {
-            return View();
+            TenantDTO tenantDTO = new TenantDTO();
+            tenantDTO.ApartmentId = apartmentId;
+            return View(tenantDTO);
         }
 
         [HttpPost]
-        public IActionResult Tenant([FromForm]Tenant tenant) {
+        public IActionResult Tenant([FromForm]TenantDTO tenantDTO) 
+        {
         
             if (ModelState.IsValid)
             {
-                var result = tenantService.Add(tenant);
+                var result = tenantService.Add(tenantDTO);
                 TempData["message"] = result.Message;
                 if (result.Success)
                 {
                     return RedirectToAction("Index");
                 }
             }
-            return View(tenant);
+            return View(tenantDTO);
         }
 
         public IActionResult Delete(int id)

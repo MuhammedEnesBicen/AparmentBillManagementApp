@@ -5,5 +5,6 @@ namespace DataAccess.Abstarct
 {
     public interface IApartmentDal: IEntityRepository<Apartment>
     {
+        public List<Entity.ViewModels.ApartmentVM> GetApartmentVMs(string? blockName = null);
     }
 }

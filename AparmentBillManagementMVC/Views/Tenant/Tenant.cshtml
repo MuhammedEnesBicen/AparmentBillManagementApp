@@ -1,4 +1,4 @@
-﻿@model Entity.Tenant
+﻿@model TenantDTO
 
 @if (TempData["message"] is not null)
 {
@@ -7,7 +7,8 @@
 
 
 <form asp-controller="Tenant"  method="post" >
-    <h5>New Apartment Form</h5>
+    <h5>New Tenant Form</h5>
+    <input asp-for="ApartmentId" hidden/>
     <form-group>
         <div>
             <label asp-for="Name"></label>
