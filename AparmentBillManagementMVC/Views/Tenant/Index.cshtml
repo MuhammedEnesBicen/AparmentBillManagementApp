@@ -1,4 +1,4 @@
-﻿@model List<Entity.Tenant>
+﻿@model List<TenantVM>
 
 
 @if (TempData["message"] is not null)
@@ -6,34 +6,66 @@
     <div class="alert-info">@TempData["message"]</div>
 }
 
-<a class="btn btn-outline-primary" asp-action="Tenant" > Add Tenant</a>
+@{
+    List<string> blocks = Model.DistinctBy(a => a.BlockName).Select(a => a.BlockName).Order().ToList();
+}
 
 <h2 class="d-flex justify-content-center">Tenants List</h2>
 @if (Model.Count < 1)
 {
     <p class="alert-danger"> There is no tenant</p>
 }
-<div class="row justify-content-center">
-@foreach(Entity.Tenant item in Model)
-{
-    <div class="card my-3 mx-3 col-3 col-md-6 col-lg-4 col-sm-12 apartmentCard" style="width: 18rem;">
-        <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-            <h2 class="card-title">@item.Name @item.LastName</h2>
-            <h6 class="card-subtitle mb-2 text-muted">@item.PhoneNumber</h6>
-            <p>Mail: @item.Mail</p>
-            <p>Licence Plate: @item.LicensePlate</p>
-                </div>
-                <div>
-            <a class="btn btn-danger mb-3 w-100" asp-controller="Tenant" asp-action="Delete" asp-route-id="@item.Id">
-                <i class="fa fa-trash"></i>  Delete Tenant
-            </a>
-            <a class="btn btn-warning text-white w-100" asp-controller="Tenant" asp-action="Update" asp-route-id="@item.Id">
-                <i class="fa fa-pencil"></i>  Update Tenant
-            </a>
-                </div>
-        </div>
+
+<div class="d-flex flex-wrap justify-content-between mb-2 gap-3">
+    <div id="blockRadioBtns" class="btn-group  " role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="all" autocomplete="off" checked onclick="getTenantsByBlockName()">
+        <label class="btn btn-outline-primary" for="all">All Blocks</label>
+
+        @foreach (string blockName in blocks)
+        {
+            <input type="radio" class="btn-check" name="btnradio" id="@blockName" autocomplete="off" onclick="getTenantsByBlockName()">
+            <label class="btn btn-outline-primary" for="@blockName">@blockName</label>
+        }
     </div>
-}
+    <div class ="flex-fill">
+        <input id="filter" class="w-100 form-control" placeholder="Search  by tenant name" aria-label="Search" onkeyup="getTenantsByBlockName()">
+    </div>
+    <div class="">
+        <input type="checkbox" class="btn-check" id="debtCheck" autocomplete="off" onchange="getTenantsByBlockName()">
+        <label class="btn btn-outline-primary" for="debtCheck"><i id="debtCheckIcon" class="fa fa-close"></i> Only Has Debt</label><br>
+    </div>
 
 </div>
+
+<div class="row justify-content-center" id="tenantsArea">
+    @await Html.PartialAsync("TenantsList")
+
+</div>
+
+@section Scripts{
+    <script>
+
+        function getTenantsByBlockName() {
+            let blockName = $("#blockRadioBtns input[type='radio']:checked").attr("id");
+            let filter = $("#filter").val();
+            let debtCheck = $("#debtCheck").prop("checked");
+            $.post("/Tenant/TenantsList?blockName=" + blockName + "&nameFilter=" + filter + "&onlyHasDebt=" + debtCheck).then(
+                function (result) {
+                    console.log(result);
+                    $("#tenantsArea").html(result);
+                }
+            );
+            if (debtCheck) {
+                $("#debtCheckIcon").removeClass("fa-close");
+                $("#debtCheckIcon").addClass("fa-check");
+            } else {
+                $("#debtCheckIcon").removeClass("fa-check");
+                $("#debtCheckIcon").addClass("fa-close");
+                
+
+            }
+        }
+
+    </script>
+}
+

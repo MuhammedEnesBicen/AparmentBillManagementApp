@@ -4,6 +4,7 @@ using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
 using Entity.DTOs;
+using Entity.ViewModels;
 
 namespace Bussiness.Concrete
 {
@@ -51,6 +52,13 @@ namespace Bussiness.Concrete
         {
             var tenants = tenantDal.GetList();
             return new DataResult<List<Tenant>>(true, "Tenants successfully listed", tenants.ToList());
+
+        }
+
+        public DataResult<List<TenantVM>> GetTenantVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
+        {
+            var tenantVMs = tenantDal.GetTenantVMs(blockName, nameFilter, onlyHasDebt);
+            return new DataResult<List<TenantVM>>(true, "Tenants successfully listed", tenantVMs);
 
         }
 

@@ -1,11 +1,37 @@
-﻿
-using Core.DataAccess.EntityFramework;
+﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Abstarct;
 using Entity;
+using Entity.ViewModels;
 
 namespace DataAccess.Concrete
 {
-    public class EfTenantDal : EfEntityRepositoryBase<Tenant,AppDbContext>,ITenantDal
+    public class EfTenantDal : EfEntityRepositoryBase<Tenant, AppDbContext>, ITenantDal
     {
+        public List<TenantVM> GetTenantVMs(string? blockName = null, string? nameFilter =null,  bool onlyHasDebt = false)
+        {
+            using (var context = new AppDbContext())
+            {
+                var result = from tenant in context.Tenants
+                             join apartment in context.Apartments
+                             on tenant.ApartmentId equals apartment.Id
+                             join bill in context.Bills
+                             on apartment.Id equals bill.ApartmentId into bills
+                             select new TenantVM
+                             {
+                                 Tenant = tenant,
+                                 BlockName = apartment.BlockName,
+                                 FlatNumber = apartment.Number,
+                                 DebtAmount = bills.Where(b=> b.IsPayed==false).Sum(b => b.BillCost)
+                             };
+                if (blockName != null)
+                    result = result.Where(t => t.BlockName == blockName);
+                if(onlyHasDebt)
+                    result = result.Where(t => t.DebtAmount > 0);
+                if (String.IsNullOrEmpty(nameFilter)==false)
+                    result = result.Where(t => (t.Tenant.Name+" "+t.Tenant.LastName).ToLower().Contains(nameFilter.ToLower()));
+
+                return result.ToList();
+            }
+        }
     }
 }

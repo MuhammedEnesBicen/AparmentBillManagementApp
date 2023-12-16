@@ -16,7 +16,7 @@ namespace AparmentBillManagementMVC.Controllers
 
         public IActionResult Index()
         {
-            var model = tenantService.GetList().Data;
+            var model = tenantService.GetTenantVMs().Data;
             return View(model);
         }
 
@@ -66,6 +66,17 @@ namespace AparmentBillManagementMVC.Controllers
                 return RedirectToAction("Index");
             }
             return View(tenant) ;
+        }
+
+        [HttpPost]
+        public PartialViewResult TenantsList(string? blockName, string? nameFilter, bool onlyHasDebt)
+        {
+            if(blockName == "all")
+            {
+                blockName = null;
+            }
+            var model = tenantService.GetTenantVMs(blockName, nameFilter, onlyHasDebt);
+            return PartialView(model.Data);
         }
     }
 }

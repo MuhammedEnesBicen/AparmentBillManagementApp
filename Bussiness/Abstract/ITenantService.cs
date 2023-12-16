@@ -1,6 +1,7 @@
 ﻿using Core.Utilities;
 using Entity;
 using Entity.DTOs;
+using Entity.ViewModels;
 
 namespace Bussiness.Abstract
 {
@@ -13,6 +14,8 @@ namespace Bussiness.Abstract
 
         DataResult<List<Tenant>> GetList();
         DataResult<Tenant> GetById(int id);
+
+        DataResult<List<TenantVM>> GetTenantVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false);
 
     }
 }
