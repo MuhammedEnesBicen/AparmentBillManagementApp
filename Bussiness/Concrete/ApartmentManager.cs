@@ -29,24 +29,18 @@ namespace Bussiness.Concrete
         public Result DeleteById(int id)
         {
             var result = GetById(id);
-            if (result.Success = true)
+            if (result.Success)
             {
                 return Delete(result.Data);
 
             }
-            return new Result(false, "Apartment couldnt deleted");
+            return new Result(false, "Apartment couldn't deleted");
         }
 
-        public DataResult<List<ApartmentVM>> GetApartmentVMs()
+        public DataResult<List<ApartmentVM>> GetApartmentVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
-            var result = apartmentDal.GetApartmentVMs();
+            var result = apartmentDal.GetApartmentVMs(blockName,nameFilter,onlyHasDebt);
             return new DataResult<List<ApartmentVM>>(true, "Succesfully Listed", result);
-        }
-
-        public DataResult<List<ApartmentVM>> GetApartmentVMsByBlock(String blockName)
-        {
-            return new DataResult<List<ApartmentVM>>(true, "Succesfully Listed", apartmentDal.GetApartmentVMs(blockName).ToList());
-
         }
 
         public DataResult<Apartment> GetById(int apartmentId)

@@ -18,20 +18,20 @@
 
 <div class="d-flex flex-wrap justify-content-between mb-2 gap-3">
     <div id="blockRadioBtns" class="btn-group  " role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="btnradio" id="all" autocomplete="off" checked onclick="getTenantsByBlockName()">
+        <input type="radio" class="btn-check" name="btnradio" id="all" autocomplete="off" checked onclick="filterTenants()">
         <label class="btn btn-outline-primary" for="all">All Blocks</label>
 
         @foreach (string blockName in blocks)
         {
-            <input type="radio" class="btn-check" name="btnradio" id="@blockName" autocomplete="off" onclick="getTenantsByBlockName()">
+            <input type="radio" class="btn-check" name="btnradio" id="@blockName" autocomplete="off" onclick="filterTenants()">
             <label class="btn btn-outline-primary" for="@blockName">@blockName</label>
         }
     </div>
     <div class ="flex-fill">
-        <input id="filter" class="w-100 form-control" placeholder="Search  by tenant name" aria-label="Search" onkeyup="getTenantsByBlockName()">
+        <input id="filter" class="w-100 form-control" placeholder="Search  by tenant name" aria-label="Search" onkeyup="filterTenants()">
     </div>
     <div class="">
-        <input type="checkbox" class="btn-check" id="debtCheck" autocomplete="off" onchange="getTenantsByBlockName()">
+        <input type="checkbox" class="btn-check" id="debtCheck" autocomplete="off" onchange="filterTenants()">
         <label class="btn btn-outline-primary" for="debtCheck"><i id="debtCheckIcon" class="fa fa-close"></i> Only Has Debt</label><br>
     </div>
 
@@ -45,7 +45,7 @@
 @section Scripts{
     <script>
 
-        function getTenantsByBlockName() {
+        function filterTenants() {
             let blockName = $("#blockRadioBtns input[type='radio']:checked").attr("id");
             let filter = $("#filter").val();
             let debtCheck = $("#debtCheck").prop("checked");
@@ -61,8 +61,6 @@
             } else {
                 $("#debtCheckIcon").removeClass("fa-check");
                 $("#debtCheckIcon").addClass("fa-close");
-                
-
             }
         }
 

@@ -65,9 +65,11 @@ namespace AparmentBillManagementMVC.Controllers
 
 
         [HttpPost]
-        public PartialViewResult ApartmentsList(string blockName)
+        public PartialViewResult ApartmentsList(string? blockName, string? nameFilter, bool onlyHasDebt)
         {
-            var result =(blockName=="all")? apartmentService.GetApartmentVMs(): apartmentService.GetApartmentVMsByBlock(blockName);
+            if (blockName == "all")
+                blockName = null;
+            var result = apartmentService.GetApartmentVMs(blockName,nameFilter,onlyHasDebt);
             return PartialView(result.Data);
         }
     }

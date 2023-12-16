@@ -11,8 +11,7 @@ namespace Bussiness.Abstract
 
         DataResult<Apartment> GetById(int apartmentId);
         DataResult<List<Apartment>> GetList();
-        DataResult<List<ApartmentVM>> GetApartmentVMs();
-        DataResult<List<ApartmentVM>> GetApartmentVMsByBlock(String blockName);
+        DataResult<List<ApartmentVM>> GetApartmentVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false);
 
         Result DeleteById(int id);
     }

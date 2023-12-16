@@ -8,23 +8,26 @@ namespace DataAccess.Concrete
 {
     public class EfApartmentDal : EfEntityRepositoryBase<Apartment, AppDbContext>, IApartmentDal
     {
-        public List<ApartmentVM> GetApartmentVMs(string? blockName=null)
+        public List<ApartmentVM> GetApartmentVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
             using (var context = new AppDbContext())
             {
-                var result = from apartment in context.Apartments
-                              join tenant in context.Tenants on apartment.Id equals tenant.ApartmentId into tenantsGroup
+                var result = (from apartment in context.Apartments
+                             join tenant in context.Tenants on apartment.Id equals tenant.ApartmentId into tenantsGroup
                              from tenant in tenantsGroup.DefaultIfEmpty()
                              join bill in context.Bills on apartment.Id equals bill.ApartmentId into billsGroup
-                             //from bills in billsGroup.DefaultIfEmpty()                             
-
                              select new ApartmentVM
                              {
                                  Apartment = apartment,
-                                 TenantName = (tenant == null)?String.Empty:tenant.Name + " " + tenant.LastName,
-                                 DebtAmount = (billsGroup.IsNullOrEmpty())?0:billsGroup.Where(x => x.IsPayed == false).Sum(x => x.BillCost)
-                             };
-                if(blockName.IsNullOrEmpty()==false) return result.Where(x => x.Apartment.BlockName == blockName).ToList();
+                                 TenantName = (tenant == null) ? String.Empty : tenant.Name + " " + tenant.LastName,
+                                 DebtAmount = (billsGroup.IsNullOrEmpty()) ? 0 : billsGroup.Where(x => x.IsPayed == false).Sum(x => x.BillCost)
+                             }).AsEnumerable();
+                if (String.IsNullOrEmpty(blockName) == false)
+                    result = result.Where(x => x.Apartment.BlockName == blockName);
+                if (onlyHasDebt)
+                    result = result.Where(a => a.DebtAmount > 0);
+                if (String.IsNullOrEmpty(nameFilter) == false)
+                    result = result.Where(t => t.TenantName.ToLower().Contains(nameFilter.ToLower()));
                 return result.ToList();
             }
         }

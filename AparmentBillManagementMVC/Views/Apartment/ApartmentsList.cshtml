@@ -20,7 +20,10 @@
 </style>
 
 <div class="row justify-content-center">
-
+    @if (Model.Count < 1)
+    {
+        <p class="alert alert-danger m-3 px-2"> There is no apartment</p>
+    }
     @foreach (ApartmentVM item in Model)
     {
 
