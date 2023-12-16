@@ -1,7 +1,8 @@
-﻿@model Entity.DTOs.BillDTO
+﻿@model BillDTO
 
 @{
-    DateTime today = DateTime.Today;
+    DateTime today = DateTime.Now;
+    Model.BillDate = today;
 }
 
 @if (TempData["message"] is not null)
@@ -11,10 +12,20 @@
 
 <form asp-controller="Bill" method="post">
     <h5>New Bill Form</h5>
+    @if(ViewData["tenantName"] is not null)
+    {        
+        <form-group>
+            <div>
+                <label >Tenant: </label>
+                <h6 class="text-muted">@ViewData["tenantName"]</h6>
+            </div>
+        </form-group>
+    }
+    <input asp-for="ApartmentId" hidden/>
     <form-group>
         <div>
         <label asp-for="Explanation"></label>
-            <input asp-for="Explanation" required />
+            <textarea  asp-for="Explanation" required></textarea>
         </div>
         <span asp-validation-for="Explanation" class="text-danger"></span>
     </form-group>
@@ -23,7 +34,7 @@
         <div>
 
         <label asp-for="BillDate"></label>
-            <input asp-for="BillDate" required type="date" />
+            <input asp-for="BillDate" type="date" required />
         </div>
         <span asp-validation-for="BillDate" class="text-danger"></span>
     </form-group>
@@ -44,15 +55,6 @@
             <input asp-for="IsPayed" />
         </div>
         <span asp-validation-for="IsPayed" class="text-danger"></span>
-    </form-group>
-
-        <form-group>
-        <div>
-
-        <label asp-for="ApartmentId"></label>
-            <input asp-for="ApartmentId" required />
-        </div>
-        <span asp-validation-for="ApartmentId" class="text-danger"></span>
     </form-group>
 
     <input type="submit" asp-action="Bill"  value="Add Bill"/>

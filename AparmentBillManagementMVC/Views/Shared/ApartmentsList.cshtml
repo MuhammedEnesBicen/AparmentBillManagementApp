@@ -58,7 +58,14 @@
                     <a class="btn btn-warning text-white w-100" asp-controller="Apartment" asp-action="Update" asp-route-id="@item.Apartment.Id">
                         <i class="fa fa-pencil"></i>  Update Apartment
                     </a>
-                    <a class="btn btn-outline-info rotate" asp-controller="Bill" asp-action="Bill" asp-route-apartmentId="@item.Apartment.Id">Add Bill</a>
+                    @if (String.IsNullOrEmpty(item.TenantName) == false)
+                    {
+                        <a class="btn btn-outline-info rotate" asp-controller="Bill" asp-action="Bill" asp-route-apartmentId="@item.Apartment.Id" asp-route-tenantName="@item.TenantName">Add Bill</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-info rotate" onclick="addBillAlert()">Add Bill</a>
+                    }
 
                 </div>
             </div>

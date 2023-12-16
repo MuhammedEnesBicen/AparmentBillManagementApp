@@ -23,9 +23,12 @@ namespace AparmentBillManagementMVC.Controllers
             return View(billList);
         }
 
-        public IActionResult Bill()
+        public IActionResult Bill(int apartmentId, string? tenantName)
         {
-            return View();
+            BillDTO billDTO = new();
+            billDTO.ApartmentId = apartmentId;
+            ViewData["tenantName"] = tenantName;
+            return View(billDTO);
         }
 
         [HttpPost]
