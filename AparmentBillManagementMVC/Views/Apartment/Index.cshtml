@@ -27,12 +27,12 @@
     <div class="flex-fill">
         <input id="filter" class="w-100 form-control" placeholder="Search  by tenant name" aria-label="Search" onkeyup="filterApartments()">
     </div>
-    <div class="">
+    <div class="" style="background-color:rgba(255,255,255,0.4)">
         <input type="checkbox" class="btn-check" id="debtCheck" autocomplete="off" onchange="filterApartments()">
         <label class="btn btn-outline-primary" for="debtCheck"><i id="debtCheckIcon" class="fa fa-close"></i> Only Has Debt</label><br>
     </div>
 
-    <a class="btn btn-outline-primary" asp-action="Apartment">Add Apartment</a>
+    <a class="btn btn-outline-primary" style="background-color:rgba(255,255,255,0.4)" asp-action="Apartment">Add Apartment</a>
 </div>
 <div id="apartmentList">
     @await Html.PartialAsync("ApartmentsList")

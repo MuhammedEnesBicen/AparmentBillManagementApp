@@ -29,4 +29,9 @@
     <ProjectReference Include="..\Entity\Entity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\TenantUser\Data\" />
+    <Folder Include="Areas\TenantUser\Models\" />
+  </ItemGroup>
+
 </Project>

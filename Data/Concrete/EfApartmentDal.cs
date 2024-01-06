@@ -8,7 +8,7 @@ namespace DataAccess.Concrete
 {
     public class EfApartmentDal : EfEntityRepositoryBase<Apartment, AppDbContext>, IApartmentDal
     {
-        public List<ApartmentVM> GetApartmentVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
+        public List<ApartmentVM> GetApartmentVMsByComplexId(int apartmentComplexId, string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
             using (var context = new AppDbContext())
             {
@@ -16,6 +16,7 @@ namespace DataAccess.Concrete
                              join tenant in context.Tenants on apartment.Id equals tenant.ApartmentId into tenantsGroup
                              from tenant in tenantsGroup.DefaultIfEmpty()
                              join bill in context.Bills on apartment.Id equals bill.ApartmentId into billsGroup
+                             where apartment.ApartmentComplexId == apartmentComplexId
                              select new ApartmentVM
                              {
                                  Apartment = apartment,

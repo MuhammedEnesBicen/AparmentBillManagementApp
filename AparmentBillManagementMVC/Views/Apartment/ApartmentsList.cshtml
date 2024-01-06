@@ -19,60 +19,69 @@
     }
 </style>
 
-<div class="row justify-content-center">
-    @if (Model.Count < 1)
-    {
-        <p class="alert alert-danger m-3 px-2"> There is no apartment</p>
-    }
-    @foreach (ApartmentVM item in Model)
-    {
+@if (TempData["message"] is not null)
+{
+    <div class="alert alert-info">@TempData["message"]</div>
+}
 
-        <div class="card my-3 mx-3 col-3 col-md-6 col-lg-4 col-sm-12 apartmentCard" style="width: 18rem;">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <div>
-                    <h2 class="card-title">@item.Apartment.BlockName - @item.Apartment.Number</h2>
-                    @if (String.IsNullOrEmpty(item.TenantName) == false)
-                    {
-                        <h6 class="card-subtitle mb-2 text-muted">@item.TenantName</h6>
-                    }
-                    else
-                    {
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <h6 class="card-subtitle mb-2 text-success ">No Tenant</h6>
-                            <a class="btn btn-outline-success  p-1" asp-controller="Tenant" asp-action="Tenant" asp-route-apartmentId="@item.Apartment.Id"><i class="fa fa-plus"></i> Add Tenant</a>
-                        </div>
-                    }
-                    <p>Floor:  @item.Apartment.Floor</p>
-                    <p>Type:  @item.Apartment.Type.ToString()</p>
-                    @if (item.DebtAmount > 0)
-                    {
-                        <p>Debt:  <big class="card-text text-danger">@string.Format("{0:C}",item.DebtAmount)</big></p>
-                    }
-                    else if (item.DebtAmount == 0)
-                    {
-                        <p>Debt:  <big class="card-text text-success">@string.Format("{0:C}",item.DebtAmount)</big></p>
-                    }
+@if (Model is not null)
+{
+    <div class="row justify-content-center">
+        @if (Model.Count < 1)
+        {
+            <p class="alert alert-danger m-3 px-2"> There is no apartment</p>
+        }
+        @foreach (ApartmentVM item in Model)
+        {
 
-                </div>
-                <div style="margin-right:40px; bottom:20px">
-                    <a class="btn btn-danger mb-3 w-100" asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Apartment.Id">
-                        <i class="fa fa-trash"></i>  Delete Apartment
-                    </a>
-                    <a class="btn btn-warning text-white w-100" asp-controller="Apartment" asp-action="Update" asp-route-id="@item.Apartment.Id">
-                        <i class="fa fa-pencil"></i>  Update Apartment
-                    </a>
-                    @if (String.IsNullOrEmpty(item.TenantName) == false)
-                    {
-                        <a class="btn btn-outline-info rotate" asp-controller="Bill" asp-action="Bill" asp-route-apartmentId="@item.Apartment.Id" asp-route-tenantName="@item.TenantName">Add Bill</a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-outline-info rotate" onclick="addBillAlert()">Add Bill</a>
-                    }
+            <div class="card my-3 mx-3 col-3 col-md-6 col-lg-4 col-sm-12 apartmentCard" style="width: 18rem;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h2 class="card-title">@item.Apartment.BlockName - @item.Apartment.Number</h2>
+                        @if (String.IsNullOrEmpty(item.TenantName) == false)
+                        {
+                            <h6 class="card-subtitle mb-2 text-muted">@item.TenantName</h6>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-subtitle mb-2 text-success ">No Tenant</h6>
+                                <a class="btn btn-outline-success  p-1" asp-controller="Tenant" asp-action="Tenant" asp-route-apartmentId="@item.Apartment.Id"><i class="fa fa-plus"></i> Add Tenant</a>
+                            </div>
+                        }
+                        <p>Floor:  @item.Apartment.Floor</p>
+                        <p>Type:  @item.Apartment.Type.ToString()</p>
+                        @if (item.DebtAmount > 0)
+                        {
+                            <p>Debt:  <big class="card-text text-danger">@string.Format("{0:C}",item.DebtAmount)</big></p>
+                        }
+                        else if (item.DebtAmount == 0)
+                        {
+                            <p>Debt:  <big class="card-text text-success">@string.Format("{0:C}",item.DebtAmount)</big></p>
+                        }
 
+                    </div>
+                    <div style="margin-right:40px; bottom:20px">
+                        <a class="btn btn-danger mb-3 w-100" asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Apartment.Id">
+                            <i class="fa fa-trash"></i>  Delete Apartment
+                        </a>
+                        <a class="btn btn-warning text-white w-100" asp-controller="Apartment" asp-action="Update" asp-route-id="@item.Apartment.Id">
+                            <i class="fa fa-pencil"></i>  Update Apartment
+                        </a>
+                        @if (String.IsNullOrEmpty(item.TenantName) == false)
+                        {
+                            <a class="btn btn-outline-info rotate" asp-controller="Bill" asp-action="Bill" asp-route-apartmentId="@item.Apartment.Id" asp-route-tenantName="@item.TenantName">Add Bill</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-info rotate" onclick="addBillAlert()">Add Bill</a>
+                        }
+
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 
-</div>
+    </div>
+
+}

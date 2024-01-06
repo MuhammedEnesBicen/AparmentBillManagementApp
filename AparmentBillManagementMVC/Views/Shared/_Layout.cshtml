@@ -22,15 +22,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartment" asp-action="Index">Apartments</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tenant" asp-action="Index">Tenants</a>
+                            <a class="nav-link text-dark"  asp-controller="Tenant" asp-action="Index">Tenants</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Bill" asp-action="Index">Bills</a>
                         </li>
+                        <li class="nav-item btn-info">
+                            <a class="nav-link text-dark" asp-area="TenantUser" asp-controller="Home" asp-action="Index" >TENANT SİTE</a>
+                        </li>
                     </ul>
+                    <div class="d-flex align-content-end">
+                       <a asp-action="Logout" asp-controller="Auth">
+                            <i class="fa fa-sign-out"></i>
+                       </a> 
+                    </div>
                 </div>
             </div>
         </nav>
@@ -41,11 +46,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Aparment Bill Management Site - <a asp-area="" asp-controller="Apartment" asp-action="Index">Privacy</a>
-        </div>
-    </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

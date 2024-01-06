@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
+using Core.Utilities;
 using Entity;
 using Entity.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AparmentBillManagementMVC.Controllers
 {
+    [Authorize(Roles = "manager")]
     public class BillController : Controller
     {
         private readonly IBillService billService;
@@ -19,7 +23,14 @@ namespace AparmentBillManagementMVC.Controllers
 
         public IActionResult Index()
         {
-            var billList = billService.GetListWithRelatedData().Data;
+            var idResult = GetApartmentComplexIdViaClaims();
+            if (idResult.Success == false)
+            {
+                TempData["message"] = "An error occured. Please re login to website.";
+                return View();
+            }
+
+            var billList = billService.GetListWithRelatedData(apartmentComplexId: idResult.Data).Data;
             return View(billList);
         }
 
@@ -69,6 +80,20 @@ namespace AparmentBillManagementMVC.Controllers
             }
             return View(billDTO);
             
+        }
+
+        public DataResult<int> GetApartmentComplexIdViaClaims()
+        {
+            try
+            {
+                int apartmentComplexId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+                return new DataResult<int>(true, "Complex Id fetched succesfully", apartmentComplexId);
+            }
+            catch
+            {
+                return new DataResult<int>(false, "Complex Id couldn't fetched", -1);
+            }
+
         }
     }
 }

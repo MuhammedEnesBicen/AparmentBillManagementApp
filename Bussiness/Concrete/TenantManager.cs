@@ -40,9 +40,26 @@ namespace Bussiness.Concrete
             return Delete(result.Data);
         }
 
+        public DataResult<TenantDTO> GetAsDTOById(int id)
+        {
+           var tenantResult = GetById(id);
+            if (tenantResult.Success == false)
+                return new DataResult<TenantDTO>(false, "There is no Tenant with this id", null);
+            var tenantDTO = mapper.Map<TenantDTO>(tenantResult.Data);
+            return new DataResult<TenantDTO>(true, "Tenant successfully retrieved", tenantDTO);
+        }
+
         public DataResult<Tenant> GetById(int id)
         {
             var tenant = tenantDal.Get(t=>t.Id == id);
+            if (tenant != null)
+                return new DataResult<Tenant>(true, "Tenant successfully retrieved", tenant);
+            return new DataResult<Tenant>(false, "Tenant doesnt found", tenant);
+        }
+
+        public DataResult<Tenant> GetByMail(string mail)
+        {
+            var tenant = tenantDal.Get(t => t.Mail == mail);
             if (tenant != null)
                 return new DataResult<Tenant>(true, "Tenant successfully retrieved", tenant);
             return new DataResult<Tenant>(false, "Tenant doesnt found", tenant);
@@ -55,20 +72,38 @@ namespace Bussiness.Concrete
 
         }
 
-        public DataResult<List<TenantVM>> GetTenantVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
+        public DataResult<TenantVM> GetTenantVMById(int id)
         {
-            var tenantVMs = tenantDal.GetTenantVMs(blockName, nameFilter, onlyHasDebt);
+            var tenant = tenantDal.GetTenantVMById(id);
+            if (tenant != null)
+                return new DataResult<TenantVM>(true, "Tenant successfully retrieved", tenant);
+            else return new DataResult<TenantVM>(false, "Tenant doesnt found", tenant);
+        }
+
+        public DataResult<List<TenantVM>> GetTenantVMs(int apartmentComplexId, string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
+        {
+            var tenantVMs = tenantDal.GetTenantVMs(apartmentComplexId,blockName, nameFilter, onlyHasDebt);
             return new DataResult<List<TenantVM>>(true, "Tenants successfully listed", tenantVMs);
 
         }
 
-        public Result Update(Tenant tenant)
+        public DataResult<Tenant> Login(LoginDTO loginDTO)
         {
-            var tenantFromDb = GetById(tenant.Id);
+            var tenant = GetByMail(loginDTO.Mail);
+            if (tenant.Success == false)
+                return new DataResult<Tenant>(false, "There is no user with this mail.", null);
+            if (tenant.Data.Password != loginDTO.Password)
+                return new DataResult<Tenant>(false, "Password is wrong", null);
+            return new DataResult<Tenant>(true, "Tenant successfully logged in", tenant.Data);
+        }
+
+        public Result Update(TenantDTO tenantDTO)
+        {
+            var tenantFromDb = GetById(tenantDTO.Id);
             if (tenantFromDb.Success == false)
                 return new Result(false, "Tenant doesnt found");
 
-            mapper.Map<Tenant,Tenant>(tenant,tenantFromDb.Data);
+            mapper.Map<TenantDTO,Tenant>(tenantDTO, tenantFromDb.Data);
             tenantDal.Update(tenantFromDb.Data);
             return new Result(true, "Tenant updated successfully");
 

@@ -1,5 +1,9 @@
 ﻿@model Entity.Apartment
 
+@if (TempData["message"] is not null)
+{
+    <div class="alert alert-info">@TempData["message"]</div>
+}
 
 <form method="Post" asp-controller="Apartment" >
 

@@ -3,7 +3,7 @@
 
 @if (TempData["message"] is not null)
 {
-    <div class="alert-info">@TempData["message"]</div>
+    <div class="alert alert-info">@TempData["message"]</div>
 }
 
 @{
@@ -30,7 +30,7 @@
     <div class ="flex-fill">
         <input id="filter" class="w-100 form-control" placeholder="Search  by tenant name" aria-label="Search" onkeyup="filterTenants()">
     </div>
-    <div class="">
+    <div  style="background-color:rgba(255,255,255,0.4)">
         <input type="checkbox" class="btn-check" id="debtCheck" autocomplete="off" onchange="filterTenants()">
         <label class="btn btn-outline-primary" for="debtCheck"><i id="debtCheckIcon" class="fa fa-close"></i> Only Has Debt</label><br>
     </div>

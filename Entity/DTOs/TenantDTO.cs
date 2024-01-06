@@ -4,7 +4,8 @@ namespace Entity.DTOs
 {
     public class TenantDTO
     {
-        
+        public int Id { get; set; }
+
         [Required]
         [StringLength(20)]
         [MinLength(2)]
@@ -19,6 +20,9 @@ namespace Entity.DTOs
         public string IdentityNumber { get; set; }
         [Required]
         public string Mail { get; set; }
+
+        [Required]
+        public string Password { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         [Required]

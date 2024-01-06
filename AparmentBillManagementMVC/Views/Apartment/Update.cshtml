@@ -2,9 +2,10 @@
 
 <form method="Post" asp-controller="Apartment">
 
-    <h5>New Apartment Form</h5>
+    <h5>Apartment Form</h5>
     <form-group>
         <input asp-for="Id" hidden/>
+        <input asp-for="ApartmentComplexId" hidden/>
         <div>
             <label asp-for="Floor"></label>
             <input asp-for="Floor" min="0" placeholder="0" required />

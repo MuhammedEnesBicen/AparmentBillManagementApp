@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entity.enums
+﻿namespace Entity.enums
 {
     public enum UserType
     {
-        manager,tenant
+        tenant,manager
     }
     
 }

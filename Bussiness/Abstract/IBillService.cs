@@ -17,7 +17,7 @@ namespace Bussiness.Abstract
 
         DataResult<List<Bill>> GetListByApartmentId(int apartmentId);
 
-        DataResult<List<Bill>> GetListWithRelatedData(int? apartmentId=null);
+        DataResult<List<Bill>> GetListWithRelatedData(int apartmentComplexId,int? apartmentId=null);
         DataResult<Bill> GetWithRelatedData(int billId);
     }
 }

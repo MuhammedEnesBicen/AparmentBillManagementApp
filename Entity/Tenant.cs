@@ -19,6 +19,10 @@ namespace Entity
         public string IdentityNumber { get; set; }
         [Required]
         public string Mail { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
         [Required]
         public string PhoneNumber { get; set; }
         [Required]

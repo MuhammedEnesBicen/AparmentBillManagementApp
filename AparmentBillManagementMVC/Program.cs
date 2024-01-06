@@ -1,15 +1,23 @@
 using Bussiness.Abstract;
-using Bussiness.Automapper;
 using Bussiness.Concrete;
 using DataAccess;
 using DataAccess.Abstarct;
 using DataAccess.Concrete;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(opt =>
+        {
+            opt.LoginPath = "/Auth/Index";
+            opt.AccessDeniedPath = "/Auth/AccessDenied";
+        });
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSingleton<DbContext, AppDbContext>();
@@ -18,6 +26,9 @@ builder.Services.AddSingleton<IApartmentService, ApartmentManager>();
 
 builder.Services.AddSingleton<ITenantDal,EfTenantDal>();
 builder.Services.AddSingleton<ITenantService, TenantManager>();
+
+builder.Services.AddScoped<IManagerDal, EfManagerDal>();
+builder.Services.AddScoped<IManagerService, ManagerManager>();
 
 builder.Services.AddSingleton<IBillDal, EfBillDal>();
 builder.Services.AddSingleton<IBillService, BillManager>();
@@ -40,10 +51,22 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+
+
+
+app.MapAreaControllerRoute(
+       name: "TenantUserRoute",
+       areaName: "TenantUser",
+             pattern: "TenantUser/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Apartment}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Index}/{id?}");
+
+
+
 
 app.Run();

@@ -30,6 +30,9 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ApartmentComplexId")
+                        .HasColumnType("int");
+
                     b.Property<string>("BlockName")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -48,7 +51,34 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApartmentComplexId");
+
                     b.ToTable("Apartments");
+                });
+
+            modelBuilder.Entity("Entity.ApartmentComplex", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApartmentComplexes");
                 });
 
             modelBuilder.Entity("Entity.Bill", b =>
@@ -80,6 +110,48 @@ namespace DataAccess.Migrations
                     b.HasIndex("ApartmentId");
 
                     b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("Entity.Manager", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApartmentComplexId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdentityNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApartmentComplexId");
+
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("Entity.Message", b =>
@@ -144,6 +216,10 @@ namespace DataAccess.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -155,6 +231,17 @@ namespace DataAccess.Migrations
                     b.ToTable("Tenants");
                 });
 
+            modelBuilder.Entity("Entity.Apartment", b =>
+                {
+                    b.HasOne("Entity.ApartmentComplex", "ApartmentComplex")
+                        .WithMany("Apartments")
+                        .HasForeignKey("ApartmentComplexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApartmentComplex");
+                });
+
             modelBuilder.Entity("Entity.Bill", b =>
                 {
                     b.HasOne("Entity.Apartment", "Apartment")
@@ -164,6 +251,17 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Apartment");
+                });
+
+            modelBuilder.Entity("Entity.Manager", b =>
+                {
+                    b.HasOne("Entity.ApartmentComplex", "ApartmentComplex")
+                        .WithMany()
+                        .HasForeignKey("ApartmentComplexId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApartmentComplex");
                 });
 
             modelBuilder.Entity("Entity.Message", b =>
@@ -186,6 +284,11 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Apartment");
+                });
+
+            modelBuilder.Entity("Entity.ApartmentComplex", b =>
+                {
+                    b.Navigation("Apartments");
                 });
 #pragma warning restore 612, 618
         }

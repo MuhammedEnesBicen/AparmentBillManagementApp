@@ -1,0 +1,93 @@
+﻿@model LoginDTO
+
+<style>
+
+body {
+        background-image: url("../img/login_background.webp");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+
+    }
+
+    h1,h3{
+        color: black;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-shadow: #fff 1px 0 10px;
+    }
+    label{font-weight:600;font-size:1.2rem;
+    }
+
+    form{
+        background-color: rgba(255, 255, 255, 0.95);
+
+        border-radius: 10px;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 ">
+    <div class="col">
+        <h1>ABMS Apartment Bill Management Web App</h1>
+            <h3>"Streamline Your Space, Simplify Your Bills: Your Apartment Finances, Managed with Ease!"</h3>
+    </div>
+</div>
+    <div class="col-sm-12 col-md-6 ">
+
+        <form method="Post" asp-controller="Auth">
+
+            <h5>Login</h5>
+            <form-group>
+                <div>
+                    <label asp-for="Mail"></label>
+                    <input asp-for="Mail" required />
+                </div>
+                <span asp-validation-for="Mail" class="text-danger"></span>
+            </form-group>
+            <form-group>
+                <div>
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password"  required />
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+            </form-group>
+
+            <form-group>
+                <div>
+                    <label asp-for="UserType">User Type</label>
+
+                    <div>
+                        <select class="form-select" asp-for="UserType">
+                            <option value="0">Tenant</option>
+                            <option value="1">Manager</option>
+                        </select>
+                    </div>
+                </div>
+            </form-group>
+
+
+            <form-group>
+                <div>
+                    <label class="form-check-label" asp-for="RememberMe">Remember Me</label>
+                <div class="form-switch ">
+                    
+                    <input class="form-check-input " type="checkbox"  asp-for="RememberMe">
+                    
+                </div>
+                </div>
+
+            </form-group>
+
+
+
+
+            <input type="submit" value="Login" asp-action="Index" />
+
+
+        </form>
+</div>
+</div>

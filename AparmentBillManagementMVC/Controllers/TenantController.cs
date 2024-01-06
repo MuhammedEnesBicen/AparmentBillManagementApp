@@ -1,10 +1,14 @@
 ﻿using Bussiness.Abstract;
-using Entity;
+using Core.Utilities;
 using Entity.DTOs;
+using Entity.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AparmentBillManagementMVC.Controllers
 {
+    [Authorize(Roles = "manager")]
     public class TenantController : Controller
     {
         private readonly ITenantService tenantService;
@@ -16,7 +20,14 @@ namespace AparmentBillManagementMVC.Controllers
 
         public IActionResult Index()
         {
-            var model = tenantService.GetTenantVMs().Data;
+            var idResult = GetApartmentComplexIdViaClaims();
+            if (idResult.Success == false)
+            {
+                TempData["message"] = "Something went wrong. Please re login to website.";
+                return View(new List<TenantVM>());
+            }
+
+            var model = tenantService.GetTenantVMs(apartmentComplexId:idResult.Data).Data;
             return View(model);
         }
 
@@ -52,31 +63,57 @@ namespace AparmentBillManagementMVC.Controllers
 
         public IActionResult Update([FromRoute] int id)
         {
-            var model = tenantService.GetById(id).Data;
-            return View(model);
+            var model = tenantService.GetAsDTOById(id);
+            if(model == null)
+            {
+                TempData["message"] = model.Message;
+            }
+            return View(model.Data);
         }
 
         [HttpPost]
-        public IActionResult Update(Tenant tenant)
+        public IActionResult Update(TenantDTO tenantDTO)
         {
             if (ModelState.IsValid)
             {
-                var result = tenantService.Update(tenant);
+                var result = tenantService.Update(tenantDTO);
                 TempData["message"] = result.Message;
                 return RedirectToAction("Index");
             }
-            return View(tenant) ;
+            return View(tenantDTO) ;
         }
 
         [HttpPost]
         public PartialViewResult TenantsList(string? blockName, string? nameFilter, bool onlyHasDebt)
         {
-            if(blockName == "all")
+            TempData["message"] = "Something went wrong. Please re login to website.";
+            var idResult = GetApartmentComplexIdViaClaims();
+            if (idResult.Success = false)
+            {
+                TempData["message"] = "Something went wrong. Please re login to website.";
+                return PartialView(new List<TenantVM>());
+            }
+
+            if (blockName == "all")
             {
                 blockName = null;
             }
-            var model = tenantService.GetTenantVMs(blockName, nameFilter, onlyHasDebt);
+            var model = tenantService.GetTenantVMs(idResult.Data,blockName, nameFilter, onlyHasDebt);
             return PartialView(model.Data);
+        }
+
+        public DataResult<int> GetApartmentComplexIdViaClaims()
+        {
+            try
+            {
+                int apartmentComplexId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+                return new DataResult<int>(true, "Complex Id fetched succesfully", apartmentComplexId);
+            }
+            catch
+            {
+                return new DataResult<int>(false, "Complex Id couldn't fetched", -1);
+            }
+
         }
     }
 }

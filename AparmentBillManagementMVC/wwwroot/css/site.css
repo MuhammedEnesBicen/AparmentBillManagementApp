@@ -17,9 +17,33 @@ html {
     min-height: 100%;
 }
 
+header{
+    opacity:0.9;
+   /*background-color: black;*/
+}
+
 body {
     margin-bottom: 60px;
 }
+
+
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../img/login_background.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(4px);
+}
+
 
 /* Form */
 
@@ -45,7 +69,7 @@ form {
     }
 
     /* form form-group{margin:20px;} */
-    form form-group span {
+    form form-group {
         display: block;
         text-align: end;
         margin-bottom: 20px;
@@ -67,7 +91,6 @@ input {
     input[type="submit"]:hover{
         background-color: white;
         color: blueviolet;
-        padding: 5px 20px;
     }
 
 form h5 {

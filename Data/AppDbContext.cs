@@ -1,10 +1,5 @@
 ﻿using Entity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -15,7 +10,8 @@ namespace DataAccess
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ABMS;Trusted_Connection=true");
 
         }
-
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<ApartmentComplex> ApartmentComplexes { get; set; }
         public DbSet<Apartment> Apartments { get;set; }
         public DbSet<Tenant> Tenants {get;set;}
         public DbSet<Message> Messages {get;set;}

@@ -46,6 +46,15 @@
 
     <form-group>
         <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" placeholder="e.g. 1234" required type="text" />
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
             <label asp-for="IdentityNumber"></label>
             <input asp-for="IdentityNumber" placeholder="enter identity number" required type="number" />
         </div>

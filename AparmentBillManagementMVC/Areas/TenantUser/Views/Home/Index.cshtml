@@ -1,0 +1,64 @@
+﻿@model Entity.ViewModels.TenantVM
+
+<style>
+    <!-- make section height 100vh - navbar height -->
+
+    .msg {
+
+        height: 100vh;
+        background-color: #ddd;
+  
+    }
+</style>
+
+<div class="d-flex flex-row col-12">
+<div class="col-md-6 col-sm-8">
+    <div class="card my-3 mx-3 apartmentCard" >
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+                <div class="d-flex justify-content-between">
+                    <h2 class="card-title">@Model.Tenant.Name @Model.Tenant.LastName </h2>
+                    <h2 style="color:blueviolet;"> @Model.BlockName@Model.FlatNumber</h2>
+                </div>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.Tenant.PhoneNumber</h6>
+                <p>Mail: @Model.Tenant.Mail</p>
+                <p>License Plate: @Model.Tenant.LicensePlate</p>
+                @if (Model.DebtAmount > 0)
+                {
+                    <p>Debt:  <big class="card-text text-danger">@string.Format("{0:C}",Model.DebtAmount)</big></p>
+                }
+                else if (Model.DebtAmount == 0)
+                {
+                    <p>Debt:  <big class="card-text text-success">@string.Format("{0:C}",Model.DebtAmount)</big></p>
+                }
+            </div>
+            @*             <div>
+            <a class="btn btn-warning text-white w-100" asp-controller="Tenant" asp-action="Update" asp-route-id="@Model.Tenant.Id">
+            <i class="fa fa-pencil"></i>  Update Tenant
+            </a>
+            </div> *@
+        </div>
+    </div>
+
+    <div class="p-3" id="_BillsPartial"></div>
+
+
+
+</div>
+<!--Message Section-->
+<div class="col-md-6 col-sm-4  bg-success">
+    dssdf
+
+</div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id }, function (data) {
+                $("#_BillsPartial").html(data);
+            });
+        });
+    </script>
+}

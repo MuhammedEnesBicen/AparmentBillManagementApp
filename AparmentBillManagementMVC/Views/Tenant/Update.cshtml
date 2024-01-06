@@ -1,4 +1,4 @@
-﻿@model Entity.Tenant
+﻿@model TenantDTO
 
 
 @if (TempData["message"] is not null)
@@ -9,6 +9,8 @@
 
 <form asp-controller="Tenant" method="post">
     <h5>Update Tenant Form</h5>
+    <input asp-for="ApartmentId" hidden />
+    <input asp-for="Id" hidden />
     <form-group>
         <div>
             <label asp-for="Name"></label>
@@ -41,6 +43,15 @@
             <input asp-for="Mail" placeholder="e.g. blabla@gmail.com" required type="email" />
         </div>
         <span asp-validation-for="Mail" class="text-danger"></span>
+
+    </form-group>
+
+    <form-group>
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" required type="text" />
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
 
     </form-group>
 

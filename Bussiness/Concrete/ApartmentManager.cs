@@ -1,7 +1,9 @@
-﻿using Bussiness.Abstract;
+﻿using AutoMapper;
+using Bussiness.Abstract;
 using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
+using Entity.DTOs;
 using Entity.ViewModels;
 
 namespace Bussiness.Concrete
@@ -9,13 +11,16 @@ namespace Bussiness.Concrete
     public class ApartmentManager : IApartmentService
     {
         private readonly IApartmentDal apartmentDal;
+        private readonly IMapper mapper;
 
-        public ApartmentManager(IApartmentDal dal)
+        public ApartmentManager(IApartmentDal dal, IMapper mapper)
         {
             apartmentDal = dal;
+            this.mapper = mapper;
         }
-        public Result Add(Apartment apartment)
+        public Result Add(ApartmentDTO apartmentDTO)
         {
+            Apartment apartment = mapper.Map<Apartment>(apartmentDTO);
             apartmentDal.Add(apartment);
             return new Result(true,"Successfully Added");
         }
@@ -34,12 +39,12 @@ namespace Bussiness.Concrete
                 return Delete(result.Data);
 
             }
-            return new Result(false, "Apartment couldn't deleted");
+            return new Result(false, result.Message);
         }
 
-        public DataResult<List<ApartmentVM>> GetApartmentVMs(string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
+        public DataResult<List<ApartmentVM>> GetApartmentVMsByComplexId(int apartmentComplexId,string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
-            var result = apartmentDal.GetApartmentVMs(blockName,nameFilter,onlyHasDebt);
+            var result = apartmentDal.GetApartmentVMsByComplexId(apartmentComplexId,blockName, nameFilter,onlyHasDebt);
             return new DataResult<List<ApartmentVM>>(true, "Succesfully Listed", result);
         }
 
@@ -57,15 +62,12 @@ namespace Bussiness.Concrete
             return new DataResult<List<Apartment>>(true, "Succesfully Listed", apartmentDal.GetList().ToList());
         }
 
-        public Result Update(Apartment apartment)
+        public Result Update(ApartmentDTO apartmentDTO)
         {
-            var item = GetById(apartment.Id).Data;
+            var item = GetById(apartmentDTO.Id).Data;
             if (item == null)
                 return new Result(false, "There is no Apartment with this id");
-            item.BlockName = apartment.BlockName;
-            item.Number = apartment.Number;
-            item.Floor = apartment.Floor;
-            item.Type = apartment.Type;
+            mapper.Map(apartmentDTO, item);
             apartmentDal.Update(item);
             return new Result(true, "Apartment updated successfully");
         }

@@ -1,4 +1,5 @@
 ﻿using Core.DataAccess.EntityFramework;
+using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
 using Entity.ViewModels;
@@ -7,7 +8,7 @@ namespace DataAccess.Concrete
 {
     public class EfTenantDal : EfEntityRepositoryBase<Tenant, AppDbContext>, ITenantDal
     {
-        public List<TenantVM> GetTenantVMs(string? blockName = null, string? nameFilter =null,  bool onlyHasDebt = false)
+        public TenantVM GetTenantVMById(int id)
         {
             using (var context = new AppDbContext())
             {
@@ -16,6 +17,29 @@ namespace DataAccess.Concrete
                              on tenant.ApartmentId equals apartment.Id
                              join bill in context.Bills
                              on apartment.Id equals bill.ApartmentId into bills
+                             where tenant.Id == id
+                             select new TenantVM
+                             {
+                                 Tenant = tenant,
+                                 BlockName = apartment.BlockName,
+                                 FlatNumber = apartment.Number,
+                                 DebtAmount = bills.Where(b => b.IsPayed == false).Sum(b => b.BillCost),
+                                 ApartmentId = apartment.Id
+                             };
+                return result.FirstOrDefault();
+            }
+        }
+
+        public List<TenantVM> GetTenantVMs(int apartmentComplexId, string? blockName = null, string? nameFilter =null,  bool onlyHasDebt = false)
+        {
+            using (var context = new AppDbContext())
+            {
+                var result = from tenant in context.Tenants
+                             join apartment in context.Apartments
+                             on tenant.ApartmentId equals apartment.Id
+                             join bill in context.Bills
+                             on apartment.Id equals bill.ApartmentId into bills
+                             where apartment.ApartmentComplexId == apartmentComplexId
                              select new TenantVM
                              {
                                  Tenant = tenant,

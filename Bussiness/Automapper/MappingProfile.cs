@@ -1,4 +1,4 @@
-using AutoMapper;
+    using AutoMapper;
 using Entity;
 using Entity.DTOs;
 
@@ -10,11 +10,13 @@ namespace Bussiness.Automapper
             CreateMap<Tenant, Tenant>();
             CreateMap<Bill,Bill>();
 
-            CreateMap<BillDTO, Bill>();
-            CreateMap<Bill,BillDTO>();
+            CreateMap<BillDTO, Bill>().ReverseMap();
 
-            CreateMap<TenantDTO, Tenant>();
-            CreateMap<Tenant,TenantDTO>();
+            CreateMap<TenantDTO, Tenant>().ReverseMap();
+
+            CreateMap<Manager, Manager>();
+
+            CreateMap<ApartmentDTO,Apartment>().ReverseMap();
         }
     }
 }

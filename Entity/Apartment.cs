@@ -20,5 +20,8 @@ namespace Entity
         [Required]
         [StringLength(20)]
         public string Type { get; set; }//like (2+1) or (3+1)
+
+        public int ApartmentComplexId { get; set; }
+        public ApartmentComplex ApartmentComplex { get; set; }
     }
 }
