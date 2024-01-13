@@ -1,0 +1,37 @@
+﻿@model List<MessageDTO>
+@using Entity.enums;
+
+<style>
+    .message {
+        
+        border-radius: 10px;
+        background-color: #f2f2f2;
+        margin: 10px;
+        padding: 10px;
+        width: 300px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+
+    }
+
+
+</style>
+
+
+    @foreach (var item in Model)
+    {
+        string senderClass = (item.Sender == UserType.tenant) ? "justify-content-end" : "";
+        string bgColor = (item.Sender == UserType.tenant) ? "background-color:rgba(221,255,221,0.8);" : "";
+        <div class="d-flex @senderClass">
+        <div class="message" style="@bgColor">
+            <div class="message-header">
+
+                <div class="message-date">
+                    <p>@item.MessageTime</p>
+                </div>
+            </div>
+            <div class="message-body">
+                <p>@item.Text</p>
+            </div>
+        </div>
+        </div>
+    }

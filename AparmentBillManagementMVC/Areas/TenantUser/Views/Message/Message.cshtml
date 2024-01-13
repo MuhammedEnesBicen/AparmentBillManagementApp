@@ -1,0 +1,32 @@
+﻿@model MessageDTO
+@using Entity.enums;
+
+
+
+@if (Model is not null)
+{
+
+
+    string senderClass = (Model.Sender == UserType.tenant) ? "justify-content-end tenantMessage" : "managerMessage";
+    string bgColor = (Model.Sender == UserType.tenant) ? "background-color:rgba(221,255,221,0.8);" : "";
+
+
+    <div class=" @senderClass d-flex messageDiv ">
+
+        <div class="message" style="@bgColor ">
+            <input name="@Model.Id" hidden />
+            <div class="message-header d-flex justify-content-end text-info" style="padding-left:20px;">
+                <small>@Model.MessageTime.ToString("hh: mm tt")</small>
+
+            </div>
+            <div class="message-body">
+                <p>@Model.Text</p>
+            </div>
+
+            <div onclick="removeMessage(@Model.Id)" class="btn btn-danger my-2 visually-hidden d-flex align-self-stretch justify-content-center">
+                <i class="fa fa-trash">  Delete</i>
+            </div>
+        </div>
+
+    </div>
+}

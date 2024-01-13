@@ -9,24 +9,43 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AparmentBillManagementMVC.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/sweetalert2-11.10.1/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/css/message.css" />
 </head>
-<body>
+<body class="TenantUserAreaLayout">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Apartment" asp-action="Index">Home</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+
+
+                <div>
+                    <a class="navbar-toggler" type="button" href="/TenantUser/Message/Index">
+                        <big><i class="fa fa-envelope mx-4"></i></big>
+                    </a>
+
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="TenantUser" asp-controller="Tenant" asp-action="Index">My HomePage</a>
+                            <a class="nav-link text-dark" asp-area="TenantUser" asp-controller="Message" asp-action="Index">My HomePage</a>
                         </li>
 
                     </ul>
+                    <div class="d-flex align-content-end">
+                        <a href="/TenantUser/Message/Index">
+                            <big> <i class="fa fa-envelope mx-4"></i></big>
+                        </a>
+                        <a asp-action="Logout" asp-controller="Auth">
+                            <big> <i class="fa fa-sign-out"></i></big>
+                        </a>
+                    </div>
                 </div>
+
             </div>
         </nav>
     </header>
@@ -41,6 +60,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/sweetalert2-11.10.1/dist/sweetalert2.all.min.js"></script>
+    <script src="~/lib/notify.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

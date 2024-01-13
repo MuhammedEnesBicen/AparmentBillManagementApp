@@ -6,8 +6,7 @@ using System.Security.Claims;
 namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
 {
     [Area("TenantUser")]
-    [Route("TenantUser/[controller]/[action]")]
-    [Authorize(Roles = "tenant")]
+    //[Authorize(Roles = "tenant")]
     public class HomeController : Controller
     {
         private readonly ITenantService tenantService;
@@ -22,9 +21,9 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var userMail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
-            var tenantId = tenantService.GetByMail(userMail).Data.Id;
-            var tenantResult = tenantService.GetTenantVMById(tenantId);
+            //var userMail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+            //var tenantId = tenantService.GetByMail(userMail).Data.Id;
+            var tenantResult = tenantService.GetTenantVMById(11);//tenantId);
             //if(tenantResult.Success == false)
             //    return RedirectToAction("Index", "Home");
             TempData["message"] = tenantResult.Message;

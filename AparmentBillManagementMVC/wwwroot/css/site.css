@@ -26,23 +26,27 @@ body {
     margin-bottom: 60px;
 }
 
-
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
-    background-image: url("../img/login_background.webp");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    filter: blur(4px);
+body.TenantUserAreaLayout{
+    margin-bottom: 0px;
 }
+
+
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        background-image: url("../img/login_background.webp");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        filter: blur(4px);
+    }
 
 
 /* Form */

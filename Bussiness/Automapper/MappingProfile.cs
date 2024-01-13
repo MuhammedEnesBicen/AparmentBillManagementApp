@@ -17,6 +17,8 @@ namespace Bussiness.Automapper
             CreateMap<Manager, Manager>();
 
             CreateMap<ApartmentDTO,Apartment>().ReverseMap();
+
+            CreateMap<MessageDTO, Message>().ReverseMap();
         }
     }
 }

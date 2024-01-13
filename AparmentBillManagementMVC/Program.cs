@@ -20,18 +20,21 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddSingleton<DbContext, AppDbContext>();
-builder.Services.AddSingleton<IApartmentDal, EfApartmentDal>();
-builder.Services.AddSingleton<IApartmentService, ApartmentManager>();
+builder.Services.AddScoped<DbContext, AppDbContext>();
+builder.Services.AddScoped<IApartmentDal, EfApartmentDal>();
+builder.Services.AddScoped<IApartmentService, ApartmentManager>();
 
-builder.Services.AddSingleton<ITenantDal,EfTenantDal>();
-builder.Services.AddSingleton<ITenantService, TenantManager>();
+builder.Services.AddScoped<ITenantDal,EfTenantDal>();
+builder.Services.AddScoped<ITenantService, TenantManager>();
 
 builder.Services.AddScoped<IManagerDal, EfManagerDal>();
 builder.Services.AddScoped<IManagerService, ManagerManager>();
 
-builder.Services.AddSingleton<IBillDal, EfBillDal>();
-builder.Services.AddSingleton<IBillService, BillManager>();
+builder.Services.AddScoped<IBillDal, EfBillDal>();
+builder.Services.AddScoped<IBillService, BillManager>();
+
+builder.Services.AddScoped<IMessageDal, EfMessageDal>();
+builder.Services.AddScoped<IMessageService, MessageManager>();
 
 
 //builder.Services.AddSingleton<MappingProfile>();
@@ -66,7 +69,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Index}/{id?}");
 
-
+//make tenantuser area default
+app.MapGet("/", (HttpContext context) =>
+{
+    context.Response.Redirect("/TenantUser/Message/Index");
+    return Task.CompletedTask;
+});
 
 
 app.Run();

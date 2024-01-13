@@ -1,0 +1,123 @@
+﻿
+.messageSection {
+    height: 80vh;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+#sendMessage {
+    border-radius: 10px;
+    background-color: #fff;
+    margin: 10px;
+    padding: 10px;
+    height: 50px;
+    align-self: flex-end;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+.message {
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    margin: 10px;
+    padding: 0px 10px;
+    /* width: 300px; */
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+
+
+.scroller {
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    flex: content;
+}
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scroller::-webkit-scrollbar {
+        display: none;
+    }
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroller {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+textarea {
+    height: auto;
+    max-height: 200px;
+    resize: none;
+    overflow: auto;
+}
+
+#spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3rem;
+    height: 3rem;
+}
+
+
+
+/*  -- Breakpoints  --  */
+
+/* Small devices such as large phones (640px and up) */
+@media (max-width: 640px ) {
+    .tenantMessage {
+        margin-left: 4em;
+    }
+
+    .managerMessage {
+        margin-right: 4em;
+    }
+}
+
+/* Small devices such as large phones (640px and up) */
+@media (min-width: 640px ) {
+    .tenantMessage {
+        margin-left: 5em;
+    }
+
+    .managerMessage {
+        margin-right: 5em;
+    }
+}
+
+/* Medium devices such as tablets (768px and up) */
+@media only screen and (min-width: 768px) {
+    .tenantMessage {
+        margin-left: 8em;
+    }
+
+    .managerMessage {
+        margin-right: 8em;
+    }
+}
+
+/* Large devices such as laptops (1024px and up) */
+@media only screen and (min-width: 1024px) {
+    .tenantMessage {
+        margin-left: 17em;
+    }
+
+    .managerMessage {
+        margin-right: 17em;
+    }
+}
+
+/* Largest devices such as desktops (1280px and up) */
+@media only screen and (min-width: 1280px) {
+    .tenantMessage {
+        margin-left: 30em;
+    }
+
+    .managerMessage {
+        margin-right: 30em;
+    }
+}
