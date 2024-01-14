@@ -72,7 +72,7 @@ app.MapControllerRoute(
 //make tenantuser area default
 app.MapGet("/", (HttpContext context) =>
 {
-    context.Response.Redirect("/TenantUser/Message/Index");
+    context.Response.Redirect("/Message/Index");
     return Task.CompletedTask;
 });
 

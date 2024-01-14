@@ -1,5 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Core.Utilities;
+using Entity;
 using Entity.DTOs;
 using Entity.enums;
 using Microsoft.AspNetCore.Mvc;
@@ -18,18 +19,22 @@ namespace AparmentBillManagementMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //TODO get from claim 
+            var result = messageService.GetChatRooms(1);
+            //ViewBag.tenantId = 11;
+            return View(result.Data);
         }
 
         [HttpPost]
         public PartialViewResult MessageList(int tenantId)
         {
             var result = messageService.GetAllMessagesOfConversation(tenantId);
+            ViewBag.tenantId = tenantId;
             return PartialView(result.Data);
         }
 
         [HttpPost]
-        public Result SendMessage(int tenantId,string text, int sender)
+        public PartialViewResult MessageItem(MessageDTO messageDTO)
         {
             //int tenantId;
             //var getIdViaClaim = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value,out tenantId);
@@ -38,14 +43,28 @@ namespace AparmentBillManagementMVC.Controllers
             //    return new Result(false, "Cant send message. Try again later. If the problem persists, please log in to the system again.");
             //}
 
-            var messageDTO = new MessageDTO
-            {
-                Text = text,
-                Sender = (UserType)sender,
-                MessageTime = DateTime.Now,
-                TenantId = tenantId
-            };
-            return messageService.Add(messageDTO);
+            messageDTO.MessageTime = DateTime.Now;
+
+            messageService.Add(messageDTO);
+            return PartialView(messageDTO);
         }
+
+        [HttpGet]
+        public PartialViewResult MessageItem(int tenantId, int messageId)
+        {
+            var result = messageService.GetNewMessagesOfConversation(tenantId, messageId);
+            if (result.Data.Count == 0)
+                return PartialView(null);
+
+            return PartialView(result.Data.First());
+        }
+
+        [HttpDelete]
+        public Result Delete(int messageId)
+        {
+            var result = messageService.DeleteById(messageId);
+            return result;
+        }
+
     }
 }

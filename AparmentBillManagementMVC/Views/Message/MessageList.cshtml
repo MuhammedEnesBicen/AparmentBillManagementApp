@@ -1,37 +1,37 @@
 ﻿@model List<MessageDTO>
-@using Entity.enums;
-
-<style>
-    .message {
-        
-        border-radius: 10px;
-        background-color: #f2f2f2;
-        margin: 10px;
-        padding: 10px;
-        width: 300px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-
-    }
 
 
-</style>
+@{
+    DateTime date = new DateTime();
+    int tenantId = ViewBag.tenantId ?? -1;
 
-
-    @foreach (var item in Model)
+}
+<span id="tenantIdSpan" value="@tenantId" hidden></span>
+@foreach (var item in Model)
+{
+    if (item.MessageTime.Day != date.Day)
     {
-        string senderClass = (item.Sender == UserType.tenant) ? "justify-content-end" : "";
-        string bgColor = (item.Sender == UserType.tenant) ? "background-color:rgba(221,255,221,0.8);" : "";
-        <div class="d-flex @senderClass">
-        <div class="message" style="@bgColor">
-            <div class="message-header">
+        <div class="d-flex justify-content-center messageDateDivider">
 
-                <div class="message-date">
-                    <p>@item.MessageTime</p>
-                </div>
-            </div>
-            <div class="message-body">
-                <p>@item.Text</p>
-            </div>
+            <span class="badge rounded-pill bg-light text-dark">@item.MessageTime.ToString("dd MMMM yyyy")</span>
+
         </div>
-        </div>
+
     }
+    date = item.MessageTime;
+
+    @await Html.PartialAsync("MessageItem", item)
+    ;
+
+}
+
+@if (Model?.Count > 0 && Model.Last().MessageTime.Day != DateTime.Today.Day)
+{
+    <hr />
+    <div class="d-flex justify-content-center pb-2 messageTodayDateDivider">
+
+        <span class="badge rounded-pill bg-light text-primary ">Today - @DateTime.Today.ToString("dd MMMM yyyy")</span>
+
+    </div>
+
+}

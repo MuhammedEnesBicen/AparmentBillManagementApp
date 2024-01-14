@@ -1,0 +1,36 @@
+﻿@model List<ChatRoomVM>
+
+@{
+    List<string> blocks = Model.DistinctBy(a => a.BlockName).Select(a => a.BlockName).Order().ToList();
+}
+
+@if(Model is not null)
+{
+   <div class="chatRoomArea">
+        <div id="blockRadioBtns" class="btn-group  pb-2 flex-wrap" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="all" autocomplete="off" checked onclick="filterTenants()">
+            <label class="btn btn-outline-primary" for="all">All Blocks</label>
+
+            @foreach (string blockName in blocks)
+            {
+                <input type="radio" class="btn-check" name="btnradio" id="@blockName" autocomplete="off" onclick="filterTenants()">
+                <label class="btn btn-outline-primary" for="@blockName">@blockName</label>
+            }
+        </div>
+    @foreach (var item in Model)
+    {
+            <div id="room_@item.TenantId" class="chatRoomItem  card p-3 mb-2 bg-white" onclick="openChatRoom(@item.TenantId)">
+            <input name="@item.ApartmentId" hidden/>
+            <h5>@item.TenantName @item.TenantLastName - <span class="text-info">@item.BlockName@item.FlatNumber</span></h5>
+            <p>@item.LastChatTime.ToString("f")</p>
+        </div>
+    }
+</div> 
+}
+
+@if(Model is null || Model.Count < 1)
+{
+    <div class="text-center">
+        <h5>No chat room found!</h5>
+    </div>
+}

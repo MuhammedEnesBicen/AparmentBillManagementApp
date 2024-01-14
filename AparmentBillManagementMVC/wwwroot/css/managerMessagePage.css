@@ -1,0 +1,23 @@
+﻿/* Manager message page uses message.css to */
+
+.chatRoomArea {
+    overflow: auto;
+}
+
+.messageSection {
+    position: relative;
+}
+
+#spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+#emptyChatArea {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

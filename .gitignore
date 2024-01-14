@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Lines that added by developer
+AparmentBillManagementMVC/todo.txt
+
 # User-specific files
 *.rsuser
 *.suo

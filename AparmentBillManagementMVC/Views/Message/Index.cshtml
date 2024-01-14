@@ -1,0 +1,72 @@
+﻿@{
+    int tenantId = ViewBag.tenantId ?? -1;
+}
+<link rel="stylesheet" href="~/css/message.css" />
+<link rel="stylesheet" href="~/css/managerMessagePage.css"/>
+
+<div class="container">
+    <div class="row">
+        <div class="col-4 bg-light p-1 g-0">
+            @await Html.PartialAsync("ChatRoomList")
+        </div>
+
+        <div class="col-8">
+            <button class="btn btn-primary" onclick="getNewMessages()">Get new Messages</button>
+            <div class=" messageSection bg-light bg-opacity-75">
+
+
+                <div id="spinner"></div>
+
+
+                <div id="emptyChatArea" class="visually-hidden">
+                    <p>You can select a chat from chat list</p>
+                </div>
+                
+
+                <div class=" scroller ">
+                    <div id="messagesArea">  </div>
+                </div>
+
+                <div class="input-group ">
+                    <textarea id="textarea" type="text" class="form-control" placeholder="Enter your message" aria-label="Enter your message" aria-describedby="sendMessage"></textarea>
+                    <button class="btn " type="button" id="sendMessage" onclick="sendMessage()">
+                        Send
+                        <i class="fa fa-send"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/managerMessagesPage.js"></script>
+    <script>
+
+
+        $(document).on("click", ".managerMessage", function () {
+            $(this).children().first().children().last().toggleClass("visually-hidden");
+        });
+
+        $(document).ready(function () {
+            $("#spinner").html("");
+            getMessages(@tenantId);
+
+            // window.setInterval(function () {
+            //     console.log("getMessages");
+            //     getNewMessages();
+            // }, 5000);
+        });
+
+        const textareaEle = document.getElementById('textarea');
+
+        textareaEle.addEventListener('input', () => {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+
+        });
+
+
+    </script>
+}

@@ -4,6 +4,7 @@ using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
 using Entity.DTOs;
+using Entity.ViewModels;
 
 namespace Bussiness.Concrete
 {
@@ -41,6 +42,11 @@ namespace Bussiness.Concrete
         {
             var result = messageDal.GetAllMessagesOfConversation(tenantId);
             return new DataResult<List<MessageDTO>>(true, "Messages listed successfully", result.Data);
+        }
+
+        public DataResult<List<ChatRoomVM>> GetChatRooms(int apartmentComplexId)
+        {
+           return messageDal.GetChatRooms(apartmentComplexId);
         }
 
         public DataResult<List<MessageDTO>> GetNewMessagesOfConversation(int tenantId, int messageId)
