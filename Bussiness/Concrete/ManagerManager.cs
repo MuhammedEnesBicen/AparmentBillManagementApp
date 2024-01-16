@@ -20,8 +20,19 @@ namespace Bussiness.Concrete
 
         public Result Add(Manager manager)
         {
+            var result = GetByMail(manager.Mail);
+            if (result.Data != null)
+                return new Result(false, "Manager with this mail already exists");
             managerDal.Add(manager);
             return new Result(true, "Manager added successfully");
+        }
+
+        public Result AddManagerWithApartmentComplex(Manager manager)
+        {
+            var result = GetByMail(manager.Mail);
+            if (result.Data != null)
+                return new Result(false, "Manager with this mail already exists");
+            return managerDal.AddManagerWithApartmentComplex(manager);
         }
 
         public Result Delete(Manager manager)
@@ -41,7 +52,7 @@ namespace Bussiness.Concrete
 
         public DataResult<Manager> GetById(int id)
         {
-            var manager = managerDal.Get(m => m.Id==id);
+            var manager = managerDal.Get(m => m.Id == id);
             if (manager == null)
                 return new DataResult<Manager>(false, "Manager not found", null);
             return new DataResult<Manager>(true, "Manager fetched successfully", manager);
@@ -65,8 +76,8 @@ namespace Bussiness.Concrete
         {
             var manager = GetByMail(loginDTO.Mail);
             if (manager.Data == null)
-                return new DataResult<Manager>(false, "There is no user with this mail.", null);
-            if(manager.Data.Password != loginDTO.Password)
+                return new DataResult<Manager>(false, "There is no manager with this mail.", null);
+            if (manager.Data.Password != loginDTO.Password)
                 return new DataResult<Manager>(false, "Password is wrong.", null);
             return new DataResult<Manager>(true, "Login successful", manager.Data);
 

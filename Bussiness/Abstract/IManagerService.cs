@@ -7,6 +7,7 @@ namespace Bussiness.Abstract
     public interface IManagerService
     {
         Result Add(Manager manager);
+        Result AddManagerWithApartmentComplex(Manager manager);
         Result Update(Manager manager);
         Result Delete(Manager manager);
         Result DeleteById(int managerId);

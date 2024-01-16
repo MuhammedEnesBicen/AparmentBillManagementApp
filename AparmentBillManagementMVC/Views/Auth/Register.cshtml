@@ -1,0 +1,97 @@
+﻿@model Manager
+
+@if(ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<div class="container">
+    <form method="Post" asp-controller="Auth" class="d-flex flex-wrap flex-sm-wrap flex-md-nowrap flex-lg-nowrap  align-items-center" >
+        <div class="m-3 " >
+      
+        <h5>Apartment Complex Form</h5>
+        <form-group>
+
+            <div>
+                <label asp-for="ApartmentComplex.Name"></label>
+                    <input asp-for="ApartmentComplex.Name" placeholder="ex. Harmony Haven" />
+            </div>
+            <span asp-validation-for="ApartmentComplex.Name" class="text-danger"></span>
+        </form-group>
+        <form-group>
+            <div>
+                <label asp-for="ApartmentComplex.Address"></label>
+                    <input asp-for="ApartmentComplex.Address" placeholder="ex. 123 Maple Street, Cityville" />
+            </div>
+            <span asp-validation-for="ApartmentComplex.Address" class="text-danger"></span>
+        </form-group>
+        <form-group>
+            <div>
+                <label asp-for="ApartmentComplex.PhoneNumber"></label>
+                    <input asp-for="ApartmentComplex.PhoneNumber" placeholder="ex. (555) 123-4567" />
+            </div>
+            <span asp-validation-for="ApartmentComplex.PhoneNumber" class="text-danger"></span>
+        </form-group>
+
+        <div style="border-top:dashed 1px red; border-bottom:dashed 1px red;">
+            Only managers can register. Tenants should be registered by managers. Contact with your manager to get your account.
+        </div>
+
+
+</div>
+<div class="vr d-none d-sm-none d-md-inline"></div>
+        <div class="m-3">
+
+            <h5>Manager Form</h5>
+            <form-group>
+                <div>
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" placeholder="ex. Muhammed Enes" />
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </form-group>
+            <form-group>
+                <div>
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" placeholder="ex. Biçen" />
+                </div>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </form-group>
+            <form-group>
+                <div>
+                    <label asp-for="Mail"></label>
+                    <input asp-for="Mail" placeholder="ex. muhammedenesbicen49@gmail.com" />
+                </div>
+                <span asp-validation-for="Mail" class="text-danger"></span>
+            </form-group>
+            <form-group>
+                <div>
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" placeholder="Abms49" />
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </form-group>
+            <form-group>
+                <div>
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" placeholder="ex. (555) 123-4567" />
+                </div>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </form-group>
+            <form-group>
+                <div>
+                    <label asp-for="IdentityNumber"></label>
+                    <input asp-for="IdentityNumber" placeholder="XYA-789-23Z" />
+                </div>
+                <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+            </form-group>
+
+
+            <input type="submit" value="Register" asp-action="Register" />
+
+</div></form>
+</div>
+
+

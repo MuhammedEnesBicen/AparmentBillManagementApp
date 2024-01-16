@@ -10,8 +10,10 @@ namespace Entity
         [Required]
         public string Address { get; set; }
         [Required]
+        [Display(Name = "Phone Number")]
+        [Phone]
         public string PhoneNumber { get; set; }
 
-        public List<Apartment> Apartments { get; set; }
+        public List<Apartment> Apartments { get; set; } = new List<Apartment>();
     }
 }

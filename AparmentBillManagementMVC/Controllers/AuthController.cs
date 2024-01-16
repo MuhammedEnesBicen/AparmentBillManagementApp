@@ -1,6 +1,8 @@
 ﻿using Bussiness.Abstract;
+using Entity;
 using Entity.DTOs;
 using Entity.enums;
+using Entity.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -41,8 +43,8 @@ namespace AparmentBillManagementMVC.Controllers
             CredentialsCookieOperations(loginDTO);
 
             dynamic userResult = (loginDTO.UserType == UserType.manager) ?
-                managerService.GetByMail(loginDTO.Mail) :
-                tenantService.GetByMail(loginDTO.Mail);
+                managerService.Login(loginDTO) :
+                tenantService.Login(loginDTO);
 
             if (userResult.Success == false)
             {
@@ -51,7 +53,7 @@ namespace AparmentBillManagementMVC.Controllers
             }
 
 
-            string role = (loginDTO.UserType == UserType.tenant) ?"tenant" : "manager";
+            string role = (loginDTO.UserType == UserType.tenant) ? "tenant" : "manager";
             string nameIdentifier = (loginDTO.UserType == UserType.tenant) ? userResult.Data.Id.ToString() : userResult.Data.ApartmentComplexId.ToString();
 
 
@@ -84,6 +86,31 @@ namespace AparmentBillManagementMVC.Controllers
             await HttpContext.SignOutAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Register(Manager manager)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var result = managerService.AddManagerWithApartmentComplex(manager);
+                if (result.Success)
+                {
+                    TempData["message"] = "Registration successful. You can login now.";
+                    return RedirectToAction("Index");
+                }
+
+                ViewBag.error = result.Message;
+            }
+
+            return View(manager);
         }
 
         public IActionResult AccessDenied()

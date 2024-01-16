@@ -24,7 +24,7 @@ builder.Services.AddScoped<DbContext, AppDbContext>();
 builder.Services.AddScoped<IApartmentDal, EfApartmentDal>();
 builder.Services.AddScoped<IApartmentService, ApartmentManager>();
 
-builder.Services.AddScoped<ITenantDal,EfTenantDal>();
+builder.Services.AddScoped<ITenantDal, EfTenantDal>();
 builder.Services.AddScoped<ITenantService, TenantManager>();
 
 builder.Services.AddScoped<IManagerDal, EfManagerDal>();
@@ -67,14 +67,14 @@ app.MapAreaControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Auth}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Register}/{id?}");
 
 //make tenantuser area default
-app.MapGet("/", (HttpContext context) =>
-{
-    context.Response.Redirect("/Message/Index");
-    return Task.CompletedTask;
-});
+//app.MapGet("/", (HttpContext context) =>
+//{
+//    context.Response.Redirect("/Message/Index");
+//    return Task.CompletedTask;
+//});
 
 
 app.Run();

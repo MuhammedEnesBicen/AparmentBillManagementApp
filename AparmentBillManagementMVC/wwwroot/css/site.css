@@ -2,11 +2,6 @@ html {
     font-size: 14px;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -17,36 +12,34 @@ html {
     min-height: 100%;
 }
 
-header{
-    opacity:0.9;
-   /*background-color: black;*/
+header {
+    opacity: 0.9;
+    /*background-color: black;*/
 }
 
-body {
-    margin-bottom: 60px;
-}
 
-body.TenantUserAreaLayout{
+
+body.TenantUserAreaLayout {
     margin-bottom: 0px;
 }
 
 
 
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        width: 100vw;
-        height: 100vh;
-        background-image: url("../img/login_background.webp");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        filter: blur(4px);
-    }
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../img/login_background.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(4px);
+}
 
 
 /* Form */
@@ -70,6 +63,9 @@ form {
 
     form form-group label {
         padding-right: 20px;
+        font-weight: 500;
+        font-size: 1rem;
+        text-align: left;
     }
 
     /* form form-group{margin:20px;} */
@@ -79,6 +75,9 @@ form {
         margin-bottom: 20px;
     }
 
+    form h5 {
+        padding-bottom: 30px;
+    }
 
 input {
     border-radius: 5px;
@@ -92,13 +91,21 @@ input {
         padding: 5px 20px;
     }
 
-    input[type="submit"]:hover{
-        background-color: white;
-        color: blueviolet;
-    }
+        input[type="submit"]:hover {
+            background-color: white;
+            color: blueviolet;
+        }
 
-form h5 {
-    padding-bottom: 30px;
+
+
+
+
+.mottoPhrase > h1, h3 {
+    color: black;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: #fff 5px -1px 5px;
+    backdrop-filter: blur(5px);
 }
 
 /* Form */
@@ -106,4 +113,20 @@ form h5 {
 .apartmentCard {
     border-radius: 25px;
     box-shadow: 1px 1px 1px 1px lightblue;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+@media (max-width:640px) {
+    form {
+        padding: 10px 15px 10px 15px;
+    }
+
+        form form-group label {
+            padding-right: 10px;
+        }
 }

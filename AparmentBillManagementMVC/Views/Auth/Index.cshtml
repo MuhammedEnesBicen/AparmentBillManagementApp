@@ -1,39 +1,15 @@
 ﻿@model LoginDTO
 
-<style>
-
-body {
-        background-image: url("../img/login_background.webp");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-
-    }
-
-    h1,h3{
-        color: black;
-        text-align: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        text-shadow: #fff 1px 0 10px;
-    }
-    label{font-weight:600;font-size:1.2rem;
-    }
-
-    form{
-        background-color: rgba(255, 255, 255, 0.95);
-
-        border-radius: 10px;
-    }
-
-</style>
+@if(TempData["message"] != null ){
+    <div class="alert alert-success">
+        @TempData["message"]
+    </div>
+}
 
 <div class="row">
-    <div class="col-sm-12 col-md-6 ">
-    <div class="col">
+    <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-around mottoPhrase">
         <h1>ABMS Apartment Bill Management Web App</h1>
             <h3>"Streamline Your Space, Simplify Your Bills: Your Apartment Finances, Managed with Ease!"</h3>
-    </div>
 </div>
     <div class="col-sm-12 col-md-6 ">
 
@@ -82,11 +58,7 @@ body {
 
             </form-group>
 
-
-
-
             <input type="submit" value="Login" asp-action="Index" />
-
 
         </form>
 </div>
