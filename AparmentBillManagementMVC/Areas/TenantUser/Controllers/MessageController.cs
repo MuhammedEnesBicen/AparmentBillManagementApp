@@ -1,12 +1,14 @@
 ﻿using Bussiness.Abstract;
 using Core.Utilities;
 using Entity.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
 {
     [Area("TenantUser")]
-    //[Route("TenantUser/[controller]/[action]/{id}")]
+    [Authorize(Roles = "tenant")]
     public class MessageController : Controller
     {
         private readonly IMessageService messageService;
@@ -18,7 +20,14 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.tenantId = 11;
+            int tenantId;
+            var getIdViaClaim = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out tenantId);
+            if (!getIdViaClaim)
+            {
+                TempData["message"] = "You must login first";
+                return RedirectToAction("Login", "Auth", new { area = "Identity" });
+            }
+            ViewBag.tenantId = tenantId;
             return View();
         }
 
@@ -32,21 +41,16 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
         [HttpPost]
         public PartialViewResult Message(MessageDTO messageDTO)
         {
-            //int tenantId;
-            //var getIdViaClaim = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value,out tenantId);
-            //if (!getIdViaClaim)
-            //{
-            //    return new Result(false, "Cant send message. Try again later. If the problem persists, please log in to the system again.");
-            //}
-
             messageDTO.MessageTime = DateTime.Now;
 
-            messageService.Add(messageDTO);
-            return PartialView(messageDTO);
+            var result = messageService.Add(messageDTO);
+            if (!result.Success)
+                return PartialView(null);
+            return PartialView(result.Data);
         }
 
         [HttpGet]
-        public PartialViewResult? Message(int tenantId, int messageId)
+        public PartialViewResult Message(int tenantId, int messageId)
         {
             var result = messageService.GetNewMessagesOfConversation(tenantId, messageId);
             if (result.Data.Count == 0)

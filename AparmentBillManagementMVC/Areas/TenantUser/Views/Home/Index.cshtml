@@ -1,8 +1,8 @@
 ﻿@model Entity.ViewModels.TenantVM
 
-<div class="d-flex flex-row">
-<div class="col-md-6 col-sm-8">
-    <div class="card my-3 mx-3 apartmentCard" >
+<div class="d-flex row">
+<div class="col-md-6 col-sm-12">
+    <div class="card mb-5 mx-3 apartmentCard" >
         <div class="card-body d-flex flex-column justify-content-between">
             <div>
                 <div class="d-flex justify-content-between">
@@ -21,15 +21,26 @@
                     <p>Debt:  <big class="card-text text-success">@string.Format("{0:C}",Model.DebtAmount)</big></p>
                 }
             </div>
-    @*         <div>
-            <a class="btn btn-warning text-white w-100" asp-controller="Tenant" asp-action="Update" asp-route-id="@Model.Tenant.Id">
-            <i class="fa fa-pencil"></i>  Update Tenant
+            <div>
+            <a class=" d-flex justify-content-end align-items-center "  asp-action="UpdateProfile" asp-route-id="@Model.Tenant.Id">
+            <i class="fa fa-pencil"></i>
             </a>
-            </div> *@
+            </div>
         </div>
     </div>
 
-    <div class="p-3" id="_BillsPartial"></div>
+    
+</div>
+<div class="col-sm-12 col-md-6">
+        <div class="d-flex justify-content-between align-items-center bg-light">
+            <h2>Bills List</h2>
+            <div>
+                <button id="billPageDecrease" class="btn" onclick="changeBillPage(-1)" disabled> <i class="fa fa-arrow-left"></i></button>
+                <span id="billPage">1</span>
+                <button id="billPageIncrease" class="btn" onclick="changeBillPage(1)"> <i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+        <div class="" id="_BillsPartial"></div>
 </div>
 
 </div>
@@ -38,10 +49,38 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            $.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id }, function (data) {
+            $.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id , billPage:1}, function (data) {
                 $("#_BillsPartial").html(data);
             });
         });
+
+
+
+
+        function changeBillPage(value) {
+            var billPage = Number($("#billPage").text());
+            billPage += value;
+$.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id, billPage: billPage }, function (data) {
+                $("#_BillsPartial").html(data);
+                if($("#noBillAlert").length > 0)
+                {
+                    $("#billPageIncrease").attr("disabled", true);
+                }
+                else
+                {
+                    $("#billPageIncrease").attr("disabled", false);
+                }
+            });
+
+            $("#billPage").text(billPage);
+            if (billPage == 1) {
+                $("#billPageDecrease").attr("disabled", true);
+            }
+            else {
+                $("#billPageDecrease").attr("disabled", false);
+            }
+
+        }
 
     </script>
 }

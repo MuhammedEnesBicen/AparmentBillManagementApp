@@ -47,8 +47,8 @@ function getNewMessages() {
         $.notify("You should select a chat from chat list");
         return;
     }
-    var messageId = $("#messagesArea > div > div > input");
-    messageId = messageId.last().attr("name");
+    let messages = $("#messagesArea > div > div > input");
+    let messageId = messages.last().attr("name");
     $.get("MessageItem?tenantId=" + tenantIdVal + "&messageId=" + messageId, function (data) {
         $("#messagesArea").append(data);
     });

@@ -35,7 +35,7 @@ namespace Bussiness.Concrete
         public Result DeleteById(int id)
         {
             var result = GetById(id);
-            if(result.Success==false)
+            if (result.Success == false)
             {
                 return new Result(false, "Bill not found in database.");
             }
@@ -45,8 +45,8 @@ namespace Bussiness.Concrete
 
         public DataResult<Bill> GetById(int id)
         {
-           var bill = billDal.Get(b=> b.Id==id);
-            if(bill is null)
+            var bill = billDal.Get(b => b.Id == id);
+            if (bill is null)
             {
                 return new DataResult<Bill>(false, "Bill not found in database.", bill);
             }
@@ -55,23 +55,23 @@ namespace Bussiness.Concrete
 
         public DataResult<List<Bill>> GetList()
         {
-            var result =  billDal.GetList().ToList();
+            var result = billDal.GetList().ToList();
             return new DataResult<List<Bill>>(true, "Bills listed successfully", result);
         }
 
-        public DataResult<List<Bill>> GetListByApartmentId(int apartmentId)
+        public DataResult<List<Bill>> GetListByApartmentId(int apartmentId, int billPage)
         {
-            var result = billDal.GetList(b=> b.ApartmentId == apartmentId).ToList();
+            var result = billDal.GetList(b => b.ApartmentId == apartmentId).Reverse().Skip(billPage * 10).Take(10).ToList();
             return new DataResult<List<Bill>>(true, "Bills of apartment listed successfully", result);
         }
 
-        public DataResult<List<Bill>> GetListWithRelatedData(int apartmentComplexId, int? apartmentId =null)
+        public DataResult<List<Bill>> GetListWithRelatedData(int apartmentComplexId, int? apartmentId = null)
         {
             var result =
-            (apartmentId == null)?
-            billDal.GetListWithRelatedData(b=> b.Apartment.ApartmentComplexId == apartmentComplexId):billDal.GetListWithRelatedData(b=> b.ApartmentId==apartmentId);
+            (apartmentId == null) ?
+            billDal.GetListWithRelatedData(b => b.Apartment.ApartmentComplexId == apartmentComplexId) : billDal.GetListWithRelatedData(b => b.ApartmentId == apartmentId);
 
-            return new DataResult<List<Bill>>(true,"Bills listed successfully",result);
+            return new DataResult<List<Bill>>(true, "Bills listed successfully", result);
         }
 
 
@@ -85,11 +85,11 @@ namespace Bussiness.Concrete
         public Result Update(BillDTO billDTO)
         {
             var billFromDb = GetById(billDTO.Id);
-            if(billFromDb.Success is false)
+            if (billFromDb.Success is false)
             {
-                return new Result(false, "Bill not found in database.");   
+                return new Result(false, "Bill not found in database.");
             }
-            mapper.Map<BillDTO,Bill>(billDTO, billFromDb.Data);
+            mapper.Map<BillDTO, Bill>(billDTO, billFromDb.Data);
             billDal.Update(billFromDb.Data);
             return new Result(true, "Bill Updated Successfully");
         }

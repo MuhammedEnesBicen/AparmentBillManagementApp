@@ -2,14 +2,15 @@
 
     @if(Model is not null){
 
-<h2 class="d-flex justify-content-center">Bills List</h2>
+
+
 <table class="table  table-striped">
-    <tr class="">
+    <tr class="bg-light">
         <th>Explanation</th>
         <th>BillDate</th>
         <th>BillCost</th>
         <th>Is Payed</th>
-        <th>Actions</th>
+        @* <th>Actions</th> *@
     </tr>
 
     @foreach (Bill item in Model)
@@ -18,11 +19,11 @@
         <tr class="@style">
 
             <td>@item.Explanation</td>
-            <td>@item.BillDate.ToString()</td>
+            <td>@item.BillDate.ToString("Y")</td>
             <td>@item.BillCost</td>
             <td>@item.IsPayed</td>
 
-                <td class="text-center">
+@*                 <td class="text-center">
                     @if (!item.IsPayed)
                     {
                         <a asp-action="PayBill" asp-route-id="@item.Id" class="btn btn-info text-white">
@@ -34,7 +35,7 @@
                     {
                         <i class="fa fa-check text-success "></i>
                     }
-                    </td>
+                    </td> *@
                 
 
         </tr>
@@ -43,3 +44,8 @@
 </table>
 
     }
+
+@if(Model is null || Model.Count == 0)
+{
+    <div id="noBillAlert" class="alert alert-info">No Bills</div>
+}

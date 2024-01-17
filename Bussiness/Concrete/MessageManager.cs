@@ -19,11 +19,12 @@ namespace Bussiness.Concrete
             this.mapper = mapper;
         }
 
-        public Result Add(MessageDTO messageDTO)
+        public DataResult<MessageDTO> Add(MessageDTO messageDTO)
         {
             var message = mapper.Map<Message>(messageDTO);
-            messageDal.Add(message);
-            return new Result(true, "Message sended successfully");
+            var result = messageDal.Add(message);
+            var newDto = mapper.Map<MessageDTO>(result.Data);
+            return new DataResult<MessageDTO>(true, "Message sended successfully", newDto);
         }
 
 
@@ -46,7 +47,7 @@ namespace Bussiness.Concrete
 
         public DataResult<List<ChatRoomVM>> GetChatRooms(int apartmentComplexId)
         {
-           return messageDal.GetChatRooms(apartmentComplexId);
+            return messageDal.GetChatRooms(apartmentComplexId);
         }
 
         public DataResult<List<MessageDTO>> GetNewMessagesOfConversation(int tenantId, int messageId)

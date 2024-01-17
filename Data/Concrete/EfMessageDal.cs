@@ -4,6 +4,7 @@ using DataAccess.Abstarct;
 using Entity;
 using Entity.DTOs;
 using Entity.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete
 {
@@ -13,7 +14,7 @@ namespace DataAccess.Concrete
         {
             using (var context = new AppDbContext())
             {
-                   var result = from m in context.Messages
+                var result = from m in context.Messages
                              where m.TenantId == tenantId
                              select new MessageDTO
                              {
@@ -50,7 +51,7 @@ namespace DataAccess.Concrete
             using (var context = new AppDbContext())
             {
                 var result = (
-                              from a in context.Apartments                              
+                              from a in context.Apartments
                               join t in context.Tenants on a.Id equals t.ApartmentId
                               join m in context.Messages on t.Id equals m.TenantId into messages
                               where a.ApartmentComplexId == apartmentComplexId
@@ -66,9 +67,20 @@ namespace DataAccess.Concrete
                                   FlatNumber = a.Number,
                                   LastChatTime = messages.Max(m => m.MessageTime),
 
-                              }).Distinct().OrderByDescending(c=> c.LastChatTime);
+                              }).Distinct().OrderByDescending(c => c.LastChatTime);
 
                 return new DataResult<List<ChatRoomVM>>(true, "Chat rooms listed successfully", result.ToList());
+            }
+        }
+
+        DataResult<Message> IMessageDal.Add(Message message)
+        {
+            using (var context = new AppDbContext())
+            {
+                var addedEntity = context.Entry(message);
+                addedEntity.State = EntityState.Added;
+                context.SaveChanges();
+                return new DataResult<Message>(true, "Message added successfully", addedEntity.Entity);
             }
         }
     }
