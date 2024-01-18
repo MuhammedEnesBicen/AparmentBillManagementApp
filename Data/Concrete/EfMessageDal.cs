@@ -83,5 +83,31 @@ namespace DataAccess.Concrete
                 return new DataResult<Message>(true, "Message added successfully", addedEntity.Entity);
             }
         }
+
+        public DataResult<ChatRoomVM> NewChatRoom(int tenantId)
+        {
+            using (var context = new AppDbContext())
+            {
+                var result =
+                              from t in context.Tenants
+                              join a in context.Apartments on t.ApartmentId equals a.Id
+                              where t.Id == tenantId
+
+                              select new ChatRoomVM
+                              {
+
+                                  TenantId = t.Id,
+                                  TenantName = t.Name,
+                                  TenantLastName = t.LastName,
+                                  ApartmentId = a.Id,
+                                  BlockName = a.BlockName,
+                                  FlatNumber = a.Number,
+                                  LastChatTime = DateTime.Now,
+
+                              };
+
+                return new DataResult<ChatRoomVM>(true, "Chat room generated", result.First());
+            }
+        }
     }
 }

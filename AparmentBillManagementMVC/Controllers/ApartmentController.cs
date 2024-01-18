@@ -2,6 +2,9 @@
 using Core.Utilities;
 using Entity;
 using Entity.DTOs;
+using Entity.enums;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -18,6 +21,7 @@ namespace AparmentBillManagementMVC.Controllers
         }
         public IActionResult Index()
         {
+
             int apartmentComplexId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
             var result = apartmentService.GetApartmentVMsByComplexId(apartmentComplexId);
             return View(result.Data);
@@ -109,5 +113,7 @@ namespace AparmentBillManagementMVC.Controllers
             }
 
         }
+
+
     }
 }

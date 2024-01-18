@@ -13,16 +13,17 @@ namespace DataAccess.Concrete
             using (var context = new AppDbContext())
             {
                 var result = (from apartment in context.Apartments
-                             join tenant in context.Tenants on apartment.Id equals tenant.ApartmentId into tenantsGroup
-                             from tenant in tenantsGroup.DefaultIfEmpty()
-                             join bill in context.Bills on apartment.Id equals bill.ApartmentId into billsGroup
-                             where apartment.ApartmentComplexId == apartmentComplexId
-                             select new ApartmentVM
-                             {
-                                 Apartment = apartment,
-                                 TenantName = (tenant == null) ? String.Empty : tenant.Name + " " + tenant.LastName,
-                                 DebtAmount = (billsGroup.IsNullOrEmpty()) ? 0 : billsGroup.Where(x => x.IsPayed == false).Sum(x => x.BillCost)
-                             }).AsEnumerable();
+                              join tenant in context.Tenants on apartment.Id equals tenant.ApartmentId into tenantsGroup
+                              from tenant in tenantsGroup.DefaultIfEmpty()
+                              join bill in context.Bills on apartment.Id equals bill.ApartmentId into billsGroup
+                              where apartment.ApartmentComplexId == apartmentComplexId
+                              select new ApartmentVM
+                              {
+                                  Apartment = apartment,
+                                  TenantId = (tenant == null) ? -1 : tenant.Id,
+                                  TenantName = (tenant == null) ? String.Empty : tenant.Name + " " + tenant.LastName,
+                                  DebtAmount = (billsGroup.IsNullOrEmpty()) ? 0 : billsGroup.Where(x => x.IsPayed == false).Sum(x => x.BillCost)
+                              }).AsEnumerable();
                 if (String.IsNullOrEmpty(blockName) == false)
                     result = result.Where(x => x.Apartment.BlockName == blockName);
                 if (onlyHasDebt)

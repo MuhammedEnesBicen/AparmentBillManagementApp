@@ -1,13 +1,13 @@
 ﻿using Bussiness.Abstract;
 using Core.Utilities;
-using Entity;
 using Entity.DTOs;
-using Entity.enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace AparmentBillManagementMVC.Controllers
 {
+    [Authorize(Roles = "manager")]
     public class MessageController : Controller
     {
         private readonly IMessageService messageService;
@@ -17,11 +17,23 @@ namespace AparmentBillManagementMVC.Controllers
             this.messageService = messageService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(int? tenantId)
         {
-            //TODO get from claim 
-            var result = messageService.GetChatRooms(1);
-            //ViewBag.tenantId = 11;
+            int apartmentComplexId;
+            var getIdViaClaim = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out apartmentComplexId);
+            if (!getIdViaClaim)
+            {
+                TempData["message"] = "An error occured. Please re login to website.";
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var result = messageService.GetChatRooms(apartmentComplexId);
+            if (result.Success && tenantId != null && result.Data.Any(c => c.TenantId == tenantId) == false)
+            {
+                result.Data.Add(messageService.NewChatRoom((int)tenantId).Data);
+            }
+            ViewBag.tenantId = tenantId;
             return View(result.Data);
         }
 
@@ -36,12 +48,6 @@ namespace AparmentBillManagementMVC.Controllers
         [HttpPost]
         public PartialViewResult MessageItem(MessageDTO messageDTO)
         {
-            //int tenantId;
-            //var getIdViaClaim = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value,out tenantId);
-            //if (!getIdViaClaim)
-            //{
-            //    return new Result(false, "Cant send message. Try again later. If the problem persists, please log in to the system again.");
-            //}
 
             messageDTO.MessageTime = DateTime.Now;
 

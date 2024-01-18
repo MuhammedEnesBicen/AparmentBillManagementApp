@@ -4,13 +4,19 @@
 <link rel="stylesheet" href="~/css/message.css" />
 <link rel="stylesheet" href="~/css/managerMessagePage.css"/>
 
+<style>
+    .sideNav {
+        transition: transform ease-out 0.3s;
+    }
+</style>
 <div class="container">
+    <button class="btn btn-info text-white" id="chatsButton" onclick="toggleChats()">Chat Rooms <i class="fa fa-arrow-down"></i></button>
     <div class="row">
-        <div class="col-4 bg-light p-1 g-0">
+        <div class="col-sm-4 d-none d-sm-block bg-light p-1 g-0 sideNav">
             @await Html.PartialAsync("ChatRoomList")
         </div>
 
-        <div class="col-8">
+        <div class=" col-sm-8">
             <button class="btn btn-primary" onclick="getNewMessages()">Get new Messages</button>
             <div class=" messageSection bg-light bg-opacity-75">
 
@@ -51,7 +57,11 @@
 
         $(document).ready(function () {
             $("#spinner").html("");
-            getMessages(@tenantId);
+            
+            if(@tenantId != -1)
+                openChatRoom(@tenantId);
+else
+                $("#emptyChatArea").removeClass("visually-hidden");
 
             // window.setInterval(function () {
             //     console.log("getMessages");
@@ -67,6 +77,9 @@
 
         });
 
+        function toggleChats() {
+            $(".sideNav").toggleClass("d-none");
+        }
 
     </script>
 }

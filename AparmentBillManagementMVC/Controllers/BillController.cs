@@ -29,9 +29,15 @@ namespace AparmentBillManagementMVC.Controllers
                 TempData["message"] = "An error occured. Please re login to website.";
                 return View();
             }
-
-            var billList = billService.GetListWithRelatedData(apartmentComplexId: idResult.Data).Data;
+            ViewBag.apartmentComplexId = idResult.Data;
+            var billList = billService.GetListWithRelatedData(apartmentComplexId: idResult.Data, page: 0).Data;
             return View(billList);
+        }
+
+        public PartialViewResult BillsPartialList(int apartmentComplexId, int billPage)
+        {
+            var billList = billService.GetListWithRelatedData(apartmentComplexId: apartmentComplexId, page: billPage - 1).Data;
+            return PartialView(billList);
         }
 
         public IActionResult Bill(int apartmentId, string? tenantName)
@@ -45,7 +51,7 @@ namespace AparmentBillManagementMVC.Controllers
         [HttpPost]
         public IActionResult Bill([FromForm] BillDTO billDTO)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = billService.Add(billDTO);
                 TempData["message"] = result.Message;
@@ -54,7 +60,7 @@ namespace AparmentBillManagementMVC.Controllers
             return View(billDTO);
         }
 
-        public IActionResult Delete([FromRoute] int id) 
+        public IActionResult Delete([FromRoute] int id)
         {
             var result = billService.DeleteById(id);
             TempData["message"] = result.Message;
@@ -65,21 +71,21 @@ namespace AparmentBillManagementMVC.Controllers
         public IActionResult Update([FromRoute] int id)
         {
             var result = billService.GetById(id);
-            var billDTO = mapper.Map<Bill,BillDTO>(result.Data);  
+            var billDTO = mapper.Map<Bill, BillDTO>(result.Data);
             return View(billDTO);
         }
 
         [HttpPost]
         public IActionResult Update([FromForm] BillDTO billDTO)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = billService.Update(billDTO);
                 TempData["message"] = result.Message;
                 return RedirectToAction("Index");
             }
             return View(billDTO);
-            
+
         }
 
         public DataResult<int> GetApartmentComplexIdViaClaims()

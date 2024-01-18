@@ -27,11 +27,11 @@ namespace AparmentBillManagementMVC.Controllers
                 return View(new List<TenantVM>());
             }
 
-            var model = tenantService.GetTenantVMs(apartmentComplexId:idResult.Data).Data;
+            var model = tenantService.GetTenantVMs(apartmentComplexId: idResult.Data).Data;
             return View(model);
         }
 
-        public IActionResult Tenant([FromQuery]int apartmentId)
+        public IActionResult Tenant([FromQuery] int apartmentId)
         {
             TenantDTO tenantDTO = new TenantDTO();
             tenantDTO.ApartmentId = apartmentId;
@@ -39,9 +39,9 @@ namespace AparmentBillManagementMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Tenant([FromForm]TenantDTO tenantDTO) 
+        public IActionResult Tenant([FromForm] TenantDTO tenantDTO)
         {
-        
+
             if (ModelState.IsValid)
             {
                 var result = tenantService.Add(tenantDTO);
@@ -64,7 +64,7 @@ namespace AparmentBillManagementMVC.Controllers
         public IActionResult Update([FromRoute] int id)
         {
             var model = tenantService.GetAsDTOById(id);
-            if(model == null)
+            if (model == null)
             {
                 TempData["message"] = model.Message;
             }
@@ -80,15 +80,14 @@ namespace AparmentBillManagementMVC.Controllers
                 TempData["message"] = result.Message;
                 return RedirectToAction("Index");
             }
-            return View(tenantDTO) ;
+            return View(tenantDTO);
         }
 
         [HttpPost]
         public PartialViewResult TenantsList(string? blockName, string? nameFilter, bool onlyHasDebt)
         {
-            TempData["message"] = "Something went wrong. Please re login to website.";
             var idResult = GetApartmentComplexIdViaClaims();
-            if (idResult.Success = false)
+            if (idResult.Success == false)
             {
                 TempData["message"] = "Something went wrong. Please re login to website.";
                 return PartialView(new List<TenantVM>());
@@ -98,7 +97,7 @@ namespace AparmentBillManagementMVC.Controllers
             {
                 blockName = null;
             }
-            var model = tenantService.GetTenantVMs(idResult.Data,blockName, nameFilter, onlyHasDebt);
+            var model = tenantService.GetTenantVMs(idResult.Data, blockName, nameFilter, onlyHasDebt);
             return PartialView(model.Data);
         }
 

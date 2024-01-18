@@ -21,3 +21,18 @@
     justify-content: center;
     width: 100%;
 }
+
+@media (min-width: 576px) {
+    #chatsButton{
+        display: none;
+    }
+}
+
+@media (max-width:576px) {
+#chatsButton{display: block;}
+
+.sideNav{
+    max-height:80vh;
+    overflow-y: scroll;
+}
+}

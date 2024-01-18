@@ -135,5 +135,26 @@ namespace AparmentBillManagementMVC.Controllers
                 Response.Cookies.Delete("userTypeCookie");
             }
         }
+
+        public async Task<IActionResult> ManagerTestLogin()
+        {
+
+            var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, "1"),//ApartmentComplexId
+                        new Claim(ClaimTypes.Email, "test@test.com"),
+                       new Claim(ClaimTypes.Role, "manager"),
+                    };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties();
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                          new ClaimsPrincipal(claimsIdentity),
+                                          authProperties);
+
+            return RedirectToAction("Index", "Apartment");
+        }
     }
 }

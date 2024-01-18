@@ -55,5 +55,10 @@ namespace Bussiness.Concrete
             var result = messageDal.GetNewMessagesOfConversation(tenantId, messageId);
             return new DataResult<List<MessageDTO>>(true, "Messages listed successfully", result.Data);
         }
+
+        public DataResult<ChatRoomVM> NewChatRoom(int apartmentId)
+        {
+            return messageDal.NewChatRoom(apartmentId);
+        }
     }
 }

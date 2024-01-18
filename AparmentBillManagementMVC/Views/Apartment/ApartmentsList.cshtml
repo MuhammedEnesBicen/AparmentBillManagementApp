@@ -19,10 +19,7 @@
     }
 </style>
 
-@if (TempData["message"] is not null)
-{
-    <div class="alert alert-info">@TempData["message"]</div>
-}
+
 
 @if (Model is not null)
 {
@@ -34,7 +31,7 @@
         @foreach (ApartmentVM item in Model)
         {
 
-            <div class="card my-3 mx-3 col-3 col-md-6 col-lg-4 col-sm-12 apartmentCard" style="width: 18rem;">
+            <div class="card my-3 mx-3 col-md-6 col-lg-4  col-xl-2 apartmentCard" style="width: 18rem;">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <h2 class="card-title">@item.Apartment.BlockName - @item.Apartment.Number</h2>
@@ -62,9 +59,19 @@
 
                     </div>
                     <div style="margin-right:40px; bottom:20px">
-                        <a class="btn btn-danger mb-3 w-100" asp-controller="Apartment" asp-action="Delete" asp-route-id="@item.Apartment.Id">
-                            <i class="fa fa-trash"></i>  Delete Apartment
-                        </a>
+                        @if(item.TenantId != -1)
+                        {
+                            <a class="btn btn-danger mb-3 w-100" asp-controller="Message" asp-action="Index" asp-route-tenantId="@item.TenantId">
+                            <i class="fa fa-trash"></i> Send Message
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger mb-3 w-100 disabled" asp-controller="Message" asp-action="Index" asp-route-tenantId="@item.TenantId">
+                                <i class="fa fa-trash"></i> Send Message
+                            </a>
+                        }
+
                         <a class="btn btn-warning text-white w-100" asp-controller="Apartment" asp-action="Update" asp-route-id="@item.Apartment.Id">
                             <i class="fa fa-pencil"></i>  Update Apartment
                         </a>

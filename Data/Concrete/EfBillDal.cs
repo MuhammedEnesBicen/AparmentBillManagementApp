@@ -8,13 +8,13 @@ namespace DataAccess.Concrete
 {
     public class EfBillDal : EfEntityRepositoryBase<Bill, AppDbContext>, IBillDal
     {
-        public List<Bill> GetListWithRelatedData(Expression<Func<Bill, bool>> filter = null)
+        public List<Bill> GetListWithRelatedData(int page, Expression<Func<Bill, bool>> filter = null)
         {
             using (var context = new AppDbContext())
             {
                 return filter == null
-                    ? context.Set<Bill>().Include(b=> b.Apartment).ToList()
-                    : context.Set<Bill>().Include(b => b.Apartment).Where(filter).ToList();
+                    ? context.Set<Bill>().Include(b => b.Apartment).OrderByDescending(b => b.Id).Skip(page * 10).Take(10).ToList()
+                    : context.Set<Bill>().Include(b => b.Apartment).Where(filter).OrderByDescending(b => b.Id).Skip(page * 10).Take(10).ToList();
             }
         }
 

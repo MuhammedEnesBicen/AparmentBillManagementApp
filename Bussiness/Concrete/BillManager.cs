@@ -65,11 +65,11 @@ namespace Bussiness.Concrete
             return new DataResult<List<Bill>>(true, "Bills of apartment listed successfully", result);
         }
 
-        public DataResult<List<Bill>> GetListWithRelatedData(int apartmentComplexId, int? apartmentId = null)
+        public DataResult<List<Bill>> GetListWithRelatedData(int apartmentComplexId, int page, int? apartmentId = null)
         {
             var result =
             (apartmentId == null) ?
-            billDal.GetListWithRelatedData(b => b.Apartment.ApartmentComplexId == apartmentComplexId) : billDal.GetListWithRelatedData(b => b.ApartmentId == apartmentId);
+            billDal.GetListWithRelatedData(page, b => b.Apartment.ApartmentComplexId == apartmentComplexId) : billDal.GetListWithRelatedData(page, b => b.ApartmentId == apartmentId);
 
             return new DataResult<List<Bill>>(true, "Bills listed successfully", result);
         }

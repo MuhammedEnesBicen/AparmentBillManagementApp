@@ -93,6 +93,15 @@ function filterTenants() {
 }
 
 function openChatRoom(tenantId) {
+
+    let chatsButton = $("#chatsButton");
+    // write code to hide sidenav if chats button is visible
+
+    console.log("çalıştı " + chatsButton.is(":visible"));
+    if (chatsButton.is(":visible")) {
+        $(".sideNav").toggleClass("d-none");
+    }
+
     let roomDivId = "#room_" + tenantId;
     getMessages(tenantId);
     $(".selectedRoom > h5 > span").removeClass("text-white");
