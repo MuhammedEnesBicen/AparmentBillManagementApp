@@ -4,7 +4,7 @@ using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
 using Entity.DTOs;
-using Entity.ViewModels;
+using Entity.enums;
 
 namespace Bussiness.Concrete
 {
@@ -23,8 +23,8 @@ namespace Bussiness.Concrete
         {
             var message = mapper.Map<Message>(messageDTO);
             var result = messageDal.Add(message);
-            var newDto = mapper.Map<MessageDTO>(result.Data);
-            return new DataResult<MessageDTO>(true, "Message sended successfully", newDto);
+            mapper.Map<Message, MessageDTO>(result.Data, messageDTO);
+            return new DataResult<MessageDTO>(true, "Message sended successfully", messageDTO);
         }
 
 
@@ -39,26 +39,21 @@ namespace Bussiness.Concrete
             return new Result(true, "Message deleted successfully");
         }
 
-        public DataResult<List<MessageDTO>> GetAllMessagesOfConversation(int tenantId)
+        public DataResult<List<MessageDTO>> GetAllMessagesOfConversation(int chatRoomId)
         {
-            var result = messageDal.GetAllMessagesOfConversation(tenantId);
+            var result = messageDal.GetAllMessagesOfConversation(chatRoomId);
             return new DataResult<List<MessageDTO>>(true, "Messages listed successfully", result.Data);
         }
 
-        public DataResult<List<ChatRoomVM>> GetChatRooms(int apartmentComplexId)
+        public DataResult<List<MessageDTO>> GetNewMessagesOfConversation(int chatRoomId)
         {
-            return messageDal.GetChatRooms(apartmentComplexId);
-        }
-
-        public DataResult<List<MessageDTO>> GetNewMessagesOfConversation(int tenantId, int messageId)
-        {
-            var result = messageDal.GetNewMessagesOfConversation(tenantId, messageId);
+            var result = messageDal.GetNewMessagesOfConversation(chatRoomId);
             return new DataResult<List<MessageDTO>>(true, "Messages listed successfully", result.Data);
         }
 
-        public DataResult<ChatRoomVM> NewChatRoom(int apartmentId)
+        public int GetUnreadMessageCount(int chatRoomId, int lastSeenMessageId)
         {
-            return messageDal.NewChatRoom(apartmentId);
+            return messageDal.GetUnreadMessageCount(chatRoomId, lastSeenMessageId);
         }
     }
 }

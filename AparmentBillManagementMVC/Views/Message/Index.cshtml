@@ -1,5 +1,6 @@
 ﻿@{
-    int tenantId = ViewBag.tenantId ?? -1;
+    int chatRoomId = ViewBag.chatRoomId ?? -1;
+    Console.WriteLine("chatRoomId: " + chatRoomId);
 }
 <link rel="stylesheet" href="~/css/message.css" />
 <link rel="stylesheet" href="~/css/managerMessagePage.css"/>
@@ -17,7 +18,7 @@
         </div>
 
         <div class=" col-sm-8">
-            <button class="btn btn-primary" onclick="getNewMessages()">Get new Messages</button>
+
             <div class=" messageSection bg-light bg-opacity-75">
 
 
@@ -57,16 +58,21 @@
 
         $(document).ready(function () {
             $("#spinner").html("");
-            
-            if(@tenantId != -1)
-                openChatRoom(@tenantId);
+
+            if (@chatRoomId != -1)
+                openChatRoom(@chatRoomId);
 else
                 $("#emptyChatArea").removeClass("visually-hidden");
 
-            // window.setInterval(function () {
-            //     console.log("getMessages");
-            //     getNewMessages();
-            // }, 5000);
+            window.setInterval(function () {
+                let chatRoomIdVal = parseInt($("#chatRoomIdSpan").attr("value"));
+                if (isNaN(chatRoomIdVal) ) {
+                return;
+            }
+                console.log("before chat room id: " + chatRoomIdVal);
+                getNewMessages(chatRoomIdVal);
+            }, 5000);
+            
         });
 
         const textareaEle = document.getElementById('textarea');

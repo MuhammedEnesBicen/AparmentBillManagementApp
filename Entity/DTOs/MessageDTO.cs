@@ -8,6 +8,6 @@ namespace Entity.DTOs
         public string Text { get; set; }
         public DateTime MessageTime { get; set; }
         public UserType Sender { get; set; }
-        public int TenantId { get; set; }
+        public int ChatRoomId { get; set; }
     }
 }

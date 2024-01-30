@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240126151807_ChatRoomTableAdded")]
+    partial class ChatRoomTableAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,10 +123,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("LastSeenMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TenantId")
+                    b.Property<int>("LastSeenMessageId")
                         .HasColumnType("int");
 
                     b.Property<int>("User")
@@ -131,11 +131,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LastSeenMessageId")
-                        .IsUnique()
-                        .HasFilter("[LastSeenMessageId] IS NOT NULL");
-
-                    b.HasIndex("TenantId");
+                    b.HasIndex("LastSeenMessageId");
 
                     b.ToTable("ChatRooms");
                 });
@@ -190,13 +186,13 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("MessageTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Sender")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -204,6 +200,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Messages");
                 });
@@ -282,18 +280,12 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entity.ChatRoom", b =>
                 {
                     b.HasOne("Entity.Message", "Message")
-                        .WithOne("ChatRoom")
-                        .HasForeignKey("Entity.ChatRoom", "LastSeenMessageId");
-
-                    b.HasOne("Entity.Tenant", "Tenant")
                         .WithMany()
-                        .HasForeignKey("TenantId")
+                        .HasForeignKey("LastSeenMessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Message");
-
-                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Entity.Manager", b =>
@@ -305,6 +297,17 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("ApartmentComplex");
+                });
+
+            modelBuilder.Entity("Entity.Message", b =>
+                {
+                    b.HasOne("Entity.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("Entity.Tenant", b =>
@@ -321,12 +324,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entity.ApartmentComplex", b =>
                 {
                     b.Navigation("Apartments");
-                });
-
-            modelBuilder.Entity("Entity.Message", b =>
-                {
-                    b.Navigation("ChatRoom")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

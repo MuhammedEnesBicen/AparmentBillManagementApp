@@ -1,14 +1,15 @@
-    using AutoMapper;
+using AutoMapper;
 using Entity;
 using Entity.DTOs;
 
 namespace Bussiness.Automapper
 {
-    public class MappingProfile :Profile
+    public class MappingProfile : Profile
     {
-        public MappingProfile() {
+        public MappingProfile()
+        {
             CreateMap<Tenant, Tenant>();
-            CreateMap<Bill,Bill>();
+            CreateMap<Bill, Bill>();
 
             CreateMap<BillDTO, Bill>().ReverseMap();
 
@@ -16,9 +17,11 @@ namespace Bussiness.Automapper
 
             CreateMap<Manager, Manager>();
 
-            CreateMap<ApartmentDTO,Apartment>().ReverseMap();
+            CreateMap<ApartmentDTO, Apartment>().ReverseMap();
 
             CreateMap<MessageDTO, Message>().ReverseMap();
+
+            CreateMap<ChatRoomDTO, ChatRoom>().ReverseMap();
         }
     }
 }

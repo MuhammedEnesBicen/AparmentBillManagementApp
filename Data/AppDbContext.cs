@@ -12,10 +12,11 @@ namespace DataAccess
         }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<ApartmentComplex> ApartmentComplexes { get; set; }
-        public DbSet<Apartment> Apartments { get;set; }
-        public DbSet<Tenant> Tenants {get;set;}
-        public DbSet<Message> Messages {get;set;}
-        public DbSet<Bill> Bills {get;set;}
+        public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<Bill> Bills { get; set; }
 
 
     }

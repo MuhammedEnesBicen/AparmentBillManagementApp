@@ -36,6 +36,9 @@ builder.Services.AddScoped<IBillService, BillManager>();
 builder.Services.AddScoped<IMessageDal, EfMessageDal>();
 builder.Services.AddScoped<IMessageService, MessageManager>();
 
+builder.Services.AddScoped<IChatRoomDal, EfChatRoomDal>();
+builder.Services.AddScoped<IChatRoomService, ChatRoomManager>();
+
 
 //builder.Services.AddSingleton<MappingProfile>();
 

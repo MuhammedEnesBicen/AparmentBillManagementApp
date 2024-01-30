@@ -8,7 +8,8 @@ namespace Entity
         public string Text { get; set; }
         public DateTime MessageTime { get; set; }
         public UserType Sender { get; set; }
-        public int TenantId { get; set; }
-        public Tenant Tenant { get; set; }
+        public int ChatRoomId { get; set; }
+        public ChatRoom ChatRoom { get; set; }
+
     }
 }

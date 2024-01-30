@@ -5,7 +5,12 @@
 
 @if (Model is not null)
 {
-
+    if (ViewBag.isMessageNew is not null)
+    {
+        <script>
+            $.notify("New message received!", "success");
+        </script>
+    }
 
     string senderClass = (Model.Sender == UserType.tenant) ? "justify-content-end tenantMessage" : "managerMessage";
     string bgColor = (Model.Sender == UserType.tenant) ? "background-color:rgba(221,255,221,0.8);" : "";

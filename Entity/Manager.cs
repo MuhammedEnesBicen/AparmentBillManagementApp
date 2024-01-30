@@ -12,7 +12,6 @@ namespace Entity
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Required]
-        [StringLength(11)]
         [Display(Name = "Identity Number")]
         public string IdentityNumber { get; set; }
         [Required]

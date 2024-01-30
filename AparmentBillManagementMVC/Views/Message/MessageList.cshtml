@@ -3,10 +3,12 @@
 
 @{
     DateTime date = new DateTime();
-    int tenantId = ViewBag.tenantId ?? -1;
+    int chatRoomId = ViewBag.chatRoomId ?? -1;
+    int lastSeenMessageId = Model.Last().Id;
 
 }
-<span id="tenantIdSpan" value="@tenantId" hidden></span>
+<span id="chatRoomIdSpan" value="@chatRoomId" hidden></span>
+<span id="lastSeenMessageIdSpan" value="@lastSeenMessageId" hidden></span>
 @foreach (var item in Model)
 {
     if (item.MessageTime.Day != date.Day)

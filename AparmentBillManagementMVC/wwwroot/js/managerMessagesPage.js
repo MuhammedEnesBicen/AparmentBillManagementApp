@@ -1,9 +1,9 @@
 ﻿let spinnerElement = $("<div  class='d-flex align-self-center spinner-border text-info' role='status'><span class='visually-hidden'> Loading...</span></div>");
 
-function getMessages(tenantId) {
+function getMessages(chatRoomId) {
     $("#spinner").html(spinnerElement);
 
-    if (tenantId == -1 || tenantId==null) {
+    if (chatRoomId == -1 || chatRoomId ==null) {
         $("#emptyChatArea").removeClass("visually-hidden");
         $("#spinner").html("");
         return;
@@ -12,9 +12,13 @@ function getMessages(tenantId) {
 
     $("#spinner").html(spinnerElement);
 
-    $.post("MessageList", { tenantId: tenantId }, function (data) {
+    $.post("MessageList", { chatRoomId: chatRoomId }, function (data) {
         $("#spinner").html("");
         $("#messagesArea").html(data);
+
+        // updating chat rooms last seen mesaage
+        let lastSeenMessageIdInput = "#room_" + chatRoomId + " > input.lastSeenMessageId";
+        $(lastSeenMessageIdInput).attr("value", $("#lastSeenMessageIdSpan").attr("value"));
     }).fail(function () {
         $("#spinner").html("");
         $.notify("Error while getting messages!");
@@ -22,8 +26,8 @@ function getMessages(tenantId) {
 }
 
 function sendMessage() {
-    let tenantIdVal = $("#tenantIdSpan").attr("value") ?? -1;
-    if (tenantIdVal == -1) {
+    let chatRoomIdVal = $("#chatRoomIdSpan").attr("value") ?? -1;
+    if (chatRoomIdVal == -1) {
         $.notify("You should select a chat from chat list");
         return;
     }
@@ -32,7 +36,7 @@ function sendMessage() {
         $.notify("Message Cant be empty!");
         return;
     }
-    $.post("MessageItem", { tenantId: tenantIdVal, text: message, sender: 1 }, function (data) {
+    $.post("MessageItem", { chatRoomId: chatRoomIdVal, text: message, sender: 1 }, function (data) {
         $("#messagesArea").append(data);
         if (data.includes("message")) {
             $("#sendMessage").prev().val("");
@@ -41,16 +45,14 @@ function sendMessage() {
     });
 }
 
-function getNewMessages() {
-    let tenantIdVal = $("#tenantIdSpan").attr("value") ?? -1;
-    if (tenantIdVal == -1) {
-        $.notify("You should select a chat from chat list");
-        return;
-    }
-    let messages = $("#messagesArea > div > div > input");
-    let messageId = messages.last().attr("name");
-    $.get("MessageItem?tenantId=" + tenantIdVal + "&messageId=" + messageId, function (data) {
-        $("#messagesArea").append(data);
+function getNewMessages(chatRoomId) {
+    $.get("MessageItem?chatRoomId=" + chatRoomId , function (data) {
+        if (data.includes("message")) {
+            $("#messagesArea").append(data);
+            //$(".scroller").scrollTop($(".scroller")[0].scrollHeight)
+            let chatRoomIdVal = parseInt($("#chatRoomIdSpan").attr("value"));
+            console.log("after get new messages chatRoomIdVal: " + chatRoomIdVal);
+        }
     });
 }
 
@@ -92,18 +94,17 @@ function filterTenants() {
     }
 }
 
-function openChatRoom(tenantId) {
+function openChatRoom(chatRoomId) {
 
     let chatsButton = $("#chatsButton");
     // write code to hide sidenav if chats button is visible
 
-    console.log("çalıştı " + chatsButton.is(":visible"));
     if (chatsButton.is(":visible")) {
         $(".sideNav").toggleClass("d-none");
     }
 
-    let roomDivId = "#room_" + tenantId;
-    getMessages(tenantId);
+    let roomDivId = "#room_" + chatRoomId;
+    getMessages(chatRoomId);
     $(".selectedRoom > h5 > span").removeClass("text-white");
     $(".selectedRoom > h5 > span").addClass("text-info");
     $(".selectedRoom").removeClass("bg-info");
@@ -119,4 +120,9 @@ function openChatRoom(tenantId) {
     let span = roomDivId + " > h5 > span";
     $(span).removeClass("text-info");
     $(span).addClass("text-white");
+
+    let unreadMsgSpan = roomDivId + " > span";
+    $(unreadMsgSpan).addClass("visually-hidden");
+
+
 }

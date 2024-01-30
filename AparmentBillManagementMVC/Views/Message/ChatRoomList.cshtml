@@ -2,11 +2,12 @@
 
 @{
     List<string> blocks = Model.DistinctBy(a => a.BlockName).Select(a => a.BlockName).Order().ToList();
+    List<int> chatRoomIds = Model.Select(a => a.ChatRoomId).ToList();
 }
 
-@if(Model is not null)
+@if (Model is not null)
 {
-   <div class="chatRoomArea">
+    <div class="chatRoomArea">
         <div id="blockRadioBtns" class="btn-group  pb-2 flex-wrap" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" name="btnradio" id="all" autocomplete="off" checked onclick="filterTenants()">
             <label class="btn btn-outline-primary" for="all">All Blocks</label>
@@ -17,20 +18,57 @@
                 <label class="btn btn-outline-primary" for="@blockName">@blockName</label>
             }
         </div>
-    @foreach (var item in Model)
-    {
-            <div id="room_@item.TenantId" class="chatRoomItem  card p-3 mb-2 bg-white" onclick="openChatRoom(@item.TenantId)">
-            <input name="@item.ApartmentId" hidden/>
-            <h5>@item.TenantName @item.TenantLastName - <span class="text-info">@item.BlockName@item.FlatNumber</span></h5>
-            <p>@item.LastChatTime.ToString("f")</p>
-        </div>
-    }
-</div> 
+        @foreach (var item in Model)
+        {
+            string unreadMsgClass = (item.UnreadMessageCount > 0) ? "" : "visually-hidden";
+            <div id="room_@item.ChatRoomId" class="chatRoomItem  card p-3 mb-2 bg-white" onclick="openChatRoom(@item.ChatRoomId)">
+                <input class="lastSeenMessageId" value="@item.LastSeenMessageId" hidden />
+                <input name="@item.ApartmentId" hidden />
+
+                <h5>@item.TenantName @item.TenantLastName - <span class="text-info">@item.BlockName@item.FlatNumber</span></h5>
+
+                <span class="@unreadMsgClass position-absolute top-0 end-0 m-1  badge rounded-pill bg-success text-white">@item.UnreadMessageCount</span>
+                <p>@item.LastChatTime?.ToString("f")</p>
+                
+            </div>
+        }
+    </div>
 }
 
-@if(Model is null || Model.Count < 1)
+@if (Model is null || Model.Count < 1)
 {
     <div class="text-center">
         <h5>No chat room found!</h5>
     </div>
 }
+
+
+<script>
+    document.ready = (function () {
+        let chatRoomIdList = @Json.Serialize(chatRoomIds);
+        window.setInterval(function () {
+            let chatRoomIdVal = parseInt($("#chatRoomIdSpan").attr("value"));
+            let indexOfCurrentChatRoom = chatRoomIdList.indexOf(chatRoomIdVal);
+
+
+            for (let i = 0; i < chatRoomIdList.length;i++) {
+                if (i == indexOfCurrentChatRoom) {
+                    continue;
+                }
+                let lastSeenMessageId = $("#room_" + chatRoomIdList[i]).find(".lastSeenMessageId").attr("value");
+
+                let msgCountSpan = $("#room_" + chatRoomIdList[i]).find(".badge");
+                $.get("/Message/GetUnreadMessageCount", { chatRoomId: chatRoomIdList[i], lastSeenMessageId }, function (data) {
+                    if (data > 0) {
+                        msgCountSpan.removeClass("visually-hidden");
+                        msgCountSpan.text(data);    
+                    }
+                    else {
+                        msgCountSpan.addClass("visually-hidden");
+                    }
+                })
+            }
+    }, 5000);
+            });
+</script>
+
