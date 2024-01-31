@@ -19,8 +19,16 @@
                     Home</a>
 
                 <div class="d-flex align-content-end">
-                    <a href="/TenantUser/Message/Index" title="Messages">
-                        <big> <i class="fa fa-envelope mx-4"></i></big>
+                    <a class="" asp-area="TenantUser" asp-action="Index" asp-controller="Message" title="Messages">
+                        
+                        <big>
+                            <i class="position-relative fa fa-envelope mx-4">
+                                <span id="unreadMessageCount" class="p-1 mx-2 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning visually-hidden">+9</span>
+                        </i>
+                            
+                        
+                    </big>
+             
                     </a>
                     <a asp-area="" asp-action="Logout" asp-controller="Auth" title="Sign Out">
                         <big> <i class="fa fa-sign-out"></i></big>

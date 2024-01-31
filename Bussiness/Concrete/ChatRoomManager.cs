@@ -4,7 +4,6 @@ using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
 using Entity.DTOs;
-using Entity.enums;
 using Entity.ViewModels;
 
 namespace Bussiness.Concrete
@@ -22,7 +21,7 @@ namespace Bussiness.Concrete
 
         public DataResult<ChatRoom> Add(ChatRoomDTO chatRoomDTO)
         {
-            var cr = GetByTenantIdAndUserType(chatRoomDTO.TenantId, chatRoomDTO.User);
+            var cr = GetByTenantId(chatRoomDTO.TenantId);
             if (cr.Success)
             {
                 return new DataResult<ChatRoom>(true, "ChatRoom already exists", cr.Data);
@@ -59,9 +58,9 @@ namespace Bussiness.Concrete
             return new DataResult<ChatRoom>(true, "ChatRoom found", chatRoomFromDB);
         }
 
-        public DataResult<ChatRoom> GetByTenantIdAndUserType(int tenantId, UserType userType)
+        public DataResult<ChatRoom> GetByTenantId(int tenantId)
         {
-            var cr = chatRoomDal.Get(x => x.TenantId == tenantId && x.User == userType);
+            var cr = chatRoomDal.Get(x => x.TenantId == tenantId);
             if (cr is null)
             {
                 return new DataResult<ChatRoom>(false, "ChatRoom not found", null);
@@ -75,9 +74,9 @@ namespace Bussiness.Concrete
         }
 
 
-        public Result UpdateWithMessageDTO(MessageDTO messageDTO, UserType forWhichUser)
+        public Result UpdateWithMessageDTO(MessageDTO messageDTO)
         {
-            var chatRoomFromDb = chatRoomDal.Get(x => x.Id == messageDTO.ChatRoomId && x.User == forWhichUser);
+            var chatRoomFromDb = chatRoomDal.Get(x => x.Id == messageDTO.ChatRoomId);
             chatRoomFromDb.LastSeenMessageId = messageDTO.Id;
             chatRoomDal.Update(chatRoomFromDb);
             return new Result(true, "ChatRoom updated successfully");

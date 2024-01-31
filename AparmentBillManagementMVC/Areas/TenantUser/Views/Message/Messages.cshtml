@@ -1,34 +1,38 @@
 ﻿@model List<MessageDTO>
 
-
 @{
     DateTime date = new DateTime();
-    
+
 }
 @foreach (var item in Model)
 {
     if (item.MessageTime.Day != date.Day)
     {
-        <div class="d-flex justify-content-center messageDateDivider">
-
-            <span class="badge rounded-pill bg-light text-dark">@item.MessageTime.ToString("dd MMMM yyyy")</span>
-
-        </div>
+        if (item.MessageTime.Day != DateTime.Today.Day)
+        {
+            <div class="d-flex justify-content-center messageDateDivider">
+                <span class="badge rounded-pill bg-light text-dark">@item.MessageTime.ToString("dd MMMM yyyy")</span>
+            </div>
+        }
+        else
+        {
+            <hr />
+            <div class="d-flex justify-content-center pb-2 messageTodayDateDivider">
+                <span class="badge rounded-pill bg-light text-primary ">Today - @DateTime.Today.ToString("dd MMMM yyyy")</span>
+            </div>
+        }
 
     }
     date = item.MessageTime;
 
-    @await Html.PartialAsync("Message", item);
-
+    @await Html.PartialAsync("Message", item)
 }
 
-@if (Model?.Count >0 && Model.Last().MessageTime.Day != DateTime.Today.Day)
+@if (Model?.Count > 0 && Model.Last().MessageTime.Day != DateTime.Today.Day)
 {
     <hr />
     <div class="d-flex justify-content-center pb-2 messageTodayDateDivider">
-
         <span class="badge rounded-pill bg-light text-primary ">Today - @DateTime.Today.ToString("dd MMMM yyyy")</span>
-
+        <br />
     </div>
-
 }

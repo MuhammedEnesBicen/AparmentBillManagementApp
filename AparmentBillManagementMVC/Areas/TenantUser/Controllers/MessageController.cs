@@ -12,10 +12,11 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
     public class MessageController : Controller
     {
         private readonly IMessageService messageService;
-
-        public MessageController(IMessageService messageService)
+        private readonly IChatRoomService chatRoomService;
+        public MessageController(IMessageService messageService, IChatRoomService chatRoomService)
         {
             this.messageService = messageService;
+            this.chatRoomService = chatRoomService;
         }
 
         public IActionResult Index()
@@ -27,14 +28,28 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
                 TempData["message"] = "You must login first";
                 return RedirectToAction("Login", "Auth", new { area = "Identity" });
             }
-            ViewBag.tenantId = tenantId;
+
+            var newChatRoom = new ChatRoomDTO
+            {
+                TenantId = tenantId,
+                LastSeenMessageId = null,
+            };
+            var chatRoomResult = chatRoomService.Add(newChatRoom);
+            if (!chatRoomResult.Success)
+            {
+                TempData["message"] = chatRoomResult.Message;
+                return RedirectToAction("Index", "Home", new { area = "TenantUser" });
+            }
+            ViewBag.chatRoomId = chatRoomResult.Data.Id;
             return View();
         }
 
         [HttpPost]
-        public PartialViewResult Messages(int tenantId)
+        public PartialViewResult Messages(int chatRoomId)
         {
-            var result = messageService.GetAllMessagesOfConversation(tenantId);
+            var result = messageService.GetAllMessagesOfConversation(chatRoomId);
+            if (result.Success && result.Data.Count > 0)
+                SetTenantsLastReadedMessageIdViaCookie(result.Data.Last().Id);
             return PartialView(result.Data);
         }
 
@@ -46,16 +61,20 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
             var result = messageService.Add(messageDTO);
             if (!result.Success)
                 return PartialView(null);
+
+            SetTenantsLastReadedMessageIdViaCookie(result.Data.Id);
             return PartialView(result.Data);
         }
 
         [HttpGet]
-        public PartialViewResult Message(int tenantId, int messageId)
+        public PartialViewResult Message(int chatRoomId, int lastMessageId)
         {
-            var result = messageService.GetNewMessagesOfConversation(tenantId, messageId);
+            var result = messageService.GetNewMessagesByChatRoomIdAndMessageId(chatRoomId, lastMessageId);
             if (result.Data.Count == 0)
                 return PartialView(null);
 
+            SetTenantsLastReadedMessageIdViaCookie(result.Data.First().Id);
+            ViewBag.isNewMessage = true;
             return PartialView(result.Data.First());
         }
 
@@ -63,6 +82,37 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
         public Result Delete(int messageId)
         {
             var result = messageService.DeleteById(messageId);
+            return result;
+        }
+
+        public int? GetTenantsLastReadedMessageIdViaCookie()
+        {
+            int lastSeenMessageId;
+
+            bool result = Int32.TryParse(Request.Cookies["lastSeenMessageId"], out lastSeenMessageId);
+            if (!result)
+                return null;
+            return lastSeenMessageId;
+        }
+
+        public void SetTenantsLastReadedMessageIdViaCookie(int lastSeenMessageId)
+        {
+            Response.Cookies.Append("lastSeenMessageId", lastSeenMessageId.ToString());
+        }
+
+        [HttpGet]
+        public int GetUnreadMessagesCount()
+        {
+            int tenantId;
+            var getIdViaClaim = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out tenantId);
+            if (!getIdViaClaim)
+            {
+                return -1;
+            }
+            int chatRoomId = chatRoomService.GetByTenantId(tenantId).Data.Id;
+            int lastSeenMessageId = GetTenantsLastReadedMessageIdViaCookie() ?? 0;
+            var result = messageService.GetUnreadMessageCount(chatRoomId, lastSeenMessageId);
+
             return result;
         }
 

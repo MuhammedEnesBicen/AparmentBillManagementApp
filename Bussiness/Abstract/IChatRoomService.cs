@@ -1,7 +1,6 @@
 ﻿using Core.Utilities;
 using Entity;
 using Entity.DTOs;
-using Entity.enums;
 using Entity.ViewModels;
 
 namespace Bussiness.Abstract
@@ -10,11 +9,11 @@ namespace Bussiness.Abstract
     {
         DataResult<ChatRoom> Add(ChatRoomDTO chatRoomDTO);
         Result Delete(ChatRoom chatRoom);
-        Result UpdateWithMessageDTO(MessageDTO messageDTO, UserType forWhichUser);
+        Result UpdateWithMessageDTO(MessageDTO messageDTO);
 
         Result DeleteById(int id);
         DataResult<ChatRoom> GetById(int chatRoomId);
-        DataResult<ChatRoom> GetByTenantIdAndUserType(int tenantId, UserType userType);
+        DataResult<ChatRoom> GetByTenantId(int tenantId);
 
         DataResult<List<ChatRoomVM>> GetChatRoomVMs(int apartmentComplexID);
 

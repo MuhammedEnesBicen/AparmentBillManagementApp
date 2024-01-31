@@ -4,7 +4,6 @@ using Core.Utilities;
 using DataAccess.Abstarct;
 using Entity;
 using Entity.DTOs;
-using Entity.enums;
 
 namespace Bussiness.Concrete
 {
@@ -43,6 +42,12 @@ namespace Bussiness.Concrete
         {
             var result = messageDal.GetAllMessagesOfConversation(chatRoomId);
             return new DataResult<List<MessageDTO>>(true, "Messages listed successfully", result.Data);
+        }
+
+        public DataResult<List<MessageDTO>> GetNewMessagesByChatRoomIdAndMessageId(int chatRoomId, int messageId)
+        {
+            var result = messageDal.GetList(m => m.ChatRoomId == chatRoomId && m.Id > messageId);
+            return new DataResult<List<MessageDTO>>(true, "Messages listed successfully", mapper.Map<List<MessageDTO>>(result.ToList()));
         }
 
         public DataResult<List<MessageDTO>> GetNewMessagesOfConversation(int chatRoomId)

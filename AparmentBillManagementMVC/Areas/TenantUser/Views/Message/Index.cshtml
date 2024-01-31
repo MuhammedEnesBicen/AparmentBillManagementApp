@@ -1,5 +1,5 @@
 ﻿@{
-    int tenantId = ViewBag.tenantId;
+    int chatRoomId = ViewBag.chatRoomId;
 }
 
 
@@ -14,7 +14,7 @@
 
     <div class="input-group ">
         <textarea id="textarea" type="text" class="form-control" placeholder="Enter your message" aria-label="Enter your message" aria-describedby="sendMessage"></textarea>
-        <button class="btn " type="button" id="sendMessage" onclick="sendMessage(@tenantId)">
+        <button class="btn " type="button" id="sendMessage" onclick="sendMessage(@chatRoomId)">
             Send
             <i class="fa fa-send"></i>
         </button>
@@ -27,11 +27,11 @@
 
 
         $(document).ready(function () {
-            getMessages(@tenantId);
+            getMessages(@chatRoomId);
 
             window.setInterval(function () {
-                console.log("getMessages");
-                getNewMessages(@tenantId);
+                console.log("getNewMessages");
+                getNewMessages(@chatRoomId);
             }, 5000);
         });
 

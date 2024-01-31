@@ -32,12 +32,12 @@
     
 </div>
 <div class="col-sm-12 col-md-6">
-        <div class="d-flex justify-content-between align-items-center bg-light">
+        <div class="p-2 d-flex justify-content-between align-items-center bg-light">
             <h2>Bills List</h2>
             <div>
-                <button id="billPageDecrease" class="btn" onclick="changeBillPage(-1)" disabled> <i class="fa fa-arrow-left"></i></button>
+                <button id="billPageDecrease" class="btn" onclick="changeBillPage(-1,@Model.Tenant.Id)" disabled> <i class="fa fa-arrow-left"></i></button>
                 <span id="billPage">1</span>
-                <button id="billPageIncrease" class="btn" onclick="changeBillPage(1)"> <i class="fa fa-arrow-right"></i></button>
+                <button id="billPageIncrease" class="btn" onclick="changeBillPage(1,@Model.Tenant.Id)"> <i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
         <div class="" id="_BillsPartial"></div>
@@ -47,40 +47,16 @@
 
 
 @section Scripts{
+<script src="~/js/tenantHomePage.js"></script>
     <script>
         $(document).ready(function () {
-            $.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id , billPage:1}, function (data) {
+            $.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id, billPage: 1 }, function (data) {
                 $("#_BillsPartial").html(data);
             });
+
+            getUnreadMessageCount();
         });
 
-
-
-
-        function changeBillPage(value) {
-            var billPage = Number($("#billPage").text());
-            billPage += value;
-$.post("/TenantUser/Home/GetBills", { tenantId: @Model.Tenant.Id, billPage: billPage }, function (data) {
-                $("#_BillsPartial").html(data);
-                if($("#noBillAlert").length > 0)
-                {
-                    $("#billPageIncrease").attr("disabled", true);
-                }
-                else
-                {
-                    $("#billPageIncrease").attr("disabled", false);
-                }
-            });
-
-            $("#billPage").text(billPage);
-            if (billPage == 1) {
-                $("#billPageDecrease").attr("disabled", true);
-            }
-            else {
-                $("#billPageDecrease").attr("disabled", false);
-            }
-
-        }
 
     </script>
 }

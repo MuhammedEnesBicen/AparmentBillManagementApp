@@ -6,7 +6,6 @@ namespace Entity
     public class ChatRoom
     {
         public int Id { get; set; }
-        public UserType User { get; set; }
 
         [ForeignKey("Message")]
         public int? LastSeenMessageId { get; set; }

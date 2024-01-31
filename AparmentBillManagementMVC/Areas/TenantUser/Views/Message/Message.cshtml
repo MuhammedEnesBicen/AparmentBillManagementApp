@@ -1,15 +1,11 @@
 ﻿@model MessageDTO
 @using Entity.enums;
 
-
-
 @if (Model is not null)
 {
 
-
     string senderClass = (Model.Sender == UserType.tenant) ? "justify-content-end tenantMessage" : "managerMessage";
     string bgColor = (Model.Sender == UserType.tenant) ? "background-color:rgba(221,255,221,0.8);" : "";
-
 
     <div class=" @senderClass d-flex messageDiv ">
 
