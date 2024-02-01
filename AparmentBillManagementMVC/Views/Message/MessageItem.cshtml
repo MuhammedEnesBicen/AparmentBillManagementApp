@@ -19,7 +19,7 @@
     <div class=" @senderClass d-flex messageDiv ">
 
         <div class="message" style="@bgColor ">
-            <input name="@Model.Id" hidden />
+            <input class="messageId" value="@Model.Id" hidden />
             <div class="message-header d-flex justify-content-end text-info" style="padding-left:20px;">
                 <small>@Model.MessageTime.ToString("hh: mm tt")</small>
 
@@ -27,8 +27,7 @@
             <div class="message-body">
                 <p>@Model.Text</p>
             </div>
-
-            <div onclick="removeMessage(@Model.Id)" class="btn btn-danger my-2 visually-hidden d-flex align-self-stretch justify-content-center">
+            <div onclick="removeMessage(@Model.ChatRoomId,@Model.Id)" class="btn btn-danger my-2 visually-hidden d-flex align-self-stretch justify-content-center">
                 <i class="fa fa-trash">  Delete</i>
             </div>
         </div>

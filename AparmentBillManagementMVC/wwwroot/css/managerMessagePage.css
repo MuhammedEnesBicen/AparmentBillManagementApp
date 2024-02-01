@@ -29,10 +29,11 @@
 }
 
 @media (max-width:576px) {
-#chatsButton{display: block;}
+#chatsButton{display: block; margin-bottom:7px;}
 
 .sideNav{
-    max-height:80vh;
+    height:80vh;
     overflow-y: scroll;
+    margin-bottom:10px;
 }
 }

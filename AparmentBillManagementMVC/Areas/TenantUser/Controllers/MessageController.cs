@@ -109,9 +109,11 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
             {
                 return -1;
             }
-            int chatRoomId = chatRoomService.GetByTenantId(tenantId).Data.Id;
+            var chatRoom = chatRoomService.GetByTenantId(tenantId);
+            if (chatRoom.Data is null)
+                return 0;
             int lastSeenMessageId = GetTenantsLastReadedMessageIdViaCookie() ?? 0;
-            var result = messageService.GetUnreadMessageCount(chatRoomId, lastSeenMessageId);
+            var result = messageService.GetUnreadMessageCount(chatRoom.Data.Id, lastSeenMessageId);
 
             return result;
         }

@@ -22,8 +22,8 @@
         {
             string unreadMsgClass = (item.UnreadMessageCount > 0) ? "" : "visually-hidden";
             <div id="room_@item.ChatRoomId" class="chatRoomItem  card p-3 mb-2 bg-white" onclick="openChatRoom(@item.ChatRoomId)">
-                <input class="lastSeenMessageId" value="@item.LastSeenMessageId" hidden />
-                <input name="@item.ApartmentId" hidden />
+                <input class="lastSeenMessageId" value="@item?.LastSeenMessageId" hidden />
+                <input name="ApartmentId" value="@item.ApartmentId" hidden />
 
                 <h5>@item.TenantName @item.TenantLastName - <span class="text-info">@item.BlockName@item.FlatNumber</span></h5>
 

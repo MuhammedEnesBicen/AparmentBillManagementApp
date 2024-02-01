@@ -73,6 +73,10 @@ namespace Bussiness.Concrete
             return chatRoomDal.GetChatRoomVMs(apartmentComplexID);
         }
 
+        public Result UpdateLastSeenMessageIdWithNewMax(int chatRoomId, int messageId)
+        {
+            return chatRoomDal.UpdateLastSeenMessageIdWithNewMax(chatRoomId, messageId);
+        }
 
         public Result UpdateWithMessageDTO(MessageDTO messageDTO)
         {

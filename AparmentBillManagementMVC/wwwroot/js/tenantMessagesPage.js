@@ -11,11 +11,11 @@ textareaEle.addEventListener('input', () => {
 });
 
 
-function getMessages(tenantId) {
+function getMessages(chatRoomId) {
 
     $("#spinner").prop("hidden", false);
 
-    $.post("Messages", { tenantId: tenantId }, function (data) {
+    $.post("Message/Messages", { chatRoomId: chatRoomId }, function (data) {
         $("#spinner").prop("hidden", true);
         $("#messagesArea").html(data);
     }).fail(function () {
@@ -24,13 +24,13 @@ function getMessages(tenantId) {
     });
 }
 
-function sendMessage(tenantId) {
+function sendMessage(chatRoomId) {
     var message = $("#sendMessage").prev().val();
     if (message == "") {
         $.notify("Message Cant be empty!");
         return;
     }
-    $.post("Message", { tenantId: tenantId, text: message, sender: 0 }, function (data) {
+    $.post("Message/Message", { chatRoomId: chatRoomId, text: message, sender: 0 }, function (data) {
         if (data.includes("message")) {
             $("#messagesArea").append(data);
             $("#sendMessage").prev().val("");
@@ -43,14 +43,15 @@ function sendMessage(tenantId) {
     });
 }
 
-function getNewMessages(tenantId) {
+function getNewMessages(chatRoomId) {
     let messages = $("#messagesArea > div > div > input");
     if (messages.length == 0) { return; }
-    let messageId = messages.last().attr("name");
-    $.get("Message?tenantId=" + tenantId + "&messageId=" + messageId, function (data) {
+    let lastMessageId = messages.last().attr("name");
+    $.get("Message/Message?chatRoomId=" + chatRoomId + "&lastMessageId=" + lastMessageId, function (data) {
         if (data.includes("message")) {
+            $.notify("New Message!","success");
             $("#messagesArea").append(data);
-            //$(".scroller").scrollTop($(".scroller")[0].scrollHeight)
+            $(".scroller").scrollTop($(".scroller")[0].scrollHeight)
         }
 
     });
@@ -58,7 +59,7 @@ function getNewMessages(tenantId) {
 
 function removeMessage(messageId) {
     $.ajax({
-        url: "Delete?messageId=" + messageId,
+        url: "Message/Delete?messageId=" + messageId,
         type: 'DELETE',
         success: function (result) {
             var elementToRemove = $("#messagesArea > div > div > input[name='" + messageId + "']").parent().parent();
@@ -73,7 +74,7 @@ function removeMessage(messageId) {
             $.notify("Message removed!", { className: "success" });
         },
         error: function (result) {
-            $.notify("Error while deleting message!");
+            $.notify("An Error occured while deleting message!");
         }
     });
 }

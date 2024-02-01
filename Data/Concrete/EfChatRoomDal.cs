@@ -51,5 +51,25 @@ namespace DataAccess.Concrete
             }
         }
 
+        public Result UpdateLastSeenMessageIdWithNewMax(int chatRoomId, int messageId)
+        {
+            using var context = new AppDbContext();
+            var result = from cr in context.ChatRooms
+                         join m in context.Messages on cr.Id equals m.ChatRoomId into messages
+                         where cr.Id == chatRoomId
+                         select new
+                         {
+                             newId = (messages.Count() > 1) ? messages.Where(m => m.Id != messageId).Max(m => m.Id) : -1
+                         };
+
+            int? newLastSeenMessageId = result.First().newId != -1 ? result.First().newId : null;
+
+            var chatRoom = context.ChatRooms.Find(chatRoomId);
+            chatRoom.LastSeenMessageId = newLastSeenMessageId;
+            context.SaveChanges();
+
+
+            return new Result(true, "LastSeenMessageId updated successfully");
+        }
     }
 }

@@ -156,5 +156,26 @@ namespace AparmentBillManagementMVC.Controllers
 
             return RedirectToAction("Index", "Apartment");
         }
+
+        public async Task<IActionResult> TenantTestLogin()
+        {
+
+            var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, "1"),//tenantId
+                        new Claim(ClaimTypes.Email, "test@test.com"),
+                       new Claim(ClaimTypes.Role, "tenant"),
+                    };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties();
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                          new ClaimsPrincipal(claimsIdentity),
+                                          authProperties);
+
+            return RedirectToAction("Index", "Message", new { area = "TenantUser" });
+        }
     }
 }

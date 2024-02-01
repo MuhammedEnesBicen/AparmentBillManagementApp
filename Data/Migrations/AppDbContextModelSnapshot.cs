@@ -126,9 +126,6 @@ namespace DataAccess.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("int");
 
-                    b.Property<int>("User")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LastSeenMessageId")

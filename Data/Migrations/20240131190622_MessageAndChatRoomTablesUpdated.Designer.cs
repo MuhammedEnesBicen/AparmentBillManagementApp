@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240127125308_MessageAndChatRoomUpdated")]
-    partial class MessageAndChatRoomUpdated
+    [Migration("20240131190622_MessageAndChatRoomTablesUpdated")]
+    partial class MessageAndChatRoomTablesUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,9 +127,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TenantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("User")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

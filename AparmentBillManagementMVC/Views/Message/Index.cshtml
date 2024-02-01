@@ -1,6 +1,5 @@
 ﻿@{
     int chatRoomId = ViewBag.chatRoomId ?? -1;
-    Console.WriteLine("chatRoomId: " + chatRoomId);
 }
 <link rel="stylesheet" href="~/css/message.css" />
 <link rel="stylesheet" href="~/css/managerMessagePage.css"/>
@@ -11,13 +10,13 @@
     }
 </style>
 <div class="container">
-    <button class="btn btn-info text-white" id="chatsButton" onclick="toggleChats()">Chat Rooms <i class="fa fa-arrow-down"></i></button>
+    <button class="btn btn-info text-white" id="chatsButton" onclick="toggleChats()">Show / Hide Chat Rooms <i class="fa fa-arrow-down"></i></button>
     <div class="row">
         <div class="col-sm-4 d-none d-sm-block bg-light p-1 g-0 sideNav">
             @await Html.PartialAsync("ChatRoomList")
         </div>
 
-        <div class=" col-sm-8">
+        <div class=" col-sm-8 ">
 
             <div class=" messageSection bg-light bg-opacity-75">
 

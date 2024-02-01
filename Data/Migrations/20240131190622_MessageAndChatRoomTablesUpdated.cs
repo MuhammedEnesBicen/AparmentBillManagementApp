@@ -5,7 +5,7 @@
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class MessageAndChatRoomUpdated : Migration
+    public partial class MessageAndChatRoomTablesUpdated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,11 @@ namespace DataAccess.Migrations
                 table: "Messages",
                 newName: "ChatRoomId");
 
+            migrationBuilder.RenameColumn(
+                name: "User",
+                table: "ChatRooms",
+                newName: "TenantId");
+
             migrationBuilder.AlterColumn<int>(
                 name: "LastSeenMessageId",
                 table: "ChatRooms",
@@ -38,13 +43,6 @@ namespace DataAccess.Migrations
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
-
-            migrationBuilder.AddColumn<int>(
-                name: "TenantId",
-                table: "ChatRooms",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatRooms_LastSeenMessageId",
@@ -93,14 +91,15 @@ namespace DataAccess.Migrations
                 name: "IX_ChatRooms_TenantId",
                 table: "ChatRooms");
 
-            migrationBuilder.DropColumn(
-                name: "TenantId",
-                table: "ChatRooms");
-
             migrationBuilder.RenameColumn(
                 name: "ChatRoomId",
                 table: "Messages",
                 newName: "TenantId");
+
+            migrationBuilder.RenameColumn(
+                name: "TenantId",
+                table: "ChatRooms",
+                newName: "User");
 
             migrationBuilder.AlterColumn<int>(
                 name: "LastSeenMessageId",

@@ -16,11 +16,9 @@ function getMessages(chatRoomId) {
         $("#spinner").html("");
         $("#messagesArea").html(data);
 
-        // updating chat rooms last seen mesaage
-        let lastSeenMessageIdInput = "#room_" + chatRoomId + " > input.lastSeenMessageId";
-        $(lastSeenMessageIdInput).attr("value", $("#lastSeenMessageIdSpan").attr("value"));
     }).fail(function () {
         $("#spinner").html("");
+        $("#messagesArea").html("<div class=\" position-absolute top-50 start-50 translate-middle text-center\">While fetching messages an error occured<div>");
         $.notify("Error while getting messages!");
     });
 }
@@ -37,8 +35,14 @@ function sendMessage() {
         return;
     }
     $.post("MessageItem", { chatRoomId: chatRoomIdVal, text: message, sender: 1 }, function (data) {
+        $(".noMessage").addClass("visually-hidden");
         $("#messagesArea").append(data);
         if (data.includes("message")) {
+            // updating chat rooms last seen mesaage
+            let lastMessage = $("#messagesArea > div:last-child");
+            let lastSeenMessageIdInput = "#room_" + chatRoomIdVal + " > input.lastSeenMessageId";
+            $(lastSeenMessageIdInput).attr("value", lastMessage.find("input.messageId").attr("value"));
+
             $("#sendMessage").prev().val("");
             $(".scroller").scrollTop($(".scroller")[0].scrollHeight)
         }
@@ -50,15 +54,14 @@ function getNewMessages(chatRoomId) {
         if (data.includes("message")) {
             $("#messagesArea").append(data);
             //$(".scroller").scrollTop($(".scroller")[0].scrollHeight)
-            let chatRoomIdVal = parseInt($("#chatRoomIdSpan").attr("value"));
-            console.log("after get new messages chatRoomIdVal: " + chatRoomIdVal);
+
         }
     });
 }
 
-function removeMessage(messageId) {
+function removeMessage(chatRoomId,messageId) {
     $.ajax({
-        url: "Delete?messageId=" + messageId,
+        url: "Delete?chatRoomId="+chatRoomId+"&messageId=" + messageId,
         type: 'DELETE',
         success: function (result) {
             var elementToRemove = $("#messagesArea > div > div > input[name='" + messageId + "']").parent().parent();
@@ -95,9 +98,7 @@ function filterTenants() {
 }
 
 function openChatRoom(chatRoomId) {
-
     let chatsButton = $("#chatsButton");
-    // write code to hide sidenav if chats button is visible
 
     if (chatsButton.is(":visible")) {
         $(".sideNav").toggleClass("d-none");

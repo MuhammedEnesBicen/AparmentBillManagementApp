@@ -13,8 +13,10 @@ html {
 }
 
 header {
-    opacity: 0.9;
-    /*background-color: black;*/
+    /*opacity: 0.95;*/
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
 

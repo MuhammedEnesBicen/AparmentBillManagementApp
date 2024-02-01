@@ -1,12 +1,7 @@
 ﻿@model List<ApartmentVM>
 
-
-@if (TempData["message"] is not null)
-{
-    <div class="alert alert-info">@TempData["message"]</div>
-}
-
 @{
+    string? message = TempData["message"] as string ?? null;
     List<string> blocks = Model.DistinctBy(a => a.Apartment.BlockName).Select(a => a.Apartment.BlockName).Order().ToList();
 }
 
@@ -40,6 +35,13 @@
 
 @section Scripts{
 <script>
+    $(document).ready(function () {
+        let message = "@message";
+        if (message != null && message != "") {
+            Swal.fire("Info", message);
+        }
+    });
+
 
     function filterApartments() {
         let blockName = $("#blockRadioBtns input[type='radio']:checked").attr("id");
@@ -47,7 +49,6 @@
         let debtCheck = $("#debtCheck").prop("checked");
         $.post("/Apartment/ApartmentsList?blockName=" + blockName + "&nameFilter=" + filter + "&onlyHasDebt=" + debtCheck).then(
             function (result) {
-                console.log(result);
                 $("#apartmentList").html(result);
             }
         );
@@ -59,7 +60,6 @@
             $("#debtCheckIcon").addClass("fa-close");
         }
     }
-
 
 </script>
 }

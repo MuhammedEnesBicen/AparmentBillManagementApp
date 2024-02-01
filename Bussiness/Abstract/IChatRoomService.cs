@@ -10,6 +10,7 @@ namespace Bussiness.Abstract
         DataResult<ChatRoom> Add(ChatRoomDTO chatRoomDTO);
         Result Delete(ChatRoom chatRoom);
         Result UpdateWithMessageDTO(MessageDTO messageDTO);
+        Result UpdateLastSeenMessageIdWithNewMax(int chatRoomId, int messageId);
 
         Result DeleteById(int id);
         DataResult<ChatRoom> GetById(int chatRoomId);

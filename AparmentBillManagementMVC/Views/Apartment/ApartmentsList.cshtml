@@ -61,14 +61,14 @@
                     <div style="margin-right:40px; bottom:20px">
                         @if(item.TenantId != -1)
                         {
-                            <a class="btn btn-danger mb-3 w-100" asp-controller="Message" asp-action="Index" asp-route-tenantId="@item.TenantId">
-                            <i class="fa fa-trash"></i> Send Message
+                            <a class="btn btn-success mb-3 w-100" asp-controller="Message" asp-action="Index" asp-route-tenantId="@item.TenantId">
+                            <i class="fa fa-envelope"></i> Send Message
                             </a>
                         }
                         else
                         {
-                            <a class="btn btn-danger mb-3 w-100 disabled" asp-controller="Message" asp-action="Index" asp-route-tenantId="@item.TenantId">
-                                <i class="fa fa-trash"></i> Send Message
+                            <a class="btn btn-success mb-3 w-100 disabled" asp-controller="Message" asp-action="Index" asp-route-tenantId="@item.TenantId">
+                                <i class="fa fa-envelope"></i> Send Message
                             </a>
                         }
 

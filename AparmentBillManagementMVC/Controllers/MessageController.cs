@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
 using Core.Utilities;
+using Entity;
 using Entity.DTOs;
-using Entity.enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -33,22 +33,21 @@ namespace AparmentBillManagementMVC.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            // TODO: getChatRooms need user type to
             if (tenantId != null)
             {
                 var chatRoomDTO = new ChatRoomDTO
                 {
                     TenantId = (int)tenantId,
                     LastSeenMessageId = null,
-                    User = UserType.manager
                 };
-                chatRoomService.Add(chatRoomDTO);
+                var chatRoom = chatRoomService.Add(chatRoomDTO);
+
+                ViewBag.chatRoomId = chatRoom.Data.Id;
             }
+
 
             var result = chatRoomService.GetChatRoomVMs(apartmentComplexId).Data.Where(c => c.LastSeenMessageId != null || c.TenantId == tenantId).ToList();
 
-            var chatRoom = result.Find(c => c.TenantId == tenantId);
-            ViewBag.chatRoomId = chatRoom?.ChatRoomId;
             return View(result);
         }
 
@@ -57,7 +56,7 @@ namespace AparmentBillManagementMVC.Controllers
         {
             var result = messageService.GetAllMessagesOfConversation(chatRoomId);
             if (result.Data.Count != 0)
-                chatRoomService.UpdateWithMessageDTO(result.Data.Last(), forWhichUser: UserType.manager);
+                chatRoomService.UpdateWithMessageDTO(result.Data.Last());
             ViewBag.chatRoomId = chatRoomId;
             return PartialView(result.Data);
         }
@@ -74,7 +73,7 @@ namespace AparmentBillManagementMVC.Controllers
             {
                 return PartialView(null);
             }
-            chatRoomService.UpdateWithMessageDTO(messageDTOFromDBResult.Data, forWhichUser: UserType.manager);
+            chatRoomService.UpdateWithMessageDTO(messageDTOFromDBResult.Data);
 
             return PartialView(messageDTO);
         }
@@ -85,16 +84,16 @@ namespace AparmentBillManagementMVC.Controllers
             var result = messageService.GetNewMessagesOfConversation(chatRoomId);
             if (result.Data.Count == 0)
                 return PartialView(null);
-
-            chatRoomService.UpdateWithMessageDTO(result.Data.First(), forWhichUser: UserType.manager);
+            chatRoomService.UpdateWithMessageDTO(result.Data.First());
             ViewBag.isMessageNew = true;
             return PartialView(result.Data.First());
         }
 
         [HttpDelete]
-        public Result Delete(int messageId)
+        public Result Delete(int chatRoomId, int messageId)
         {
-            // TODO: if message that will be deleted is last message of chatroom, update chatroom
+            var updateChatRoom = chatRoomService.UpdateLastSeenMessageIdWithNewMax(chatRoomId, messageId);
+
             var result = messageService.DeleteById(messageId);
             return result;
         }
