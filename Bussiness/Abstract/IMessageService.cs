@@ -12,5 +12,6 @@ namespace Bussiness.Abstract
         public DataResult<List<MessageDTO>> GetNewMessagesByChatRoomIdAndMessageId(int chatRoomId, int messageId);
 
         int GetUnreadMessageCount(int chatRoomId, int lastSeenMessageId);
+        int GetUnreadMessageCountByApartmentComplexId(int apartmentComplexId);
     }
 }

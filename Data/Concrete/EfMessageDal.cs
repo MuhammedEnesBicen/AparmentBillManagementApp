@@ -1,6 +1,6 @@
 ﻿using Core.DataAccess.EntityFramework;
 using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +34,7 @@ namespace DataAccess.Concrete
             {
                 var a = from m in context.Messages
                         join c in context.ChatRooms on m.ChatRoomId equals c.Id
-                        where m.Id > c.LastSeenMessageId && m.ChatRoomId == chatRoomId
+                        where m.Id > (c.LastSeenMessageId ?? 0) && m.ChatRoomId == chatRoomId
                         select new MessageDTO
                         {
                             Id = m.Id,
@@ -52,6 +52,23 @@ namespace DataAccess.Concrete
             using var context = new AppDbContext();
             var result = context.Messages.Where(m => m.ChatRoomId == chatRoomId && m.Id > lastSeenMessageId).Count();
             return result;
+        }
+
+        public int GetUnreadMessageCountByApartmentComplexId(int apartmentComplexId)
+        {
+            using var context = new AppDbContext();
+            var result = (from ac in context.ApartmentComplexes
+                          join a in context.Apartments on ac.Id equals a.ApartmentComplexId
+                          join t in context.Tenants on a.Id equals t.ApartmentId
+                          join c in context.ChatRooms on t.Id equals c.TenantId
+                          join m in context.Messages on c.Id equals m.ChatRoomId
+                          where ac.Id == apartmentComplexId && m.Id > (c.LastSeenMessageId ?? 0)
+                          select new
+                          {
+                              totalSum = 1
+                          }).ToList();
+
+            return result.Sum(x => x.totalSum);
         }
 
         DataResult<Message> IMessageDal.Add(Message message)

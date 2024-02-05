@@ -26,14 +26,16 @@ function getMessages(chatRoomId) {
 
 function sendMessage(chatRoomId) {
     var message = $("#sendMessage").prev().val();
-    if (message == "") {
+    if (!message.replace(/\s/g, '').length) {
         $.notify("Message Cant be empty!");
         return;
     }
     $.post("Message/Message", { chatRoomId: chatRoomId, text: message, sender: 0 }, function (data) {
+        $(".noMessage").addClass("visually-hidden");
         if (data.includes("message")) {
             $("#messagesArea").append(data);
             $("#sendMessage").prev().val("");
+            $("#sendMessage").prev().css('height', 'auto');
             $(".scroller").scrollTop($(".scroller")[0].scrollHeight)
         }
         else {
@@ -49,17 +51,18 @@ function getNewMessages(chatRoomId) {
     let lastMessageId = messages.last().attr("name");
     $.get("Message/Message?chatRoomId=" + chatRoomId + "&lastMessageId=" + lastMessageId, function (data) {
         if (data.includes("message")) {
-            $.notify("New Message!","success");
+            $.notify("New Message!", { position: "right bottom", className:"success" });
             $("#messagesArea").append(data);
             $(".scroller").scrollTop($(".scroller")[0].scrollHeight)
+            $(".noMessage").addClass("visually-hidden");
         }
 
     });
 }
 
-function removeMessage(messageId) {
+function removeMessage(chatRoomId,messageId) {
     $.ajax({
-        url: "Message/Delete?messageId=" + messageId,
+        url: "Message/Delete?chatRoomId="+chatRoomId+"&messageId=" + messageId,
         type: 'DELETE',
         success: function (result) {
             var elementToRemove = $("#messagesArea > div > div > input[name='" + messageId + "']").parent().parent();

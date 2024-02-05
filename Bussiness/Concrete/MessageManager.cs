@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
 using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.DTOs;
 
@@ -59,6 +59,11 @@ namespace Bussiness.Concrete
         public int GetUnreadMessageCount(int chatRoomId, int lastSeenMessageId)
         {
             return messageDal.GetUnreadMessageCount(chatRoomId, lastSeenMessageId);
+        }
+
+        public int GetUnreadMessageCountByApartmentComplexId(int apartmentComplexId)
+        {
+            return messageDal.GetUnreadMessageCountByApartmentComplexId(apartmentComplexId);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Core.DataAccess.EntityFramework;
 using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.ViewModels;
 
@@ -45,7 +45,7 @@ namespace DataAccess.Concrete
                         LastChatTime = message.MessageTime,
                         UnreadMessageCount = context.Messages.Count(m => m.ChatRoomId == cr.Id && m.Id > cr.LastSeenMessageId)
 
-                    }).Distinct().OrderByDescending(c => c.LastChatTime).OrderByDescending(c => c.UnreadMessageCount);
+                    }).Distinct().OrderByDescending(c => c.LastChatTime).ThenByDescending(c => c.UnreadMessageCount);
 
                 return new DataResult<List<ChatRoomVM>>(true, "Chat rooms listed successfully", result.ToList());
             }

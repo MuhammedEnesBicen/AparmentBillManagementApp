@@ -6,10 +6,6 @@
 }
 
 <h2 class="d-flex justify-content-center  mb-4">Tenants List</h2>
-@if (Model.Count < 1)
-{
-    <p class="alert-danger"> There is no tenant</p>
-}
 
 <div class="d-flex flex-wrap justify-content-between mb-2 gap-3">
     <div id="blockRadioBtns" class="btn-group  " role="group" aria-label="Basic radio toggle button group">
@@ -37,7 +33,7 @@
 
 </div>
 
-<div style="position:absolute; bottom:5px;right:5px; color:white;" onclick="showHowToAddTenant()"><a>How to Add Tenant?</a></div>
+<div style="position:absolute; bottom:5px;right:5px; color:white;" onclick="showHowToAddTenant()"><button style="border:none; background-color:transparent; color:white;">How to Add Tenant?</button></div>
 
 @section Scripts{
     <script>

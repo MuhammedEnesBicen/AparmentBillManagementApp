@@ -2,7 +2,7 @@
 using Core.Utilities;
 using Entity;
 
-namespace DataAccess.Abstarct
+namespace DataAccess.Abstract
 {
     public interface IManagerDal : IEntityRepository<Manager>
     {

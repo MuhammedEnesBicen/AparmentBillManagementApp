@@ -1,5 +1,5 @@
 ﻿using Core.DataAccess.EntityFramework;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -8,7 +8,7 @@ namespace DataAccess.Concrete
 {
     public class EfBillDal : EfEntityRepositoryBase<Bill, AppDbContext>, IBillDal
     {
-        public List<Bill> GetListWithRelatedData(int page, Expression<Func<Bill, bool>> filter = null)
+        public List<Bill> GetListWithRelatedData(int page, Expression<Func<Bill, bool>>? filter = null)
         {
             using (var context = new AppDbContext())
             {

@@ -3,7 +3,7 @@ using Core.Utilities;
 using Entity;
 using Entity.ViewModels;
 
-namespace DataAccess.Abstarct
+namespace DataAccess.Abstract
 {
     public interface IChatRoomDal : IEntityRepository<ChatRoom>
     {

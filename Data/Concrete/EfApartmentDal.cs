@@ -1,5 +1,5 @@
 ﻿using Core.DataAccess.EntityFramework;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.ViewModels;
 using Microsoft.IdentityModel.Tokens;

@@ -6,13 +6,14 @@
 }
 
 <form asp-controller="Bill" method="post">
-    <h5>New Bill Form</h5>
+    <h5>Update Bill Form</h5>
     <input asp-for="ApartmentId" hidden/>
     <input asp-for="Id" hidden />
+
     <form-group>
         <div>
             <label asp-for="Explanation"></label>
-            <input asp-for="Explanation" required />
+            <textarea asp-for="Explanation" required></textarea>
         </div>
         <span asp-validation-for="Explanation" class="text-danger"></span>
     </form-group>

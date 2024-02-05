@@ -33,17 +33,17 @@
 
                     </ul>
                     <div class="nav-item" style="margin-right:20px;">
-                        <a class="btn btn-outline-primary  border-0 px-0" asp-area="" asp-action="Index" asp-controller="Message" asp-route-tenantId="null" class=""><i class="fa fa-envelope"></i> Messages </a>
+                        <a class="btn btn-outline-primary px-1 border-0 px-0" asp-area="" asp-action="Index" asp-controller="Message" asp-route-tenantId="null" class="">
+                            <i class="position-relative fa fa-envelope" style="margin-right:7px;">
+                                <span id="unreadMessagesCount" class="p-1 mx-1 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning visually-hidden">+9</span>
+                        </i> Messages </a>
                     </div>
                     <div class="nav-item">
 
-                        <a class="btn btn-outline-primary border-0 px-0" asp-action="Logout" asp-controller="Auth">
+                        <a class="btn btn-outline-primary border-0 px-1" asp-action="Logout" asp-controller="Auth">
                         <i class="fa fa-sign-out"></i>
                         </a>
                     </div>
-@*                     <div class="d-flex align-content-end justify-content-between">
-    
-                    </div> *@
                 </div>
 
               
@@ -62,6 +62,34 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/sweetalert2-11.10.1/dist/sweetalert2.all.min.js"></script>
     <script src="~/lib/notify.min.js"></script>
+
+    <script>
+        function GetTotalUnreadMessageCount() {
+            $.get("/Auth/IsAuthenticated", function (data) {
+                if (data == false) {
+                    console.log("Not authenticated");
+                    return;
+                }
+                $.get("/Message/GetTotalUnreadMessageCount", function (data) {
+                    console.log("GetTotalUnreadMessageCount: " + data);
+                    if (data > 0) {
+                        $("#unreadMessagesCount").text(data);
+                        $("#unreadMessagesCount").removeClass("visually-hidden");
+                    }
+                    else {
+                        $("#unreadMessagesCount").addClass("visually-hidden");
+                    }
+
+                });
+            });
+
+
+        }
+$(document).ready(function () {
+GetTotalUnreadMessageCount();
+    setInterval(GetTotalUnreadMessageCount, 8000);
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

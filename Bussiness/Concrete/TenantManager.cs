@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
 using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.DTOs;
 using Entity.ViewModels;
@@ -23,7 +23,7 @@ namespace Bussiness.Concrete
         {
             Tenant tenant = mapper.Map<Tenant>(tenantDTO);
             tenantDal.Add(tenant);
-            return new Result(true,"Tenant Added Successfully");
+            return new Result(true, "Tenant Added Successfully");
         }
 
         public Result Delete(Tenant tenant)
@@ -42,7 +42,7 @@ namespace Bussiness.Concrete
 
         public DataResult<TenantDTO> GetAsDTOById(int id)
         {
-           var tenantResult = GetById(id);
+            var tenantResult = GetById(id);
             if (tenantResult.Success == false)
                 return new DataResult<TenantDTO>(false, "There is no Tenant with this id", null);
             var tenantDTO = mapper.Map<TenantDTO>(tenantResult.Data);
@@ -51,7 +51,7 @@ namespace Bussiness.Concrete
 
         public DataResult<Tenant> GetById(int id)
         {
-            var tenant = tenantDal.Get(t=>t.Id == id);
+            var tenant = tenantDal.Get(t => t.Id == id);
             if (tenant != null)
                 return new DataResult<Tenant>(true, "Tenant successfully retrieved", tenant);
             return new DataResult<Tenant>(false, "Tenant doesnt found", tenant);
@@ -77,12 +77,13 @@ namespace Bussiness.Concrete
             var tenant = tenantDal.GetTenantVMById(id);
             if (tenant != null)
                 return new DataResult<TenantVM>(true, "Tenant successfully retrieved", tenant);
-            else return new DataResult<TenantVM>(false, "Tenant doesnt found", tenant);
+            else
+                return new DataResult<TenantVM>(false, "Tenant doesnt found", tenant);
         }
 
         public DataResult<List<TenantVM>> GetTenantVMs(int apartmentComplexId, string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
-            var tenantVMs = tenantDal.GetTenantVMs(apartmentComplexId,blockName, nameFilter, onlyHasDebt);
+            var tenantVMs = tenantDal.GetTenantVMs(apartmentComplexId, blockName, nameFilter, onlyHasDebt);
             return new DataResult<List<TenantVM>>(true, "Tenants successfully listed", tenantVMs);
 
         }
@@ -103,7 +104,7 @@ namespace Bussiness.Concrete
             if (tenantFromDb.Success == false)
                 return new Result(false, "Tenant doesnt found");
 
-            mapper.Map<TenantDTO,Tenant>(tenantDTO, tenantFromDb.Data);
+            mapper.Map<TenantDTO, Tenant>(tenantDTO, tenantFromDb.Data);
             tenantDal.Update(tenantFromDb.Data);
             return new Result(true, "Tenant updated successfully");
 

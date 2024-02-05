@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
 using Core.Utilities;
-using Entity;
 using Entity.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +45,13 @@ namespace AparmentBillManagementMVC.Controllers
             }
 
 
-            var result = chatRoomService.GetChatRoomVMs(apartmentComplexId).Data.Where(c => c.LastSeenMessageId != null || c.TenantId == tenantId).ToList();
+            var result = chatRoomService.GetChatRoomVMs(apartmentComplexId).Data;
+            if (tenantId != null)
+            {
+                var cr = result.Find(x => x.TenantId == tenantId);
+                result.Remove(cr);
+                result.Insert(0, cr);
+            }
 
             return View(result);
         }
@@ -73,9 +78,9 @@ namespace AparmentBillManagementMVC.Controllers
             {
                 return PartialView(null);
             }
-            chatRoomService.UpdateWithMessageDTO(messageDTOFromDBResult.Data);
+            var result = chatRoomService.UpdateWithMessageDTO(messageDTOFromDBResult.Data);
 
-            return PartialView(messageDTO);
+            return PartialView(messageDTOFromDBResult.Data);
         }
 
         [HttpGet]
@@ -103,6 +108,19 @@ namespace AparmentBillManagementMVC.Controllers
         {
 
             var result = messageService.GetUnreadMessageCount(chatRoomId, lastSeenMessageId);
+            return result;
+        }
+
+        [HttpGet]
+        public int GetTotalUnreadMessageCount()
+        {
+            int apartmentComplexId = 0;
+            bool parsing = int.TryParse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value, out apartmentComplexId);
+            if (parsing is false)
+            {
+                return 0;
+            }
+            var result = messageService.GetUnreadMessageCountByApartmentComplexId(apartmentComplexId);
             return result;
         }
 

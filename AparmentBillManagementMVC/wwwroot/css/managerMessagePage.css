@@ -2,7 +2,14 @@
 
 .chatRoomArea {
     overflow: auto;
+    height: 80vh;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
+
 
 .messageSection {
     position: relative;

@@ -19,7 +19,7 @@
     <div class=" @senderClass d-flex messageDiv ">
 
         <div class="message" style="@bgColor ">
-            <input class="messageId" value="@Model.Id" hidden />
+            <input class="messageId" name="@Model.Id" hidden />
             <div class="message-header d-flex justify-content-end text-info" style="padding-left:20px;">
                 <small>@Model.MessageTime.ToString("hh: mm tt")</small>
 

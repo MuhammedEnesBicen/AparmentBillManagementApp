@@ -2,7 +2,6 @@
 using Entity;
 using Entity.DTOs;
 using Entity.enums;
-using Entity.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -176,6 +175,11 @@ namespace AparmentBillManagementMVC.Controllers
                                           authProperties);
 
             return RedirectToAction("Index", "Message", new { area = "TenantUser" });
+        }
+
+        public bool IsAuthenticated()
+        {
+            return User.Identity.IsAuthenticated;
         }
     }
 }

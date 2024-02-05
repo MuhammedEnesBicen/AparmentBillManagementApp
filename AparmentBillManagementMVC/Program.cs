@@ -1,7 +1,7 @@
 using Bussiness.Abstract;
 using Bussiness.Concrete;
 using DataAccess;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using DataAccess.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;

@@ -9,8 +9,8 @@
             <th>Apartment</th>
 
             <th>Explanation</th>
-            <th>BillDate</th>
-            <th>BillCost</th>
+            <th>Date</th>
+            <th>Cost</th>
             <th>Is Payed</th>
             <th>Actions</th>
         </tr>
@@ -23,7 +23,7 @@
         <tr class="@style">
             <td>@item.Apartment?.BlockName - @item.Apartment?.Number</td>
             <td>@item.Explanation</td>
-            <td>@item.BillDate.ToString()</td>
+            <td>@item.BillDate.ToString("d")</td>
             <td>@item.BillCost</td>
             <td>@item.IsPayed</td>
             <td>

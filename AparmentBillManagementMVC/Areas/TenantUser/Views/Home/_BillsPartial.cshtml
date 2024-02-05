@@ -3,12 +3,12 @@
     @if(Model is not null){
 
 
-
+<div class="table-responsive">
 <table class="table  table-striped">
     <tr class="bg-light">
         <th>Explanation</th>
-        <th>BillDate</th>
-        <th>BillCost</th>
+        <th>Date</th>
+        <th>Cost</th>
         <th>Is Payed</th>
         @* <th>Actions</th> *@
     </tr>
@@ -42,7 +42,7 @@
     }
 
 </table>
-
+</div>
     }
 
 @if(Model is null || Model.Count == 0)

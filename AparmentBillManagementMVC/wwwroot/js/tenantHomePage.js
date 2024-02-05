@@ -12,7 +12,7 @@ function getUnreadMessageCount() {
             $("#unreadMessageCount").text(data);
             $("#unreadMessageCount").removeClass("visually-hidden");
             if (data != currentCount) {
-                $.notify("New Message", "success", { position: "bottom" });
+                $.notify("New Message", { position: "bottom right", className: "success" });
             }
 
         }
@@ -29,7 +29,7 @@ function changeBillPage(value,tenantId) {
     billPage += value;
     $.post("/TenantUser/Home/GetBills", { tenantId: tenantId, billPage: billPage }, function (data) {
         $("#_BillsPartial").html(data);
-        if ($("#noBillAlert").length > 0) {
+        if ($("#noBillAlert").length > 0 && billPage != 1) {
             $("#billPageIncrease").attr("disabled", true);
         }
         else {

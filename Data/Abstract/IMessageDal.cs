@@ -3,7 +3,7 @@ using Core.Utilities;
 using Entity;
 using Entity.DTOs;
 
-namespace DataAccess.Abstarct
+namespace DataAccess.Abstract
 {
     public interface IMessageDal : IEntityRepository<Message>
     {
@@ -12,5 +12,6 @@ namespace DataAccess.Abstarct
         public DataResult<List<MessageDTO>> GetNewMessagesOfConversation(int chatRoomId);
 
         int GetUnreadMessageCount(int chatRoomId, int lastSeenMessageId);
+        int GetUnreadMessageCountByApartmentComplexId(int apartmentComplexId);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
 using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.DTOs;
 using Entity.ViewModels;
@@ -22,13 +22,13 @@ namespace Bussiness.Concrete
         {
             Apartment apartment = mapper.Map<Apartment>(apartmentDTO);
             apartmentDal.Add(apartment);
-            return new Result(true,"Successfully Added");
+            return new Result(true, "Successfully Added");
         }
 
         public Result Delete(Apartment apartment)
         {
             apartmentDal.Delete(apartment);
-            return new Result(true,"Apartment deleted succesfully");
+            return new Result(true, "Apartment deleted succesfully");
         }
 
         public Result DeleteById(int id)
@@ -42,9 +42,9 @@ namespace Bussiness.Concrete
             return new Result(false, result.Message);
         }
 
-        public DataResult<List<ApartmentVM>> GetApartmentVMsByComplexId(int apartmentComplexId,string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
+        public DataResult<List<ApartmentVM>> GetApartmentVMsByComplexId(int apartmentComplexId, string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
-            var result = apartmentDal.GetApartmentVMsByComplexId(apartmentComplexId,blockName, nameFilter,onlyHasDebt);
+            var result = apartmentDal.GetApartmentVMsByComplexId(apartmentComplexId, blockName, nameFilter, onlyHasDebt);
             return new DataResult<List<ApartmentVM>>(true, "Succesfully Listed", result);
         }
 
@@ -52,7 +52,7 @@ namespace Bussiness.Concrete
         {
             var result = apartmentDal.Get(a => a.Id == apartmentId);
             if (result is not null)
-            return new DataResult<Apartment>(true, "Succesfully Listed", result);
+                return new DataResult<Apartment>(true, "Succesfully Listed", result);
             return new DataResult<Apartment>(false, "Item not found ", result);
 
         }

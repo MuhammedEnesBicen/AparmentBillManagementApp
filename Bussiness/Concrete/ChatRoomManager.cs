@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Bussiness.Abstract;
 using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.DTOs;
 using Entity.ViewModels;

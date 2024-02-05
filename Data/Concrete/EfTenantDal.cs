@@ -1,6 +1,5 @@
 ﻿using Core.DataAccess.EntityFramework;
-using Core.Utilities;
-using DataAccess.Abstarct;
+using DataAccess.Abstract;
 using Entity;
 using Entity.ViewModels;
 
@@ -30,7 +29,7 @@ namespace DataAccess.Concrete
             }
         }
 
-        public List<TenantVM> GetTenantVMs(int apartmentComplexId, string? blockName = null, string? nameFilter =null,  bool onlyHasDebt = false)
+        public List<TenantVM> GetTenantVMs(int apartmentComplexId, string? blockName = null, string? nameFilter = null, bool onlyHasDebt = false)
         {
             using (var context = new AppDbContext())
             {
@@ -45,14 +44,14 @@ namespace DataAccess.Concrete
                                  Tenant = tenant,
                                  BlockName = apartment.BlockName,
                                  FlatNumber = apartment.Number,
-                                 DebtAmount = bills.Where(b=> b.IsPayed==false).Sum(b => b.BillCost)
+                                 DebtAmount = bills.Where(b => b.IsPayed == false).Sum(b => b.BillCost)
                              };
                 if (blockName != null)
                     result = result.Where(t => t.BlockName == blockName);
-                if(onlyHasDebt)
+                if (onlyHasDebt)
                     result = result.Where(t => t.DebtAmount > 0);
-                if (String.IsNullOrEmpty(nameFilter)==false)
-                    result = result.Where(t => (t.Tenant.Name+" "+t.Tenant.LastName).ToLower().Contains(nameFilter.ToLower()));
+                if (String.IsNullOrEmpty(nameFilter) == false)
+                    result = result.Where(t => (t.Tenant.Name + " " + t.Tenant.LastName).ToLower().Contains(nameFilter.ToLower()));
 
                 return result.ToList();
             }

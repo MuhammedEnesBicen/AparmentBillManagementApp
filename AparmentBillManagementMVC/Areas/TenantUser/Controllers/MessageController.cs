@@ -79,8 +79,11 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
         }
 
         [HttpDelete]
-        public Result Delete(int messageId)
+        public Result Delete(int chatRoomId, int messageId)
         {
+            var updateChatRoom = chatRoomService.UpdateLastSeenMessageIdWithNewMax(chatRoomId, messageId);
+
+
             var result = messageService.DeleteById(messageId);
             return result;
         }
@@ -97,7 +100,11 @@ namespace AparmentBillManagementMVC.Areas.TenantUser.Controllers
 
         public void SetTenantsLastReadedMessageIdViaCookie(int lastSeenMessageId)
         {
-            Response.Cookies.Append("lastSeenMessageId", lastSeenMessageId.ToString());
+            // set a expire date for cookie
+            CookieOptions cookieOptions = new();
+            cookieOptions.Expires = DateTime.Now.AddYears(1);
+            Response.Cookies.Append("lastSeenMessageId", lastSeenMessageId.ToString(), cookieOptions);
+
         }
 
         [HttpGet]

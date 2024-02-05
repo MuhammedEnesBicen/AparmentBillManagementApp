@@ -5,17 +5,24 @@
         @TempData["message"]
     </div>
 }
+<style>
+    a{
+        text-decoration: none;
+        color: #000;
+    
+    }
+</style>
 
 <div class="row">
     <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-around mottoPhrase">
         <h1>ABMS Apartment Bill Management Web App</h1>
-            <h3>"Streamline Your Space, Simplify Your Bills: Your Apartment Finances, Managed with Ease!"</h3>
+            <h3 style="margin:20px 0px;">"Streamline Your Space, Simplify Your Bills: Your Apartment Finances, Managed with Ease!"</h3>
 </div>
     <div class="col-sm-12 col-md-6 ">
 
         <form method="Post" asp-controller="Auth">
 
-            <h5>Login</h5>
+            <h5><a href="/Auth/Index">Login</a> / <a href="/Auth/Register">Register</a></h5>
             <form-group>
                 <div>
                     <label asp-for="Mail"></label>

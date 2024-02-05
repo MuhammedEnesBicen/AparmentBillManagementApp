@@ -1,10 +1,6 @@
 ﻿using Bussiness.Abstract;
 using Core.Utilities;
-using Entity;
 using Entity.DTOs;
-using Entity.enums;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

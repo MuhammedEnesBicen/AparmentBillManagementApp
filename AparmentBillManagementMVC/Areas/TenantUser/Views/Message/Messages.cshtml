@@ -1,12 +1,17 @@
 ﻿@model List<MessageDTO>
 
 @{
-    DateTime date = new DateTime();
+    DateTime? date = null;
 
 }
+@if (Model is null || Model.Count == 0)
+{
+    <p class="noMessage position-absolute top-50 start-50 translate-middle"> There is no message...</p>
+}
+
 @foreach (var item in Model)
 {
-    if (item.MessageTime.Day != date.Day)
+    if (date is null || item.MessageTime.Day != date?.Day)
     {
         if (item.MessageTime.Day != DateTime.Today.Day)
         {

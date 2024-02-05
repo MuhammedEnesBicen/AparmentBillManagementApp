@@ -15,6 +15,7 @@ function getMessages(chatRoomId) {
     $.post("MessageList", { chatRoomId: chatRoomId }, function (data) {
         $("#spinner").html("");
         $("#messagesArea").html(data);
+        UpdateLastSeenMessageId(chatRoomId);
 
     }).fail(function () {
         $("#spinner").html("");
@@ -30,7 +31,7 @@ function sendMessage() {
         return;
     }
     var message = $("#sendMessage").prev().val();
-    if (message == "") {
+    if (!message.replace(/\s/g, '').length) {
         $.notify("Message Cant be empty!");
         return;
     }
@@ -38,23 +39,28 @@ function sendMessage() {
         $(".noMessage").addClass("visually-hidden");
         $("#messagesArea").append(data);
         if (data.includes("message")) {
-            // updating chat rooms last seen mesaage
-            let lastMessage = $("#messagesArea > div:last-child");
-            let lastSeenMessageIdInput = "#room_" + chatRoomIdVal + " > input.lastSeenMessageId";
-            $(lastSeenMessageIdInput).attr("value", lastMessage.find("input.messageId").attr("value"));
+            UpdateLastSeenMessageId(chatRoomIdVal);
+
 
             $("#sendMessage").prev().val("");
+            $("#sendMessage").prev().css('height', 'auto');
             $(".scroller").scrollTop($(".scroller")[0].scrollHeight)
         }
-    });
+    }).fail(
+        function (jqXHR, textStatus, errorThrown) {
+            $.notify("Error while sending message! textSTatus=" + textStatus+ "error: " + errorThrown);
+        });
+
 }
 
 function getNewMessages(chatRoomId) {
     $.get("MessageItem?chatRoomId=" + chatRoomId , function (data) {
         if (data.includes("message")) {
+            $(".noMessage").addClass("visually-hidden");
             $("#messagesArea").append(data);
             //$(".scroller").scrollTop($(".scroller")[0].scrollHeight)
 
+            UpdateLastSeenMessageId(chatRoomId);
         }
     });
 }
@@ -126,4 +132,11 @@ function openChatRoom(chatRoomId) {
     $(unreadMsgSpan).addClass("visually-hidden");
 
 
+}
+
+function UpdateLastSeenMessageId(chatRoomIdVal) {
+    // updating chat rooms last seen mesaage
+    let lastMessage = $("#messagesArea > div:last-child");
+    let lastSeenMessageIdInput = "#room_" + chatRoomIdVal + " > input.lastSeenMessageId";
+    $(lastSeenMessageIdInput).attr("value", lastMessage.find("input.messageId").attr("value"));
 }
