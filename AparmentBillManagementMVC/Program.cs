@@ -70,7 +70,7 @@ app.MapAreaControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Auth}/{action=ManagerTestLogin}/{id?}");
+    pattern: "{controller=Auth}/{action=LandingPage}/{id?}");
 
 //make tenantuser area default
 //app.MapGet("/", (HttpContext context) =>

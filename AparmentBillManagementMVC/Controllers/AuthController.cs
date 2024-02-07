@@ -117,6 +117,11 @@ namespace AparmentBillManagementMVC.Controllers
             return View();
         }
 
+        public IActionResult LandingPage()
+        {
+            return View();
+        }
+
         private void CredentialsCookieOperations(LoginDTO loginDTO)
         {
             if (loginDTO.RememberMe)
