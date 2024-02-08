@@ -11,19 +11,31 @@ Then, they must run the <mark>"update-database"</mark> command in the Package Ma
 
 # Project Images
 
+<hr/>
+
+### Pages in Mobile Device
+
+![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/pages_in_mobile.png)
+<br />
+
 ### Landing Page
 
 ![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/landing_page.png)
 <br />
 
+### Apartments Page
+
+![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/apartments.png)
+<br />
+
+### Login Page
+
+![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/login_page.png)
+<br />
+
 ### Manager User's Messages Page
 
 ![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/manager_message_page.png)
-<br />
-
-### Tenant User's Messages Page
-
-![](https://github.com/MuhammedEnesBicen/AparmentBillManagementApp/blob/main/AparmentBillManagementMVC/wwwroot/img/git/tenant_message.png)
 <br />
 
 ### Registration Page
