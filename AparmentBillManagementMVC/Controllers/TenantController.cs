@@ -50,6 +50,7 @@ namespace AparmentBillManagementMVC.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+
             }
             return View(tenantDTO);
         }
@@ -78,7 +79,8 @@ namespace AparmentBillManagementMVC.Controllers
             {
                 var result = tenantService.Update(tenantDTO);
                 TempData["message"] = result.Message;
-                return RedirectToAction("Index");
+                if (result.Success)
+                    return RedirectToAction("Index");
             }
             return View(tenantDTO);
         }

@@ -74,7 +74,15 @@ namespace Bussiness.Concrete
 
         public DataResult<Manager> Login(LoginDTO loginDTO)
         {
-            var manager = GetByMail(loginDTO.Mail);
+            dynamic manager;
+            try
+            {
+                manager = GetByMail(loginDTO.Mail);
+            }
+            catch (Exception e)
+            {
+                return new DataResult<Manager>(false, "There are multiple account with this mail, communicate with your manager.", null);
+            }
             if (manager.Data == null)
                 return new DataResult<Manager>(false, "There is no manager with this mail.", null);
             if (manager.Data.Password != loginDTO.Password)
@@ -88,6 +96,13 @@ namespace Bussiness.Concrete
             var managerToUpdate = GetById(manager.Id);
             if (managerToUpdate.Data == null)
                 return new Result(false, "Manager not found");
+
+            if (manager.Mail != managerToUpdate.Data.Mail)
+            {
+                var result = GetByMail(manager.Mail);
+                if (result.Data != null)
+                    return new Result(false, "Manager with this mail already exists");
+            }
 
             managerToUpdate.Data = mapper.Map<Manager>(manager);
             managerDal.Update(managerToUpdate.Data);

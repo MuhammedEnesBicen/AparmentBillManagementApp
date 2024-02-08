@@ -1,72 +1,119 @@
 ﻿@model LoginDTO
 
-@if(TempData["message"] != null ){
-    <div class="alert alert-success">
-        @TempData["message"]
-    </div>
+@{
+    Layout = null;
 }
-<style>
-    a{
-        text-decoration: none;
-        color: #000;
-    
-    }
-</style>
 
-<div class="row">
-    <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-around mottoPhrase">
-        <h1>ABMS Apartment Bill Management Web App</h1>
-            <h3 style="margin:20px 0px;">"Streamline Your Space, Simplify Your Bills: Your Apartment Finances, Managed with Ease!"</h3>
-</div>
-    <div class="col-sm-12 col-md-6 ">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login-auth.css" />
+</head>
 
-        <form method="Post" asp-controller="Auth">
+<body>
 
-            <h5><a href="/Auth/Index">Login</a> / <a href="/Auth/Register">Register</a></h5>
-            <form-group>
-                <div>
-                    <label asp-for="Mail"></label>
-                    <input asp-for="Mail" required />
-                </div>
-                <span asp-validation-for="Mail" class="text-danger"></span>
-            </form-group>
-            <form-group>
-                <div>
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password"  required />
-                </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
+    <header>
+        <div class="p-2 d-flex justify-content-between">
+            <a href="/" class=" d-flex">
+                <img src="/img/logo.png" />
+                <p>ABMS</p>
+            </a>
+            <div class="">
+                <a asp-action="Index" class="btn btn-outline-primary">Login</a>
+                <a asp-action="Register" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </header>
 
-            </form-group>
+    <div class="container" style="margin-bottom:125px;">
 
-            <form-group>
-                <div>
-                    <label asp-for="UserType">User Type</label>
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["message"]
+            </div>
+        }
 
-                    <div>
-                        <select class="form-select" asp-for="UserType">
-                            <option value="0">Tenant</option>
-                            <option value="1">Manager</option>
-                        </select>
-                    </div>
-                </div>
-            </form-group>
+        <div class="row ">
+            <div class="col-sm-12 col-md-6 d-flex flex-column justify-content-around mottoPhrase">
+                <h1>ABMS - Apartment Bill Management Site</h1>
+                <h3 style="margin:30px 0px;">"Streamline Your Space, Simplify Your Bills: Your Apartment Finances, Managed with Ease!"</h3>
+            </div>
+            <div class="col-sm-12 col-md-6 ">
+
+                <form method="Post" asp-controller="Auth">
+
+                    <h5><a href="/Auth/Index">Login</a> / <a href="/Auth/Register">Register</a></h5>
+                    <form-group>
+                        <div>
+                            <label asp-for="Mail"></label>
+                            <input asp-for="Mail" required />
+                        </div>
+                        <span asp-validation-for="Mail" class="text-danger"></span>
+                    </form-group>
+                    <form-group>
+                        <div>
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" required />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                    </form-group>
+
+                    <form-group>
+                        <div>
+                            <label asp-for="UserType">User Type</label>
+
+                            <div>
+                                <select class="form-select" asp-for="UserType">
+                                    <option value="0">Tenant</option>
+                                    <option value="1">Manager</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form-group>
 
 
-            <form-group>
-                <div>
-                    <label class="form-check-label" asp-for="RememberMe">Remember Me</label>
-                <div class="form-switch ">
-                    
-                    <input class="form-check-input " type="checkbox"  asp-for="RememberMe">
-                    
-                </div>
-                </div>
+                    <form-group>
+                        <div>
+                            <label class="form-check-label" asp-for="RememberMe">Remember Me</label>
+                            <div class="form-switch ">
 
-            </form-group>
+                                <input class="form-check-input " type="checkbox" asp-for="RememberMe">
 
-            <input type="submit" value="Login" asp-action="Index" />
+                            </div>
+                        </div>
 
-        </form>
-</div>
-</div>
+                    </form-group>
+
+                    <input type="submit" value="Login" asp-action="Index" />
+
+                </form>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <footer>
+        <div>
+            <p class="d-inline">You can use this these links to open test accounts and see how this website works</p>
+            <div class="d-inline-block">
+            <a href="/Auth/ManagerTestLogin" class="btn btn-outline-info">Manager Test Account</a>
+            <a href="/Auth/TenantTestLogin" class="btn btn-outline-warning">Tenant Test Account</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+
+
+</html>

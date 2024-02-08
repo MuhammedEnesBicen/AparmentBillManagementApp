@@ -21,6 +21,9 @@ namespace Bussiness.Concrete
 
         public Result Add(TenantDTO tenantDTO)
         {
+            var tenantFromDb = GetByMail(tenantDTO.Mail);
+            if (tenantFromDb.Success)
+                return new Result(false, "There is already a user with this mail.");
             Tenant tenant = mapper.Map<Tenant>(tenantDTO);
             tenantDal.Add(tenant);
             return new Result(true, "Tenant Added Successfully");
@@ -90,7 +93,16 @@ namespace Bussiness.Concrete
 
         public DataResult<Tenant> Login(LoginDTO loginDTO)
         {
-            var tenant = GetByMail(loginDTO.Mail);
+            dynamic tenant;
+            try
+            {
+                tenant = GetByMail(loginDTO.Mail);
+            }
+            catch (Exception e)
+            {
+                return new DataResult<Tenant>(false, "There are multiple account with this mail, communicate with your manager.", null);
+            }
+
             if (tenant.Success == false)
                 return new DataResult<Tenant>(false, "There is no user with this mail.", null);
             if (tenant.Data.Password != loginDTO.Password)
@@ -103,6 +115,13 @@ namespace Bussiness.Concrete
             var tenantFromDb = GetById(tenantDTO.Id);
             if (tenantFromDb.Success == false)
                 return new Result(false, "Tenant doesnt found");
+
+            if (tenantFromDb.Data.Mail != tenantDTO.Mail)
+            {
+                var tenantWithSameMail = GetByMail(tenantDTO.Mail);
+                if (tenantWithSameMail.Success)
+                    return new Result(false, "There is already a user with this mail.");
+            }
 
             mapper.Map<TenantDTO, Tenant>(tenantDTO, tenantFromDb.Data);
             tenantDal.Update(tenantFromDb.Data);

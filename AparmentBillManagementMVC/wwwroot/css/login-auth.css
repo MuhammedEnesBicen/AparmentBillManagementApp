@@ -1,0 +1,45 @@
+﻿header p {
+    font-size: 2rem;
+    font-weight: 500;
+    font-family: Times New Roman verdana;
+    line-height: 40px;
+    margin:0;
+}
+
+header img {
+    height: 40px;
+}
+
+header a {
+    text-decoration: none;
+    color: black;
+}
+
+header{
+    background-color:white;
+    margin-bottom: 20px;
+}   
+
+
+.mottoPhrase > h1, h3 {
+    color: black;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: #fff 5px -1px 5px;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+footer{
+    position:absolute;
+    bottom:0;
+   background-color: #033a6d;
+    color: white;
+    padding: 10px 30px;
+    width: 100%;
+text-align: center;
+}
+

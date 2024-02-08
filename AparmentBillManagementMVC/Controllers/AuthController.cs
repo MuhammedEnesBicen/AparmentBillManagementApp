@@ -179,7 +179,7 @@ namespace AparmentBillManagementMVC.Controllers
                                           new ClaimsPrincipal(claimsIdentity),
                                           authProperties);
 
-            return RedirectToAction("Index", "Message", new { area = "TenantUser" });
+            return RedirectToAction("Index", "Home", new { area = "TenantUser" });
         }
 
         public bool IsAuthenticated()

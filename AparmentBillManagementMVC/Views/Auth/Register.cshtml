@@ -1,5 +1,38 @@
 ﻿@model Manager
 
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login-auth.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="p-3 d-flex justify-content-between">
+            <a href="/" class=" d-flex">
+                <img src="/img/logo.png" />
+                <p>ABMS</p>
+            </a>
+            <div class="">
+                <a asp-action="Index" class="btn btn-outline-primary">Login</a>
+                <a asp-action="Register" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
 @if(ViewBag.Error != null)
 {
     <div class="alert alert-danger">
@@ -94,4 +127,10 @@
 </div></form>
 </div>
 
+    </div>
+</body>
+
+
+
+</html>
 
