@@ -2,6 +2,8 @@
 
 @{
     Layout = null;
+    String? error = ViewBag.error;
+    String errorMSG = ViewBag.errorMSG;
 }
 
 <!DOCTYPE html>
@@ -112,6 +114,27 @@
             </div>
         </div>
     </footer>
+
+    <script src="~/lib/sweetalert2-11.10.1/dist/sweetalert2.all.min.js"></script>
+    <script>
+        
+
+        document.addEventListener("DOMContentLoaded", function () {
+                var errorMSG = '@errorMSG';
+                var error = '@error';
+            if (errorMSG != "") {
+                console.log(error);
+                Swal.fire({
+                    title: 'Info',
+                    text: errorMSG,
+                    confirmButtonColor: '#f20f0f',
+                    confirmButtonText: 'Okay'
+                });
+                //alert(error);
+            }
+            
+        });
+    </script>
 </body>
 
 

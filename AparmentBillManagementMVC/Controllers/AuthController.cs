@@ -18,6 +18,19 @@ namespace AparmentBillManagementMVC.Controllers
         {
             this.tenantService = tenantService;
             this.managerService = managerService;
+
+            InitializeDb();
+        }
+        public async void InitializeDb(){
+            //we are making this request to make db online.
+            try
+            {
+            tenantService.GetByMail("test@test.com");
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("An error occured while initializing db.");
+            }
         }
 
         public IActionResult Index()
@@ -47,7 +60,17 @@ namespace AparmentBillManagementMVC.Controllers
 
             if (userResult.Success == false)
             {
-                ModelState.AddModelError("Password", userResult.Message);
+                string message = userResult.Message;
+                string error = "";
+                var errorResult = userResult.Message.Split("{error}");
+                if ((errorResult.Length > 1))
+                {
+                    message = errorResult[0];
+                    error = errorResult[1];
+                }
+                ViewBag.errorMSG = message;
+                ViewBag.error = error;
+                ModelState.AddModelError("Password", message);
                 return View(loginDTO);
             }
 
@@ -163,6 +186,7 @@ namespace AparmentBillManagementMVC.Controllers
 
         public async Task<IActionResult> TenantTestLogin()
         {
+
 
             var claims = new List<Claim>
                     {

@@ -100,7 +100,7 @@ namespace Bussiness.Concrete
             }
             catch (Exception e)
             {
-                return new DataResult<Tenant>(false, "There are multiple account with this mail, communicate with your manager.", null);
+                return new DataResult<Tenant>(false, "Something went wrong. Probably database is offline. It takes 1 minute to database be online. please try a few seconds later again.{error}error is: " + e.ToString(), null);
             }
 
             if (tenant.Success == false)
